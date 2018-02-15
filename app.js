@@ -8,6 +8,8 @@ app.use(bodyParser.json());
 //REQUIRE ROUTES
 const titlesRoutes = require('./api/routes/titles');
 const genresRoutes = require('./api/routes/genres');
+const yearRoutes = require('./api/routes/year');
+
 
 //CORS HANDLING 
 app.use((req, res, next) => {
@@ -22,7 +24,8 @@ app.use((req, res, next) => {
 
 //REQUEST ROUTE HANDLERS
 app.use('/titles', titlesRoutes);
-app.use('/genres', genresRoutes);
+app.use('/genre', genresRoutes);
+app.use('/year', yearRoutes);
 
 //ERROR HANDLING - 404
 app.use((req, res, next) => {
