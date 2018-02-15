@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -9,6 +10,8 @@ app.use(bodyParser.json());
 const titlesRoutes = require('./api/routes/titles');
 const genresRoutes = require('./api/routes/genres');
 const yearRoutes = require('./api/routes/year');
+
+mongoose.connect('mongodb://localhost:27017/movie-database', {useMongoClient: true});
 
 
 //CORS HANDLING 
@@ -39,7 +42,11 @@ app.use((error, req, res, next) => {
     res.status(error.status || 500);
     res.json({
         error: {
-            message: error.message
+            message: error.message,
+            requests: {
+            	type: 'GET',
+            	urls: '/titles, /genre, /year'
+            }
         }
     });
 });
