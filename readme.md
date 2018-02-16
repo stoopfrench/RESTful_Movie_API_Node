@@ -7,7 +7,7 @@
 1. Clone this repository:
 	`git clone https://github.com/stoopfrench/movie_api_mongo.git`
 2. cd into the directory:
-	`cd movie-api-mongo`
+	`cd movie_api_mongo`
 3. Install Dependencies:
 	`npm install`
 4. Start the MongoDB client:
