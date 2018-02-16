@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
+
 const Movie = require('../models/movieModel')
 
 const _var = require('../../variables.js')
@@ -9,6 +10,7 @@ const port = _var.port
 //GET ALL GENRES ------------------------------------------------------------
 router.get('/', (req, res, next) => {
     const genres = []
+
     Movie
         .find()
         .exec()

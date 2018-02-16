@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
+
 const Movie = require('../models/movieModel')
 
 const _var = require('../../variables.js')
@@ -50,7 +51,8 @@ router.post('/', (req, res, next) => {
         title: req.body.title,
         year: req.body.year,
         genres: req.body.genres
-    });
+    })
+
     movie
         .save()
         .then(result => {
@@ -126,6 +128,7 @@ router.patch('/:id', (req, res, next) => {
     for (let ops of req.body) {
         updateFields[ops.propName] = ops.value
     }
+
     Movie
         .update({ 'id': id }, { $set: updateFields })
         .exec()
@@ -147,6 +150,7 @@ router.patch('/:id', (req, res, next) => {
 // //DELETE MOVIE BY ID -------------------------------------------
 router.delete('/:id', (req, res, next) => {
     const id = req.params.id
+
     Movie.deleteOne({ 'id': id })
         .exec()
         .then(result => {

@@ -11,6 +11,7 @@ const titlesRoutes = require('./api/routes/titles')
 const genresRoutes = require('./api/routes/genres')
 const yearRoutes = require('./api/routes/year')
 
+//CONNECT TO MONGO CLIENT
 mongoose.connect('mongodb://localhost:27017/movie-database')
 mongoose.Promise = global.Promise
 
