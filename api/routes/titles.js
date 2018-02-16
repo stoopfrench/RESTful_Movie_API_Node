@@ -4,6 +4,9 @@ const fs = require('fs');
 const mongoose = require('mongoose');
 const Movie = require('../models/movieModel');
 
+const _var = require('../../variables.js')
+const port = _var.port
+
 //GET ALL MOVIES -------------------------------------------------
 router.get('/', (req, res, next) => {
 
@@ -26,7 +29,7 @@ router.get('/', (req, res, next) => {
                     request: {
                         type: 'GET',
                         description: 'Get Details about this Movie',
-                        url: 'http://localhost:8091/titles/' + movie.id
+                        url: `http://localhost:${port}/titles/` + movie.id
                     }
                 }
             })
@@ -52,7 +55,6 @@ router.post('/',(req, res, next) => {
     movie
         .save()
         .then(result => {
-            console.log(result)
             res.status(201).json({
                 message: 'added new movie',
                 created: {
@@ -63,48 +65,51 @@ router.post('/',(req, res, next) => {
                     request: {
                         type: 'GET',
                         description: 'Get Details about this Movie',
-                        url: 'http://localhost:8091/titles/' + result.id
+                        url: `http://localhost:${port}/titles/` + result.id
                     }
                 }
             })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            })
+        })
 
 });
 
-// //GET MOVIE BY ID ----------------------------------------------
+// //GET MOVIE BY TITLE ----------------------------------------------
 router.get('/:id', (req, res, next) => {
     const id = req.params.id
-    console.log(id)
 
     Movie
         .findOne({'id': id})
         .select('id title year genres')
         .exec()
         .then(result=> {
-            const response = {
-                movie: {
-                    id: result.id,
-                    title: result.title,
-                    year: result.year,
-                    genres: result.genres,
-                    requests: {
-                        All: {
-                            type: 'GET',
-                            description: 'Get a list of all Movies',
-                            url: 'http://localhost:8091/titles/'
-                        },
-                        Update: {
-                            type: 'PATCH',
-                            description: 'Update this Movie',
-                            url: 'http://localhost:8091/titles/' + result.id,
-                            body: [{propName: '<movie property name>', value: '<new property value>'}]
+            if(result){
+                res.status(200).json({
+                    movie: {
+                        id: result.id,
+                        title: result.title,
+                        year: result.year,
+                        genres: result.genres,
+                        requests: {
+                            Update: {
+                                type: 'PATCH',
+                                description: 'Update this Movie',
+                                url: `http://localhost:${port}/titles/` + result.id,
+                                body: [{propName: '<movie property name>', value: '<new property value>'}]
+                            },
+                            All: {
+                                type: 'GET',
+                                description: 'Get a list of all Movies',
+                                url: `http://localhost:${port}/titles/`
+                            }
+
                         }
                     }
-                }
-            }
-            if(result){
-                res.status(200).json(response)
+                })
             }
             else {
                 res.status(404).json({
@@ -133,14 +138,12 @@ router.patch('/:id', (req, res, next) => {
                 request: {
                     type: 'GET',
                     description: 'Get Details about this product',
-                    url: 'http://localhost:8091/titles/' + id
+                    url: `http://localhost:${port}/titles/` + id
                 }
             })
         })
         .catch(err=> {
-            res.status(500).json({
-                error: err
-            })
+            console.log(err)
         })
 });
 
@@ -156,12 +159,12 @@ router.delete('/:id', (req, res, next) => {
                     All: {
                         type: 'GET',
                         description: 'Get a new list of all Movies',
-                        url: 'http://localhost:8091/titles/'
+                        url: `http://localhost:${port}/titles/`
                     },
                     Create: {
                         type: 'POST',
                         description: 'Create a new Movie',
-                        url: 'http://localhost:8091/titles/',
+                        url: `http://localhost:${port}/titles/`,
                         body: {id: 'Number', title: 'String', year: 'Number', genres: 'String'}
                     }
                 }

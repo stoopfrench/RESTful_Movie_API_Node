@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const fs = require('fs')
 const mongoose = require('mongoose');
 const Movie = require('../models/movieModel');
+
+const _var = require('../../variables.js')
+const port = _var.port
 
 //GET ALL GENRES ------------------------------------------------------------
 router.get('/', (req, res, next) => {
@@ -25,7 +27,7 @@ router.get('/', (req, res, next) => {
                         request: {
                             type: 'GET',
                             description: 'Get a list of Movies in this Genre',
-                            url: 'http://localhost:8091/genre/' + genre
+                            url: `http://localhost:${port}/genre/` + genre
                         }
                     }
                 })
@@ -48,28 +50,33 @@ router.get('/:genre', (req, res, next) => {
         .find({'genres': genre})
         .exec()
         .then(result=> {
-            const response = {
-                count: result.length,
-                movies: result.map(movie=> {
-                    return {
-                        id: movie.id,
-                        title: movie.title,
-                        year: movie.year,
-                        genres: movie.genres,
-                        request: {
-                            type: 'GET',
-                            description: 'Get details about this Movie',
-                            url: 'http://localhost:8091/titles/' + movie.id
+            if(result.length > 0){
+                res.status(200).json({
+                    genre: genre,
+                    count: result.length,
+                    movies: result.map(movie=> {
+                        return {
+                            id: movie.id,
+                            title: movie.title,
+                            year: movie.year,
+                            genres: movie.genres,
+                            request: {
+                                type: 'GET',
+                                description: 'Get details about this Movie',
+                                url: `http://localhost:${port}/titles/` + movie.id
+                            }
                         }
-                    }
+                    })                
                 })
             }
-            res.status(200).json(response)
+            else {
+                res.status(404).json({
+                    message: 'No Movies found with that Genre'
+                })
+            }   
         })
         .catch(err=> {
-            res.status(500).json({
-                error: err
-            })
+            console.log(err)
         })
 })
 
