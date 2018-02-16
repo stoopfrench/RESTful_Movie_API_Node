@@ -74,7 +74,6 @@ router.post('/', (req, res, next) => {
                 error: err
             })
         })
-
 })
 
 // //GET MOVIE BY TITLE ----------------------------------------------
