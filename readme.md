@@ -31,41 +31,51 @@ ENDPOINTS --------------------------------------------
 Movie Search
 
 GET `http://localhost:8080/titles`
+ 	
  	Returns ALL the movies in the database
 
 GET `http://localhost:8080/titles/<id>`
+ 	
  	Returns the movie stored with that ID
 
 Create New Movie
 
-POST `http://localhost:8080/title`
+POST `http://localhost:8080/titles`
+	
 	Creates a new entry in the database.
+	
 	Template: `{id: 'number', title: 'string', year: 'number', genres: 'string'}`
 
 Update a Movie
 
-PATCH `http://localhost:8080/title/<id>`
+PATCH `http://localhost:8080/titles/<id>`
+	
 	Updates one or more values in the database.
+	
 	Template: `[{ propName: <movie-property-name>, value: <new-property-value }]`
 
 Genre Index
 
 GET `http://localhost:8080/genre`
+	
 	Returns ALL the genres of the movies in the database.
 
 Search by Genre
 
 GET `http://localhost:8080/genre/<genre name>`
+	
 	Returns the movies stored under that genre.
 
 Year Index
 
 GET `http://localhost:8080/year`
+	
 	Returns ALL the years of the movies in the database.
 
 Search by Year
 
 GET `http://localhost:8080/year/<year>`
+	
 	Returns the movies from that year.
 
 
