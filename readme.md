@@ -48,7 +48,7 @@ POST `http://localhost:8080/titles`
 	
 	Template: {id: 'number', title: 'string', year: 'number', genres: 'string'}
 
-**Update a Movie**
+**Update Movie**
 
 PATCH `http://localhost:8080/titles/<id>`
 	
@@ -56,7 +56,7 @@ PATCH `http://localhost:8080/titles/<id>`
 	
 	Template: [{ propName: <movie-property-name>, value: <new-property-value }]
 
-**Delete a Movie**
+**Delete Movie**
 
 DELETE `http://localhost:8080/titles/<id>`
 
