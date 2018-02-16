@@ -39,8 +39,7 @@ router.get('/', (req, res, next) => {
                 error: err
             })
         })
-
-});
+})
 
 //GET BY GENRE --------------------------------------------------------------
 router.get('/:genre', (req, res, next) => {
