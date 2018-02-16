@@ -1,7 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const mongoose = require('mongoose');
-const Movie = require('../models/movieModel');
+const express = require('express')
+const router = express.Router()
+const mongoose = require('mongoose')
+const Movie = require('../models/movieModel')
 
 const _var = require('../../variables.js')
 const port = _var.port
@@ -12,16 +12,16 @@ router.get('/', (req, res, next) => {
     Movie
         .find()
         .exec()
-        .then(result=> {
-            result.forEach(movie=> {
-                 genres.push(movie.genres)
+        .then(result => {
+            result.forEach(movie => {
+                genres.push(movie.genres)
             })
-            const filteredGenres = genres.filter((element, i, self)=>{
+            const filteredGenres = genres.filter((element, i, self) => {
                 return i === self.indexOf(element)
             }).sort()
             const response = {
                 count: filteredGenres.length,
-                genres: filteredGenres.map(genre=> {
+                genres: filteredGenres.map(genre => {
                     return {
                         name: genre,
                         request: {
@@ -34,7 +34,7 @@ router.get('/', (req, res, next) => {
             }
             res.status(200).json(response)
         })
-        .catch(err=> {
+        .catch(err => {
             res.send(500).json({
                 error: err
             })
@@ -47,14 +47,14 @@ router.get('/:genre', (req, res, next) => {
     const genre = req.params.genre
 
     Movie
-        .find({'genres': genre})
+        .find({ 'genres': genre })
         .exec()
-        .then(result=> {
-            if(result.length > 0){
+        .then(result => {
+            if (result.length > 0) {
                 res.status(200).json({
                     genre: genre,
                     count: result.length,
-                    movies: result.map(movie=> {
+                    movies: result.map(movie => {
                         return {
                             id: movie.id,
                             title: movie.title,
@@ -66,18 +66,17 @@ router.get('/:genre', (req, res, next) => {
                                 url: `http://localhost:${port}/titles/` + movie.id
                             }
                         }
-                    })                
+                    })
                 })
-            }
-            else {
+            } else {
                 res.status(404).json({
                     message: 'No Movies found with that Genre'
                 })
-            }   
+            }
         })
-        .catch(err=> {
+        .catch(err => {
             console.log(err)
         })
 })
 
-module.exports = router;
+module.exports = router

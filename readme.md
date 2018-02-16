@@ -19,7 +19,7 @@
 7. Start the local server:
 	`npm start`
 8. Use an API Development Enviroment (ex. Postman) to make request to the API.
-	make sure that the program is making request at the proper port:
+	Make sure that the program is making request at the proper port:
 		Default: `http://localhost:8080` 
 		**The port can be easily changed by modifying the value of the `port` property in `variables.js`**
 

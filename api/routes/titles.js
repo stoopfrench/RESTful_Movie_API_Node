@@ -1,8 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const fs = require('fs');
-const mongoose = require('mongoose');
-const Movie = require('../models/movieModel');
+const express = require('express')
+const router = express.Router()
+const mongoose = require('mongoose')
+const Movie = require('../models/movieModel')
 
 const _var = require('../../variables.js')
 const port = _var.port
@@ -11,41 +10,41 @@ const port = _var.port
 router.get('/', (req, res, next) => {
 
     Movie
-    .find()
-    .select('id title year genres')
-    .exec()
-    .then(result=> {
-        result.sort((a,b)=> {
-            return a.id - b.id
-        })
-        const response = {
-            count: result.length,
-            movies: result.map(movie=> {
-                return {
-                    id: movie.id,
-                    title: movie.title,
-                    year: movie.year,
-                    genres: movie.genres,
-                    request: {
-                        type: 'GET',
-                        description: 'Get Details about this Movie',
-                        url: `http://localhost:${port}/titles/` + movie.id
-                    }
-                }
+        .find()
+        .select('id title year genres')
+        .exec()
+        .then(result => {
+            result.sort((a, b) => {
+                return a.id - b.id
             })
-        }
-        res.status(200).json(response)  
-    })
-        .catch(err=> {
+            const response = {
+                count: result.length,
+                movies: result.map(movie => {
+                    return {
+                        id: movie.id,
+                        title: movie.title,
+                        year: movie.year,
+                        genres: movie.genres,
+                        request: {
+                            type: 'GET',
+                            description: 'Get Details about this Movie',
+                            url: `http://localhost:${port}/titles/` + movie.id
+                        }
+                    }
+                })
+            }
+            res.status(200).json(response)
+        })
+        .catch(err => {
             res.status(500).json({
                 error: err
             })
         })
-});
+})
 
 //POST NEW MOVIE -------------------------------------------
-router.post('/',(req, res, next) => {
-    
+router.post('/', (req, res, next) => {
+
     const movie = new Movie({
         id: req.body.id,
         title: req.body.title,
@@ -76,18 +75,18 @@ router.post('/',(req, res, next) => {
             })
         })
 
-});
+})
 
 // //GET MOVIE BY TITLE ----------------------------------------------
 router.get('/:id', (req, res, next) => {
     const id = req.params.id
 
     Movie
-        .findOne({'id': id})
+        .findOne({ 'id': id })
         .select('id title year genres')
         .exec()
-        .then(result=> {
-            if(result){
+        .then(result => {
+            if (result) {
                 res.status(200).json({
                     movie: {
                         id: result.id,
@@ -99,7 +98,7 @@ router.get('/:id', (req, res, next) => {
                                 type: 'PATCH',
                                 description: 'Update this Movie',
                                 url: `http://localhost:${port}/titles/` + result.id,
-                                body: [{propName: '<movie property name>', value: '<new property value>'}]
+                                body: [{ propName: '<movie property name>', value: '<new property value>' }]
                             },
                             All: {
                                 type: 'GET',
@@ -110,14 +109,13 @@ router.get('/:id', (req, res, next) => {
                         }
                     }
                 })
-            }
-            else {
+            } else {
                 res.status(404).json({
                     message: 'No entry found with that ID'
                 })
-            }   
+            }
         })
-        .catch(err=> {
+        .catch(err => {
             console.log(err)
         })
 })
@@ -126,13 +124,13 @@ router.get('/:id', (req, res, next) => {
 router.patch('/:id', (req, res, next) => {
     const id = req.params.id
     const updateFields = {}
-    for(let ops of req.body){
+    for (let ops of req.body) {
         updateFields[ops.propName] = ops.value
     }
     Movie
-        .update({'id': id}, {$set: updateFields})
+        .update({ 'id': id }, { $set: updateFields })
         .exec()
-        .then(result=> {
+        .then(result => {
             res.status(200).json({
                 message: 'Movie updated',
                 request: {
@@ -142,17 +140,17 @@ router.patch('/:id', (req, res, next) => {
                 }
             })
         })
-        .catch(err=> {
+        .catch(err => {
             console.log(err)
         })
-});
+})
 
 // //DELETE MOVIE BY ID -------------------------------------------
 router.delete('/:id', (req, res, next) => {
     const id = req.params.id
-    Movie.deleteOne({'id': id})
+    Movie.deleteOne({ 'id': id })
         .exec()
-        .then(result=> {
+        .then(result => {
             res.status(200).json({
                 message: 'Movie deleted',
                 requests: {
@@ -165,16 +163,16 @@ router.delete('/:id', (req, res, next) => {
                         type: 'POST',
                         description: 'Create a new Movie',
                         url: `http://localhost:${port}/titles/`,
-                        body: {id: 'Number', title: 'String', year: 'Number', genres: 'String'}
+                        body: { id: 'Number', title: 'String', year: 'Number', genres: 'String' }
                     }
                 }
             })
         })
-        .catch(err=> {
+        .catch(err => {
             res.status(500).json({
                 error: err
             })
         })
-});
+})
 
-module.exports = router;
+module.exports = router

@@ -1,7 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const mongoose = require('mongoose');
-const Movie = require('../models/movieModel');
+const express = require('express')
+const router = express.Router()
+const mongoose = require('mongoose')
+const Movie = require('../models/movieModel')
 
 const _var = require('../../variables.js')
 const port = _var.port
@@ -12,16 +12,16 @@ router.get('/', (req, res, next) => {
     Movie
         .find()
         .exec()
-        .then(result=> {
-            result.forEach(movie=> {
-                 years.push(movie.year)
+        .then(result => {
+            result.forEach(movie => {
+                years.push(movie.year)
             })
-            const filteredYears = years.filter((element, i, self)=>{
+            const filteredYears = years.filter((element, i, self) => {
                 return i === self.indexOf(element)
             }).sort()
             const response = {
                 count: filteredYears.length,
-                years: filteredYears.map(year=> {
+                years: filteredYears.map(year => {
                     return {
                         year: year,
                         request: {
@@ -34,28 +34,28 @@ router.get('/', (req, res, next) => {
             }
             res.status(200).json(response)
         })
-        .catch(err=> {
+        .catch(err => {
             res.status(500).json({
                 error: err
             })
         })
 
-});
+})
 
 //GET MOVIE BY YEAR --------------------------------------------------------------
 router.get('/:year', (req, res, next) => {
     const year = req.params.year
 
     Movie
-        .find({'year': year})
+        .find({ 'year': year })
         .select('id title year genres')
         .exec()
-        .then(result=> {
-            if(result.length > 0){
+        .then(result => {
+            if (result.length > 0) {
                 res.status(200).json({
                     year: year,
                     count: result.length,
-                    movies: result.map(year=> {
+                    movies: result.map(year => {
                         return {
                             id: year.id,
                             title: year.title,
@@ -67,18 +67,17 @@ router.get('/:year', (req, res, next) => {
                                 url: `http://localhost:${port}/titles/` + year.id
                             }
                         }
-                    })                
+                    })
                 })
-            }
-            else {
+            } else {
                 res.status(404).json({
                     message: 'No Movies found with that Genre'
                 })
-            }   
+            }
         })
-        .catch(err=> {
+        .catch(err => {
             console.log(err)
         })
 })
 
-module.exports = router;
+module.exports = router
