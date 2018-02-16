@@ -151,7 +151,8 @@ router.patch('/:id', (req, res, next) => {
 router.delete('/:id', (req, res, next) => {
     const id = req.params.id
 
-    Movie.deleteOne({ 'id': id })
+    Movie
+        .deleteOne({ 'id': id })
         .exec()
         .then(result => {
             res.status(200).json({
