@@ -11,7 +11,8 @@ const titlesRoutes = require('./api/routes/titles');
 const genresRoutes = require('./api/routes/genres');
 const yearRoutes = require('./api/routes/year');
 
-mongoose.connect('mongodb://localhost:27017/movie-database', {useMongoClient: true});
+mongoose.connect('mongodb://localhost:27017/movie-database');
+mongoose.Promise = global.Promise;
 
 
 //CORS HANDLING 

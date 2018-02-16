@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
-const Papa = require('papaparse');
 const mongoose = require('mongoose');
-
 const Movie = require('../models/movieModel');
 
 //GET ALL MOVIES -------------------------------------------------
@@ -27,6 +25,7 @@ router.get('/', (req, res, next) => {
                     genres: movie.genres,
                     request: {
                         type: 'GET',
+                        description: 'Get Details about this Movie',
                         url: 'http://localhost:8091/titles/' + movie.id
                     }
                 }
@@ -63,6 +62,7 @@ router.post('/',(req, res, next) => {
                     genres: result.genres,
                     request: {
                         type: 'GET',
+                        description: 'Get Details about this Movie',
                         url: 'http://localhost:8091/titles/' + result.id
                     }
                 }
@@ -89,13 +89,16 @@ router.get('/:id', (req, res, next) => {
                     year: result.year,
                     genres: result.genres,
                     requests: {
-                        allTitles: {
+                        All: {
                             type: 'GET',
+                            description: 'Get a list of all Movies',
                             url: 'http://localhost:8091/titles/'
                         },
-                        updateMovie: {
+                        Update: {
                             type: 'PATCH',
-                            url: 'http://localhost:8091/titles/' + result.id
+                            description: 'Update this Movie',
+                            url: 'http://localhost:8091/titles/' + result.id,
+                            body: [{propName: '<movie property name>', value: '<new property value>'}]
                         }
                     }
                 }
@@ -126,8 +129,12 @@ router.patch('/:id', (req, res, next) => {
         .exec()
         .then(result=> {
             res.status(200).json({
-                message: 'updated on Movie',
-                results: result
+                message: 'Movie updated',
+                request: {
+                    type: 'GET',
+                    description: 'Get Details about this product',
+                    url: 'http://localhost:8091/titles/' + id
+                }
             })
         })
         .catch(err=> {
@@ -144,11 +151,19 @@ router.delete('/:id', (req, res, next) => {
         .exec()
         .then(result=> {
             res.status(200).json({
-                message: 'Removed one Movie',
-                results: result,
+                message: 'Movie deleted',
                 requests: {
-                    type: 'GET',
-                    url: '/titles'
+                    All: {
+                        type: 'GET',
+                        description: 'Get a new list of all Movies',
+                        url: 'http://localhost:8091/titles/'
+                    },
+                    Create: {
+                        type: 'POST',
+                        description: 'Create a new Movie',
+                        url: 'http://localhost:8091/titles/',
+                        body: {id: 'Number', title: 'String', year: 'Number', genres: 'String'}
+                    }
                 }
             })
         })
