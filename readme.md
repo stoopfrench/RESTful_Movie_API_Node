@@ -2,7 +2,7 @@
 
 *REQUIRES Node.js*
 
-##Installation##
+#INSTALLATION#
 
 1. Clone this repository:
 	`git clone https://github.com/stoopfrench/movie_api_mongo.git`
@@ -26,7 +26,7 @@
 ##BE SURE TO CRASH OUT (`^C`) OF THE MONGOD SERVICE IN THE TERMINAL WHEN YOURE DONE
 
 
-##Endpoints##
+#ENDPOINTS##
 
 ###Movie Search
 
