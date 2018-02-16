@@ -9,6 +9,7 @@ const port = _var.port
 //GET ALL YEARS ------------------------------------------------------------
 router.get('/', (req, res, next) => {
     const years = []
+    
     Movie
         .find()
         .exec()
@@ -39,7 +40,6 @@ router.get('/', (req, res, next) => {
                 error: err
             })
         })
-
 })
 
 //GET MOVIE BY YEAR --------------------------------------------------------------
