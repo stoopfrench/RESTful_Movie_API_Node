@@ -46,21 +46,25 @@ POST `http://localhost:8080/title`
 
 PATCH `http://localhost:8080/title/<id>`
 	Updates one or more values in the database.
-	Template: `[{ propName: <movie-propery-name>, value: <new-property-value }]`
+	Template: `[{ propName: <movie-property-name>, value: <new-property-value }]`
 
 ###Genre Index
+
 GET `http://localhost:8080/genre`
 	Returns ALL the genres of the movies in the database.
 
 ###Search by Genre
+
 GET `http://localhost:8080/genre/<genre name>`
 	Returns the movies stored under that genre.
 
 ###Year Index
+
 GET `http://localhost:8080/year`
 	Returns ALL the years of the movies in the database.
 
 ###Search by Year
+
 GET `http://localhost:8080/year/<year>`
 	Returns the movies from that year.
 
