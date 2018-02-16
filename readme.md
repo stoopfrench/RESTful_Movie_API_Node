@@ -42,17 +42,17 @@ Create New Movie
 
 POST `http://localhost:8080/titles`
 	
-	Creates a new entry in the database.
+	Creates a new movie in the database.
 	
-	Template: `{id: 'number', title: 'string', year: 'number', genres: 'string'}`
+	Template: {id: 'number', title: 'string', year: 'number', genres: 'string'}
 
 Update a Movie
 
 PATCH `http://localhost:8080/titles/<id>`
 	
-	Updates one or more values in the database.
+	Updates one or more values of a movie in the database.
 	
-	Template: `[{ propName: <movie-property-name>, value: <new-property-value }]`
+	Template: [{ propName: <movie-property-name>, value: <new-property-value }]
 
 Genre Index
 
@@ -64,7 +64,7 @@ Search by Genre
 
 GET `http://localhost:8080/genre/<genre name>`
 	
-	Returns the movies stored under that genre.
+	Returns the movies stored with that genre.
 
 Year Index
 
