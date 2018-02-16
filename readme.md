@@ -1,6 +1,8 @@
-# Requires Node.js
+# Simple Movie API
 
-##Installation:
+*REQUIRES Node.js*
+
+##Installation
 
 1. Clone this repository:
 	`git clone https://github.com/stoopfrench/movie_api_mongo.git`
@@ -11,8 +13,56 @@
 4. Start the MongoDB client:
 	`sudo mongod`
 	-Enter your password if required.
-5. Populate the Database from the dump file:
+5. Open a new terminal tab (the other one should be running the mongoDB service).
+6. Populate the Database from the dump file:
 	`mongorestore -d movie-database dump/movie-database`
-6. Start the local server:
+7. Start the local server:
 	`npm start`
-7. Use an API Development Enviroment (ex. Postman) to make request to the API.
+8. Use an API Development Enviroment (ex. Postman) to make request to the API.
+	make sure that the program is making request at the proper port:
+		Default: `http://localhost:8080` 
+		**The port can be easily changed by modifying the value of the `port` property in `variables.js`**
+
+
+##Endpoints
+
+###Movie Search
+
+GET `http://localhost:8080/titles`
+ 	Returns ALL the movies in the database
+
+GET `http://localhost:8080/titles/<id>`
+ 	Returns the movie stored with that ID
+
+###Create New Movie
+
+POST `http://localhost:8080/title`
+	Creates a new entry in the database.
+	Template: `{id: 'number', title: 'string', year: 'number', genres: 'string'}`
+
+###Update a Movie
+
+PATCH `http://localhost:8080/title/<id>`
+	Updates one or more values in the database.
+	Template: `[{ propName: <movie-propery-name>, value: <new-property-value }]`
+
+###Genre Index
+GET `http://localhost:8080/genre`
+	Returns ALL the genres of the movies in the database.
+
+###Search by Genre
+GET `http://localhost:8080/genre/<genre name>`
+	Returns the movies stored under that genre.
+
+###Year Index
+GET `http://localhost:8080/year`
+	Returns ALL the years of the movies in the database.
+
+###Search by Year
+GET `http://localhost:8080/year/<year>`
+	Returns the movies from that year.
+
+
+
+
+
