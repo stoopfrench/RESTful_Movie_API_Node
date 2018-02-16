@@ -2,7 +2,7 @@
 
 *REQUIRES Node.js*
 
-#INSTALLATION#
+INSTALLATION -----------------------------------------
 
 1. Clone this repository:
 	`git clone https://github.com/stoopfrench/movie_api_mongo.git`
@@ -23,10 +23,10 @@
 		Default: `http://localhost:8080` 
 		**The port can be easily changed by modifying the value of the `port` property in `variables.js`**
 
-##BE SURE TO CRASH OUT (`^C`) OF THE MONGOD SERVICE IN THE TERMINAL WHEN YOURE DONE
+BE SURE TO CRASH OUT (`^C`) OF THE MONGOD SERVICE IN THE TERMINAL WHEN YOURE DONE
 
 
-#ENDPOINTS#
+ENDPOINTS --------------------------------------------
 
 ###Movie Search
 
