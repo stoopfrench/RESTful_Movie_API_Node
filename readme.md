@@ -56,6 +56,10 @@ PATCH `http://localhost:8080/titles/<id>`
 	
 	Template: [{ propName: <movie-property-name>, value: <new-property-value }]
 
+DELETE `http://localhost:8080/titles/<id>`
+
+	Deletes the movie with that ID.
+
 **Genre Index**
 
 GET `http://localhost:8080/genre`
