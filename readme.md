@@ -30,7 +30,7 @@ BE SURE TO CRASH OUT (`^C`) OF THE MONGOD SERVICE IN THE TERMINAL WHEN YOURE FIN
 
 **ENDPOINTS ----------------------------------------------------------**
 
-Movie Search
+**Movie Search**
 
 GET `http://localhost:8080/titles`
  	
@@ -40,7 +40,7 @@ GET `http://localhost:8080/titles/<id>`
  	
  	Returns the movie stored with that ID
 
-Create New Movie
+**Create New Movie**
 
 POST `http://localhost:8080/titles`
 	
@@ -48,7 +48,7 @@ POST `http://localhost:8080/titles`
 	
 	Template: {id: 'number', title: 'string', year: 'number', genres: 'string'}
 
-Update a Movie
+**Update a Movie**
 
 PATCH `http://localhost:8080/titles/<id>`
 	
@@ -56,25 +56,25 @@ PATCH `http://localhost:8080/titles/<id>`
 	
 	Template: [{ propName: <movie-property-name>, value: <new-property-value }]
 
-Genre Index
+**Genre Index**
 
 GET `http://localhost:8080/genre`
 	
 	Returns ALL the genres of the movies in the database.
 
-Search by Genre
+**Search by Genre**
 
 GET `http://localhost:8080/genre/<genre name>`
 	
 	Returns the movies stored with that genre.
 
-Year Index
+**Year Index**
 
 GET `http://localhost:8080/year`
 	
 	Returns ALL the years of the movies in the database.
 
-Search by Year
+**Search by Year**
 
 GET `http://localhost:8080/year/<year>`
 	
