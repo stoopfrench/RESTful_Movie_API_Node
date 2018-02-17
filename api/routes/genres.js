@@ -10,8 +10,8 @@ const port = _var.port
 //GET ALL GENRES ------------------------------------------------------------
 router.get('/', (req, res, next) => {
     const genres = []
-    let splitGenres
-    Movie
+
+Movie
         .find()
         .exec()
         .then(result => {
