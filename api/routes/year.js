@@ -53,6 +53,39 @@ router.get('/', (req, res, next) => {
         })
 })
 
+//GET YEAR INDEX -----------------------------------------------------------------
+router.get('/index', (req, res, next) => {
+    const years = []
+
+    Movie
+        .find()
+        .exec()
+        .then(result => {
+            result.forEach(movie => {
+                years.push(movie.year)
+            })
+            const filteredYears = years.filter((element, i, self) => {
+                return i === self.indexOf(element)
+            }).sort()
+            res.status(200).json({
+                count: filteredYears.length,
+                years: filteredYears.map(year => {
+                    return {
+                        year: year,
+                        request: {
+                            type: 'GET',
+                            description: 'Get a list of Movies from this Year',
+                            url: `http://localhost:${port}/year/` + year
+                        }
+                    }
+                })
+            })
+        })
+        .catch(err => {
+            message: err
+        })
+})
+
 //GET MOVIE BY YEAR --------------------------------------------------------------
 router.get('/:year', (req, res, next) => {
     const year = req.params.year

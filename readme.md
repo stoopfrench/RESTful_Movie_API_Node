@@ -71,7 +71,7 @@ GET `http://localhost:8080/genre`
 
 **Search by Genre**
 
-GET `http://localhost:8080/genre/<genre name>`
+GET `http://localhost:8080/genre/<genre>`
 	
 	Returns the movies stored with that genre.
 
@@ -87,7 +87,11 @@ GET `http://localhost:8080/year/<year>`
 	
 	Returns the movies from that year.
 
+**Year Index**
 
+GET `http://localhost:8080/year/index`
+
+	Returns a list of years stored in the database.
 
 
 
