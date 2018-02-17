@@ -7,29 +7,31 @@ const Movie = require('../models/movieModel')
 const _var = require('../../variables.js')
 const port = _var.port
 
-//GET ALL YEARS ------------------------------------------------------------
+
+//GET MOVIE LIST BY YEAR
+
 router.get('/', (req, res, next) => {
-    const years = []
-    
+
     Movie
         .find()
+        .select('id title year genres')
         .exec()
         .then(result => {
-            result.forEach(movie => {
-                years.push(movie.year)
+            result.sort((a, b) => {
+                return a.year - b.year
             })
-            const filteredYears = years.filter((element, i, self) => {
-                return i === self.indexOf(element)
-            }).sort()
             const response = {
-                count: filteredYears.length,
-                years: filteredYears.map(year => {
+                count: result.length,
+                movies: result.map(movie => {
                     return {
-                        year: year,
+                        id: movie.id,
+                        title: movie.title,
+                        year: movie.year,
+                        genres: movie.genres,
                         request: {
                             type: 'GET',
-                            description: 'Get a list of Movies from this Year',
-                            url: `http://localhost:${port}/year/` + year
+                            description: 'Get Details about this Movie',
+                            url: `http://localhost:${port}/titles/` + movie.id
                         }
                     }
                 })

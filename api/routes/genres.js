@@ -10,15 +10,16 @@ const port = _var.port
 //GET ALL GENRES ------------------------------------------------------------
 router.get('/', (req, res, next) => {
     const genres = []
-
+    let splitGenres
     Movie
         .find()
         .exec()
         .then(result => {
             result.forEach(movie => {
-                genres.push(movie.genres)
+                genres.push(movie.genres.split('|'))
             })
-            const filteredGenres = genres.filter((element, i, self) => {
+            const splitGenres = genres.join(',').split(',')
+            const filteredGenres = splitGenres.filter((element, i, self) => {
                 return i === self.indexOf(element)
             }).sort()
             const response = {
@@ -37,7 +38,7 @@ router.get('/', (req, res, next) => {
             res.status(200).json(response)
         })
         .catch(err => {
-            res.send(500).json({
+            res.status(500).json({
                 error: err
             })
         })
