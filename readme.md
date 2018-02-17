@@ -67,7 +67,7 @@ DELETE `http://localhost:8080/titles/<id>`
 
 GET `http://localhost:8080/genre`
 	
-	Returns ALL the genres of the movies in the database.
+	Returns a list of ALL the genres in the database.
 
 **Search by Genre**
 
@@ -91,7 +91,7 @@ GET `http://localhost:8080/year/<year>`
 
 GET `http://localhost:8080/year/index`
 
-	Returns a list of years stored in the database.
+	Returns a list of ALL the years in the database.
 
 
 
