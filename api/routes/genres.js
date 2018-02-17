@@ -11,7 +11,7 @@ const port = _var.port
 router.get('/', (req, res, next) => {
     const genres = []
 
-Movie
+    Movie
         .find()
         .exec()
         .then(result => {
@@ -47,16 +47,22 @@ Movie
 //GET BY GENRE --------------------------------------------------------------
 router.get('/:genre', (req, res, next) => {
     const genre = req.params.genre
+    const genreMovies = []
 
     Movie
-        .find({ 'genres': genre })
+        .find()
         .exec()
         .then(result => {
-            if (result.length > 0) {
+            result.forEach(movie => {
+                if (movie.genres.indexOf(genre) != -1) {
+                    genreMovies.push(movie)
+                }
+            })
+            if (genreMovies.length >= 1) {
                 res.status(200).json({
                     genre: genre,
-                    count: result.length,
-                    movies: result.map(movie => {
+                    count: genreMovies.length,
+                    movies: genreMovies.map(movie => {
                         return {
                             id: movie.id,
                             title: movie.title,

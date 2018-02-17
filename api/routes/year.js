@@ -29,9 +29,17 @@ router.get('/', (req, res, next) => {
                         year: movie.year,
                         genres: movie.genres,
                         request: {
-                            type: 'GET',
-                            description: 'Get Details about this Movie',
-                            url: `http://localhost:${port}/titles/` + movie.id
+                            moviesByYear: {
+                                type: 'GET',
+                                description: 'Get a list of Movies from this Year',
+                                url: `http://localhost:${port}/year/` + movie.year
+                            },
+
+                            movieDetails: {
+                                type: 'GET',
+                                description: 'Get Details about this Movie',
+                                url: `http://localhost:${port}/titles/` + movie.id
+                            }
                         }
                     }
                 })
@@ -74,7 +82,7 @@ router.get('/:year', (req, res, next) => {
                 })
             } else {
                 res.status(404).json({
-                    message: 'No Movies found with that Genre'
+                    message: 'No Movies found from that year'
                 })
             }
         })
