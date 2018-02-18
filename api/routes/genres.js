@@ -7,7 +7,7 @@ const Movie = require('../models/movieModel')
 const _var = require('../../variables.js')
 const port = _var.port
 
-//GET ALL GENRES ------------------------------------------------------------
+//GET ALL GENRES -----------------------------------------------------------------
 router.get('/', (req, res, next) => {
     const genres = []
 
@@ -44,7 +44,7 @@ router.get('/', (req, res, next) => {
         })
 })
 
-//GET BY GENRE --------------------------------------------------------------
+//GET BY GENRE -------------------------------------------------------------------
 router.get('/:genre', (req, res, next) => {
     const genre = req.params.genre
     const genreMovies = []

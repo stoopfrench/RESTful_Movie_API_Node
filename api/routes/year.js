@@ -8,8 +8,7 @@ const _var = require('../../variables.js')
 const port = _var.port
 
 
-//GET MOVIE LIST BY YEAR
-
+//GET MOVIE LIST BY YEAR ---------------------------------------------------------
 router.get('/', (req, res, next) => {
 
     Movie
