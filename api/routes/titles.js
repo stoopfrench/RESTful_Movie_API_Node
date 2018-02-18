@@ -78,7 +78,7 @@ router.post('/', (req, res, next) => {
         })
 })
 
-// //GET MOVIE BY TITLE ----------------------------------------------
+// //GET MOVIE BY ID ----------------------------------------------
 router.get('/:id', (req, res, next) => {
     const id = req.params.id
 
