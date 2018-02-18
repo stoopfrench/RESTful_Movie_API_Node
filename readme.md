@@ -47,7 +47,7 @@ POST `http://localhost:8080/titles`
 	
 	Creates a new movie in the database.
 	
-	Template: {id: 'number', title: 'string', year: 'number', genres: 'string'}
+	Template: {id: 'number', title: 'string', year: 'number', genres: 'string ( seperated by | )'}
 
 **Update Movie**
 
@@ -55,7 +55,7 @@ PATCH `http://localhost:8080/titles/<id>`
 	
 	Updates one or more values of a movie in the database.
 	
-	Template: [{ propName: <movie-property-name>, value: <new-property-value }]
+	Template: [{ propName: <property-name>, value: <new-property-value }]
 
 **Delete Movie**
 
