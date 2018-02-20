@@ -16,13 +16,11 @@ router.get('/', (req, res, next) => {
         .exec()
         .then(result => {
             result.sort((a, b) => {
-                if(Object.keys(req.query).length === 0 || Object.keys(req.query).length > 0 && req.query.sort === 'title') {
+                if (Object.keys(req.query).length === 0 || Object.keys(req.query).length > 0 && req.query.sort === 'title') {
                     return a.title.localeCompare(b.title)
-                }
-                else if(Object.keys(req.query).length > 0 && req.query.sort === 'id') {
+                } else if (Object.keys(req.query).length > 0 && req.query.sort === 'id') {
                     return a.id - b.id
-                }
-                else if(Object.keys(req.query).length > 0 && req.query.sort === 'year') {
+                } else if (Object.keys(req.query).length > 0 && req.query.sort === 'year') {
                     return a.year - b.year
                 }
             })
@@ -60,7 +58,7 @@ router.post('/', (req, res, next) => {
         .select('id')
         .exec()
         .then(docs => {
-            
+
             let id = docs.length + 1
 
             const movie = new Movie({
@@ -189,7 +187,7 @@ router.delete('/:id', (req, res, next) => {
                             title: `http://localhost:${port}/titles/?sort=title`,
                             id: `http://localhost:${port}/titles/?sort=id`,
                             year: `http://localhost:${port}/titles/?sort=year`
-                        }                        
+                        }
                     },
                     Create: {
                         type: 'POST',

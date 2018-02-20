@@ -58,7 +58,7 @@ router.get('/:genre', (req, res, next) => {
                     genreMovies.push(movie)
                 }
             })
-            genreMovies.sort((a,b) => {
+            genreMovies.sort((a, b) => {
                 return a.title.localeCompare(b.title)
             })
             if (genreMovies.length >= 1) {
