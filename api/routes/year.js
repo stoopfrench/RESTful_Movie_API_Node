@@ -60,7 +60,6 @@ router.get('/:year', (req, res, next) => {
                     movies: result.map(year => {
                         return {
                             title: year.title,
-                            year: year.year,
                             genres: year.genres,
                             id: year.id,
                             request: {
