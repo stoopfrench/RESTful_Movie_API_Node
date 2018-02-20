@@ -58,9 +58,7 @@ router.post('/', (req, res, next) => {
         .select('id')
         .exec()
         .then(docs => {
-
             let id = docs.length + 1
-
             const movie = new Movie({
                 title: req.body.title,
                 year: req.body.year,
