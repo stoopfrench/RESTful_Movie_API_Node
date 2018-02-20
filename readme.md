@@ -38,7 +38,7 @@ GET `http://localhost:8080/titles`
  	Returns ALL the movies in the database
 
 	Sorting:
-		Alphabetical - Default or http://localhost:8080/titles?sort=title
+		Title - Default or http://localhost:8080/titles?sort=title
 		ID - http://localhost:8080/titles?sort=id
 		Year - http://localhost:8080/titles?sort=year
 
