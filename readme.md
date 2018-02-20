@@ -37,6 +37,12 @@ GET `http://localhost:8080/titles`
  	
  	Returns ALL the movies in the database
 
+	Sorting:
+		Alphabetical - Default or http://localhost:8080/titles?sort=title
+		ID - http://localhost:8080/titles?sort=id
+		Year - http://localhost:8080/titles?sort=year
+
+
 GET `http://localhost:8080/titles/<id>`
  	
  	Returns the movie stored with that ID
@@ -47,7 +53,7 @@ POST `http://localhost:8080/titles`
 	
 	Creates a new movie in the database.
 	
-	Template: {id: 'number', title: 'string', year: 'number', genres: 'string ( seperated by | )'}
+	Template: { title: 'string', year: 'number', genres: 'string ( seperated by | )' }
 
 **Update Movie**
 
@@ -55,7 +61,7 @@ PATCH `http://localhost:8080/titles/<id>`
 	
 	Updates one or more values of a movie in the database.
 	
-	Template: [{ propName: <property-name>, value: <new-property-value }]
+	Template: [{ propName: <property name>, value: <new property value }]
 
 **Delete Movie**
 

@@ -58,16 +58,19 @@ router.get('/:genre', (req, res, next) => {
                     genreMovies.push(movie)
                 }
             })
+            genreMovies.sort((a,b) => {
+                return a.title.localeCompare(b.title)
+            })
             if (genreMovies.length >= 1) {
                 res.status(200).json({
                     genre: genre,
                     count: genreMovies.length,
                     movies: genreMovies.map(movie => {
                         return {
-                            id: movie.id,
                             title: movie.title,
                             year: movie.year,
                             genres: movie.genres,
+                            id: movie.id,
                             request: {
                                 type: 'GET',
                                 description: 'Get details about this Movie',

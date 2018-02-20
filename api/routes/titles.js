@@ -16,16 +16,25 @@ router.get('/', (req, res, next) => {
         .exec()
         .then(result => {
             result.sort((a, b) => {
-                return a.id - b.id
+                if(Object.keys(req.query).length === 0 || Object.keys(req.query).length > 0 && req.query.sort === 'title') {
+                    return a.title.localeCompare(b.title)
+                }
+                else if(Object.keys(req.query).length > 0 && req.query.sort === 'id') {
+                    return a.id - b.id
+                }
+                else if(Object.keys(req.query).length > 0 && req.query.sort === 'year') {
+                    return a.year - b.year
+                }
             })
+            
             const response = {
                 count: result.length,
                 movies: result.map(movie => {
                     return {
-                        id: movie.id,
                         title: movie.title,
                         year: movie.year,
                         genres: movie.genres,
+                        id: movie.id,
                         request: {
                             type: 'GET',
                             description: 'Get Details about this Movie',
@@ -46,35 +55,44 @@ router.get('/', (req, res, next) => {
 //POST NEW MOVIE -------------------------------------------
 router.post('/', (req, res, next) => {
 
-    const movie = new Movie({
-        id: req.body.id,
-        title: req.body.title,
-        year: req.body.year,
-        genres: req.body.genres
-    })
+    Movie
+        .find()
+        .select('id')
+        .exec()
+        .then(docs => {
+            
+            let id = docs.length + 1
 
-    movie
-        .save()
-        .then(result => {
-            res.status(201).json({
-                message: 'added new movie',
-                created: {
-                    id: result.id,
-                    title: result.title,
-                    year: result.year,
-                    genres: result.genres,
-                    request: {
-                        type: 'GET',
-                        description: 'Get Details about this Movie',
-                        url: `http://localhost:${port}/titles/` + result.id
-                    }
-                }
+            const movie = new Movie({
+                title: req.body.title,
+                year: req.body.year,
+                genres: req.body.genres,
+                id: id
             })
-        })
-        .catch(err => {
-            res.status(500).json({
-                error: err
-            })
+
+            movie
+                .save()
+                .then(result => {
+                    res.status(201).json({
+                        message: 'added new movie',
+                        created: {
+                            title: result.title,
+                            year: result.year,
+                            genres: result.genres,
+                            id: result.id,
+                            request: {
+                                type: 'GET',
+                                description: 'Get Details about this Movie',
+                                url: `http://localhost:${port}/titles/` + result.id
+                            }
+                        }
+                    })
+                })
+                .catch(err => {
+                    res.status(500).json({
+                        error: err
+                    })
+                })
         })
 })
 
@@ -90,10 +108,10 @@ router.get('/:id', (req, res, next) => {
             if (result) {
                 res.status(200).json({
                     movie: {
-                        id: result.id,
                         title: result.title,
                         year: result.year,
                         genres: result.genres,
+                        id: result.id,
                         requests: {
                             Update: {
                                 type: 'PATCH',
@@ -167,7 +185,7 @@ router.delete('/:id', (req, res, next) => {
                         type: 'POST',
                         description: 'Create a new Movie',
                         url: `http://localhost:${port}/titles/`,
-                        body: { id: 'Number', title: 'String', year: 'Number', genres: 'String' }
+                        body: { title: 'String', year: 'Number', genres: 'String' }
                     }
                 }
             })

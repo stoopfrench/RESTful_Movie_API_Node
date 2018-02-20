@@ -8,58 +8,14 @@ const _var = require('../../variables.js')
 const port = _var.port
 
 
-//GET MOVIE LIST BY YEAR ---------------------------------------------------------
+//GET YEAR INDEX -----------------------------------------------------------------
 router.get('/', (req, res, next) => {
 
     Movie
         .find()
-        .select('id title year genres')
         .exec()
         .then(result => {
-            result.sort((a, b) => {
-                return a.year - b.year
-            })
-            const response = {
-                count: result.length,
-                movies: result.map(movie => {
-                    return {
-                        id: movie.id,
-                        title: movie.title,
-                        year: movie.year,
-                        genres: movie.genres,
-                        request: {
-                            moviesByYear: {
-                                type: 'GET',
-                                description: 'Get a list of Movies from this Year',
-                                url: `http://localhost:${port}/year/` + movie.year
-                            },
-
-                            movieDetails: {
-                                type: 'GET',
-                                description: 'Get Details about this Movie',
-                                url: `http://localhost:${port}/titles/` + movie.id
-                            }
-                        }
-                    }
-                })
-            }
-            res.status(200).json(response)
-        })
-        .catch(err => {
-            res.status(500).json({
-                error: err
-            })
-        })
-})
-
-//GET YEAR INDEX -----------------------------------------------------------------
-router.get('/index', (req, res, next) => {
-    const years = []
-
-    Movie
-        .find()
-        .exec()
-        .then(result => {
+            const years = []
             result.forEach(movie => {
                 years.push(movie.year)
             })
@@ -100,10 +56,10 @@ router.get('/:year', (req, res, next) => {
                     count: result.length,
                     movies: result.map(year => {
                         return {
-                            id: year.id,
                             title: year.title,
                             year: year.year,
                             genres: year.genres,
+                            id: year.id,
                             request: {
                                 type: 'GET',
                                 description: 'Get details about this Movie',
