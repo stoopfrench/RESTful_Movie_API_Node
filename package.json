@@ -1,7 +1,7 @@
 {
   "name": "movie-api-mongo",
-  "version": "1.0.1",
-  "description": "simple movie database api",
+  "version": "1.1.2",
+  "description": "RESTful movie database api",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
