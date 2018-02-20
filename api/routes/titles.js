@@ -26,7 +26,7 @@ router.get('/', (req, res, next) => {
                     return a.year - b.year
                 }
             })
-            
+
             const response = {
                 count: result.length,
                 movies: result.map(movie => {
@@ -122,7 +122,12 @@ router.get('/:id', (req, res, next) => {
                             All: {
                                 type: 'GET',
                                 description: 'Get a list of all Movies',
-                                url: `http://localhost:${port}/titles/`
+                                url: `http://localhost:${port}/titles/`,
+                                options: {
+                                    title: `http://localhost:${port}/titles/?sort=title`,
+                                    id: `http://localhost:${port}/titles/?sort=id`,
+                                    year: `http://localhost:${port}/titles/?sort=year`
+                                }
                             }
 
                         }
@@ -179,7 +184,12 @@ router.delete('/:id', (req, res, next) => {
                     All: {
                         type: 'GET',
                         description: 'Get a new list of all Movies',
-                        url: `http://localhost:${port}/titles/`
+                        url: `http://localhost:${port}/titles/`,
+                        options: {
+                            title: `http://localhost:${port}/titles/?sort=title`,
+                            id: `http://localhost:${port}/titles/?sort=id`,
+                            year: `http://localhost:${port}/titles/?sort=year`
+                        }                        
                     },
                     Create: {
                         type: 'POST',

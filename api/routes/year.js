@@ -51,6 +51,9 @@ router.get('/:year', (req, res, next) => {
         .exec()
         .then(result => {
             if (result.length > 0) {
+                result.sort((a,b) => {
+                    return a.title.localeCompare(b.title)
+                })
                 res.status(200).json({
                     year: year,
                     count: result.length,

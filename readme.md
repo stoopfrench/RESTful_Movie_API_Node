@@ -37,8 +37,8 @@ GET `http://localhost:8080/titles`
  	
  	Returns ALL the movies in the database
 
-	Sorting:
-		Title - Default or http://localhost:8080/titles?sort=title
+	Sort By:
+		Title - DEFAULT or http://localhost:8080/titles?sort=title
 		ID - http://localhost:8080/titles?sort=id
 		Year - http://localhost:8080/titles?sort=year
 
@@ -61,7 +61,7 @@ PATCH `http://localhost:8080/titles/<id>`
 	
 	Updates one or more values of a movie in the database.
 	
-	Template: [{ propName: <property name>, value: <new property value }]
+	Template: [{ propName: <property name>, value: <new value }]
 
 **Delete Movie**
 
