@@ -73,7 +73,10 @@ DELETE `http://localhost:8080/titles/<id>`
 
 GET `http://localhost:8080/genre`
 	
-	Returns a list of ALL the genres in the database.
+	Returns a list of ALL the genres in the database in alphabetical order.
+
+	Options:
+		Sort by number of movies in each genre (descending) - http://localhost:8080/genre?sort=movies
 
 **Search by Genre**
 
@@ -85,7 +88,10 @@ GET `http://localhost:8080/genre/<genre>`
 
 GET `http://localhost:8080/year/index`
 
-	Returns a list of ALL the years in the database.
+	Returns a list of ALL the years in the database in numerical order (ascending).
+
+	Options:
+		Sort by number of movies in each year (descending) - http://localhost:8080/year?sort=movies
 
 **Search by Year**
 

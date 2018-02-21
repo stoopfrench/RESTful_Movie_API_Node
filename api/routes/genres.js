@@ -19,19 +19,30 @@ router.get('/', (req, res, next) => {
                 genres.push(movie.genres.split('|'))
             })
             const splitGenres = genres.join(',').split(',')
+            const movieCount = splitGenres.reduce((yr,count) => {
+                yr[count] = (yr[count] + 1) || 1
+                return yr
+            },{})
             const filteredGenres = splitGenres.filter((element, i, self) => {
                 return i === self.indexOf(element)
-            }).sort()
+            })
             const response = {
                 count: filteredGenres.length,
                 genres: filteredGenres.map(genre => {
                     return {
                         name: genre,
+                        movies: movieCount[genre],
                         request: {
                             type: 'GET',
                             description: 'Get a list of Movies in this Genre',
                             url: `http://localhost:${port}/genre/` + genre
                         }
+                    }
+                }).sort((a,b) => {
+                    if (Object.keys(req.query).length > 0 && req.query.sort === 'movies') {
+                        return b.movies - a.movies
+                    } else {
+                        return a.name.localeCompare(b.name)
                     }
                 })
             }
@@ -43,6 +54,7 @@ router.get('/', (req, res, next) => {
             })
         })
 })
+
 
 //GET BY GENRE -------------------------------------------------------------------
 router.get('/:genre', (req, res, next) => {
@@ -89,5 +101,6 @@ router.get('/:genre', (req, res, next) => {
             console.log(err)
         })
 })
+
 
 module.exports = router

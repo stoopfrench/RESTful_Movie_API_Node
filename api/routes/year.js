@@ -10,7 +10,7 @@ const port = _var.port
 
 //GET YEAR INDEX -----------------------------------------------------------------
 router.get('/', (req, res, next) => {
-
+    
     Movie
         .find()
         .exec()
@@ -19,6 +19,10 @@ router.get('/', (req, res, next) => {
             result.forEach(movie => {
                 years.push(movie.year)
             })
+            const movieCount = years.reduce((yr,count) => {
+                yr[count] = (yr[count] + 1) || 1
+                return yr
+            },{})
             const filteredYears = years.filter((element, i, self) => {
                 return i === self.indexOf(element)
             }).sort()
@@ -27,11 +31,16 @@ router.get('/', (req, res, next) => {
                 years: filteredYears.map(year => {
                     return {
                         year: year,
+                        movies: movieCount[year],
                         request: {
                             type: 'GET',
                             description: 'Get a list of Movies from this Year',
                             url: `http://localhost:${port}/year/` + year
                         }
+                    }
+                }).sort((a,b) => {
+                    if (Object.keys(req.query).length > 0 && req.query.sort === 'movies') {
+                        return b.movies - a.movies
                     }
                 })
             })
