@@ -19,10 +19,10 @@ router.get('/', (req, res, next) => {
                 genres.push(movie.genres.split('|'))
             })
             const splitGenres = genres.join(',').split(',')
-            const movieCount = splitGenres.reduce((yr,count) => {
+            const movieCount = splitGenres.reduce((yr, count) => {
                 yr[count] = (yr[count] + 1) || 1
                 return yr
-            },{})
+            }, {})
             const filteredGenres = splitGenres.filter((element, i, self) => {
                 return i === self.indexOf(element)
             })
@@ -38,7 +38,7 @@ router.get('/', (req, res, next) => {
                             url: `http://localhost:${port}/genre/` + genre
                         }
                     }
-                }).sort((a,b) => {
+                }).sort((a, b) => {
                     if (Object.keys(req.query).length > 0 && req.query.sort === 'movies') {
                         return b.movies - a.movies
                     } else {
