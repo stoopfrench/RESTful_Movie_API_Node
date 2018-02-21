@@ -23,8 +23,8 @@ router.get('/', (req, res, next) => {
                 yr[count] = (yr[count] + 1) || 1
                 return yr
             }, {})
-            const filteredYears = years.filter((element, i, self) => {
-                return i === self.indexOf(element)
+            const filteredYears = years.filter((element, i) => {
+                return i === years.indexOf(element)
             })
             res.status(200).json({
                 count: filteredYears.length,

@@ -23,8 +23,8 @@ router.get('/', (req, res, next) => {
                 yr[count] = (yr[count] + 1) || 1
                 return yr
             }, {})
-            const filteredGenres = splitGenres.filter((element, i, self) => {
-                return i === self.indexOf(element)
+            const filteredGenres = splitGenres.filter((element, i) => {
+                return i === splitGenres.indexOf(element)
             })
             const response = {
                 count: filteredGenres.length,
