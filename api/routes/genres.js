@@ -40,10 +40,10 @@ router.get('/', (req, res, next) => {
                                 description: 'Get a list of Movies in this Genre',
                                 url: `http://localhost:${port}/genre/` + genre
                             },
-                            Update: {
+                            Rename: {
                                 type: 'PATCH',
                                 description: 'Rename a genre',
-                                url: 'http://localhost:8080/genre',
+                                url: `http://localhost:${port}/genre`,
                                 body: { genre: '<genre to rename>', newName: '<new name for genre>' }
                             }
                         }
@@ -102,7 +102,7 @@ router.patch('/', (req, res, next) => {
                     request: {
                         type: 'GET',
                         description: 'Get a list of all the genres',
-                        url: 'http://localhost:8080/genre'
+                        url: `http://localhost:${port}/genre`
                     }
                 })
             } else {
@@ -129,12 +129,12 @@ router.patch('/', (req, res, next) => {
                         genreList: {
                             type: 'GET',
                             description: 'Get a list of movies in this genre',
-                            url: 'http://localhost:8080/genre/' + newName
+                            url: `http://localhost:${port}/genre/` + newName
                         },
                         All: {
                             type: 'GET',
                             description: 'Get a new list of genres',
-                            url: `http://localhost:8080/genre`
+                            url: `http://localhost:${port}/genre`
                         }
                     }
                 })
