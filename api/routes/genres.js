@@ -49,7 +49,7 @@ router.get('/', (req, res, next) => {
                         }
                     }
                 }).sort((a, b) => {
-                    if (Object.keys(req.query).length === 0 || Object.keys(req.query).length > 0 && req.query.sort === 'movies') {
+                    if (Object.keys(req.query).length === 0) {
                         return b.movies - a.movies
                     } else if (Object.keys(req.query).length > 0 && req.query.sort === 'name') {
                         return a.name.localeCompare(b.name)

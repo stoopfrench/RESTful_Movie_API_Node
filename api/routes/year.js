@@ -40,9 +40,9 @@ router.get('/', (req, res, next) => {
                         }
                     }
                 }).sort((a, b) => {
-                    if (Object.keys(req.query).length > 0 && req.query.sort === 'movies') {
+                    if (Object.keys(req.query).length === 0) {
                         return b.movies - a.movies
-                    } else {
+                    } else if (Object.keys(req.query).length > 0 && req.query.sort === 'year') {
                         return a.year - b.year
                     }
                 })

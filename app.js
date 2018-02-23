@@ -15,7 +15,6 @@ const yearRoutes = require('./api/routes/year')
 mongoose.connect('mongodb://localhost:27017/movie-database')
 mongoose.Promise = global.Promise
 
-
 //CORS HANDLING 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*')
