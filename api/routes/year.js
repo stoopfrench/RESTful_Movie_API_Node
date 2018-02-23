@@ -7,7 +7,6 @@ const Movie = require('../models/movieModel')
 const _var = require('../../variables.js')
 const port = _var.port
 
-
 //GET YEAR INDEX -----------------------------------------------------------------
 router.get('/', (req, res, next) => {
 

@@ -33,7 +33,7 @@ app.use('/year', yearRoutes)
 
 //ERROR HANDLING - 404
 app.use((req, res, next) => {
-    const error = new Error('Not Found')
+    const error = new Error('Route not found')
     error.status = 404
     next(error)
 });

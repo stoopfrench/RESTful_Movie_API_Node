@@ -127,7 +127,7 @@ router.patch('/', (req, res, next) => {
                 return a.id - b.id
             })
             result.forEach(el => {
-                if (el.genres.length > 0) {
+                if (el.genres.length > 1) {
                     elGenre = el.genres.split('|')
                 } else {
                     elGenre = el.genres
@@ -149,7 +149,7 @@ router.patch('/', (req, res, next) => {
                         type: 'GET',
                         description: 'Get a list of all the genres',
                         url: `http://localhost:${port}/genre`,
-                        sort: {
+                        sorted: {
                             byName: `http://localhost:${port}/genre?sort=name`
                         }
                     }
@@ -174,6 +174,7 @@ router.patch('/', (req, res, next) => {
                 })
                 res.status(200).json({
                     message: `'${genre}' renamed '${newName}'`,
+                    changes: count,
                     requests: {
                         genreList: {
                             type: 'GET',
@@ -184,7 +185,7 @@ router.patch('/', (req, res, next) => {
                             type: 'GET',
                             description: 'Get a new list of genres',
                             url: `http://localhost:${port}/genre`,
-                            sort: {
+                            sorted: {
                                 byName: `http://localhost:${port}/genre?sort=name`
                             }
                         }
