@@ -8,7 +8,7 @@ app.use(bodyParser.json())
 
 //REQUIRE ROUTES
 const titlesRoutes = require('./api/routes/titles')
-const genresRoutes = require('./api/routes/genres')
+const genreRoutes = require('./api/routes/genre')
 const yearRoutes = require('./api/routes/year')
 
 //CONNECT TO MONGO CLIENT
@@ -28,7 +28,7 @@ app.use((req, res, next) => {
 
 //REQUEST ROUTE HANDLERS
 app.use('/titles', titlesRoutes)
-app.use('/genre', genresRoutes)
+app.use('/genre', genreRoutes)
 app.use('/year', yearRoutes)
 
 //ERROR HANDLING - 404
