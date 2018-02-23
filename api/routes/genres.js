@@ -65,6 +65,52 @@ router.get('/', (req, res, next) => {
         })
 })
 
+//GET BY GENRE -------------------------------------------------------------------
+router.get('/:genre', (req, res, next) => {
+    const genre = req.params.genre
+    const genreMovies = []
+
+    Movie
+        .find()
+        .exec()
+        .then(result => {
+            result.forEach(movie => {
+                if (movie.genres.indexOf(genre) != -1) {
+                    genreMovies.push(movie)
+                }
+            })
+            genreMovies.sort((a, b) => {
+                return a.title.localeCompare(b.title)
+            })
+            if (genreMovies.length >= 1) {
+                res.status(200).json({
+                    genre: genre,
+                    count: genreMovies.length,
+                    movies: genreMovies.map(movie => {
+                        return {
+                            title: movie.title,
+                            year: movie.year,
+                            genres: movie.genres,
+                            id: movie.id,
+                            request: {
+                                type: 'GET',
+                                description: 'Get details about this Movie',
+                                url: `http://localhost:${port}/titles/` + movie.id
+                            }
+                        }
+                    })
+                })
+            } else {
+                res.status(404).json({
+                    message: 'No Movies found with that Genre'
+                })
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
+})
+
 //RENAME A GENRE -----------------------------------------------------------------
 router.patch('/', (req, res, next) => {
     const genre = req.body.genre
@@ -142,52 +188,6 @@ router.patch('/', (req, res, next) => {
         })
         .catch(err => {
             console.log("err", err)
-        })
-})
-
-//GET BY GENRE -------------------------------------------------------------------
-router.get('/:genre', (req, res, next) => {
-    const genre = req.params.genre
-    const genreMovies = []
-
-    Movie
-        .find()
-        .exec()
-        .then(result => {
-            result.forEach(movie => {
-                if (movie.genres.indexOf(genre) != -1) {
-                    genreMovies.push(movie)
-                }
-            })
-            genreMovies.sort((a, b) => {
-                return a.title.localeCompare(b.title)
-            })
-            if (genreMovies.length >= 1) {
-                res.status(200).json({
-                    genre: genre,
-                    count: genreMovies.length,
-                    movies: genreMovies.map(movie => {
-                        return {
-                            title: movie.title,
-                            year: movie.year,
-                            genres: movie.genres,
-                            id: movie.id,
-                            request: {
-                                type: 'GET',
-                                description: 'Get details about this Movie',
-                                url: `http://localhost:${port}/titles/` + movie.id
-                            }
-                        }
-                    })
-                })
-            } else {
-                res.status(404).json({
-                    message: 'No Movies found with that Genre'
-                })
-            }
-        })
-        .catch(err => {
-            console.log(err)
         })
 })
 
