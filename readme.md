@@ -33,23 +33,23 @@ BE SURE TO CRASH OUT (`^C`) OF THE MONGOD SERVICE IN THE TERMINAL WHEN YOURE FIN
 
 **Movie Search**
 
-GET `http://localhost:8080/titles`
+GET `http://localhost:<port>/titles`
  	
  	Returns ALL the movies in the database
 
 	Sort By:
-		Title - DEFAULT or http://localhost:8080/titles?sort=title
-		ID - http://localhost:8080/titles?sort=id
-		Year - http://localhost:8080/titles?sort=year
+		Title - DEFAULT or http://localhost:<port>/titles?sort=title
+		ID - http://localhost:<port>/titles?sort=id
+		Year - http://localhost:<port>/titles?sort=year
 
 
-GET `http://localhost:8080/titles/<id>`
+GET `http://localhost:<port>/titles/<id>`
  	
  	Returns the movie stored with that ID
 
 **Create New Movie**
 
-POST `http://localhost:8080/titles`
+POST `http://localhost:<port>/titles`
 	
 	Creates a new movie in the database.
 	
@@ -57,7 +57,7 @@ POST `http://localhost:8080/titles`
 
 **Update Movie**
 
-PATCH `http://localhost:8080/titles/<id>`
+PATCH `http://localhost:<port>/titles/<id>`
 	
 	Updates one or more values of a movie in the database.
 	
@@ -65,28 +65,28 @@ PATCH `http://localhost:8080/titles/<id>`
 
 **Delete Movie**
 
-DELETE `http://localhost:8080/titles/<id>`
+DELETE `http://localhost:<port>/titles/<id>`
 
 	Deletes the movie with that ID.
 
 **Genre Index**
 
-GET `http://localhost:8080/genre`
+GET `http://localhost:<port>/genre`
 	
 	Returns a list of ALL the genres in the database in alphabetical order.
 
 	Options:
-		Sort by number of movies in each genre (descending) - http://localhost:8080/genre?sort=movies
+		Sort by number of movies in each genre (descending) - http://localhost:<port>/genre?sort=movies
 
 **Search by Genre**
 
-GET `http://localhost:8080/genre/<genre>`
+GET `http://localhost:<port>/genre/<genre>`
 	
 	Returns the movies stored with that genre.
 
 **Rename a Genre**
 
-PATCH `http://localhost:8080/genre`
+PATCH `http://localhost:<port>/genre`
 
 	Renames a genre.
 
@@ -94,16 +94,16 @@ PATCH `http://localhost:8080/genre`
 
 **Year Index**
 
-GET `http://localhost:8080/year/index`
+GET `http://localhost:<port>/year/index`
 
 	Returns a list of ALL the years in the database in numerical order (ascending).
 
 	Options:
-		Sort by number of movies from that year (descending) - http://localhost:8080/year?sort=movies
+		Sort by number of movies from that year (descending) - http://localhost:<port>/year?sort=movies
 
 **Search by Year**
 
-GET `http://localhost:8080/year/<year>`
+GET `http://localhost:<port>/year/<year>`
 	
 	Returns the movies from that year.
 
