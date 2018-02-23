@@ -84,6 +84,14 @@ GET `http://localhost:8080/genre/<genre>`
 	
 	Returns the movies stored with that genre.
 
+**Rename a Genre**
+
+PATCH `http://localhost:8080/genre`
+
+	Renames a genre.
+
+	Template: { genre: <genre to rename>, newName: <new name for genre> }
+
 **Year Index**
 
 GET `http://localhost:8080/year/index`
