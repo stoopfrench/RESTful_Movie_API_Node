@@ -23,25 +23,35 @@ router.get('/', (req, res, next) => {
                 yr[count] = (yr[count] + 1) || 1
                 return yr
             }, {})
-            const filteredGenres = splitGenres.filter((element, i) => {
-                return i === splitGenres.indexOf(element)
+            const hash = {}
+            const filteredGenres = splitGenres.filter(function(element) {
+                return hash.hasOwnProperty(element) ? false : (hash[element] = true)
             })
+
             const response = {
                 count: filteredGenres.length,
                 genres: filteredGenres.map(genre => {
                     return {
                         name: genre,
                         movies: movieCount[genre],
-                        request: {
-                            type: 'GET',
-                            description: 'Get a list of Movies in this Genre',
-                            url: `http://localhost:${port}/genre/` + genre
+                        requests: {
+                            genreList: {
+                                type: 'GET',
+                                description: 'Get a list of Movies in this Genre',
+                                url: `http://localhost:${port}/genre/` + genre
+                            },
+                            Update: {
+                                type: 'PATCH',
+                                description: 'Rename a genre',
+                                url: 'http://localhost:8080/genre',
+                                body: { genre: '<genre to rename>', newName: '<new name for genre>' }
+                            }
                         }
                     }
                 }).sort((a, b) => {
-                    if (Object.keys(req.query).length > 0 && req.query.sort === 'movies') {
+                    if (Object.keys(req.query).length === 0 || Object.keys(req.query).length > 0 && req.query.sort === 'movies') {
                         return b.movies - a.movies
-                    } else {
+                    } else if (Object.keys(req.query).length > 0 && req.query.sort === 'name') {
                         return a.name.localeCompare(b.name)
                     }
                 })
@@ -55,6 +65,85 @@ router.get('/', (req, res, next) => {
         })
 })
 
+//RENAME A GENRE -----------------------------------------------------------------
+router.patch('/', (req, res, next) => {
+    const genre = req.body.genre
+    const newName = req.body.newName
+    const genres = []
+    let elGenre = []
+    let count = 0
+
+    Movie
+        .find()
+        .exec()
+        .then(result => {
+            result.sort((a, b) => {
+                return a.id - b.id
+            })
+            result.forEach(el => {
+                if (el.genres.length > 0) {
+                    elGenre = el.genres.split('|')
+                } else {
+                    elGenre = el.genres
+                }
+                genres.push(elGenre)
+                genres.forEach((item) => {
+                    for (let i = 0; i < item.length; i++) {
+                        if (item[i] === genre) {
+                            count++
+                            item.splice(i, 1, newName)
+                        }
+                    }
+                })
+            })
+            if (count === 0) {
+                res.status(404).json({
+                    message: "Genre not found",
+                    request: {
+                        type: 'GET',
+                        description: 'Get a list of all the genres',
+                        url: 'http://localhost:8080/genre'
+                    }
+                })
+            } else {
+                const newGenres = genres.map(newGenre => {
+                    if (newGenre.length > 1) {
+                        return newGenre.join('|')
+                    } else {
+                        return newGenre.join()
+                    }
+                })
+                newGenres.forEach((element, i) => {
+
+                    Movie
+                        .update({ "id": i + 1 }, { $set: { "genres": element } }, false, false)
+                        .exec()
+                        .then()
+                        .catch(err => {
+                            console.log("err", err)
+                        })
+                })
+                res.status(200).json({
+                    message: `'${genre}' renamed '${newName}'`,
+                    requests: {
+                        genreList: {
+                            type: 'GET',
+                            description: 'Get a list of movies in this genre',
+                            url: 'http://localhost:8080/genre/' + newName
+                        },
+                        All: {
+                            type: 'GET',
+                            description: 'Get a new list of genres',
+                            url: `http://localhost:8080/genre`
+                        }
+                    }
+                })
+            }
+        })
+        .catch(err => {
+            console.log("err", err)
+        })
+})
 
 //GET BY GENRE -------------------------------------------------------------------
 router.get('/:genre', (req, res, next) => {
