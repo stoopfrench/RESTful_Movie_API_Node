@@ -38,7 +38,7 @@ GET `http://localhost:<port>/titles`
  	Returns ALL the movies in the database
 
 	Sort By:
-		Title - DEFAULT or http://localhost:<port>/titles?sort=title
+		Title - http://localhost:<port>/titles?sort=title
 		ID - http://localhost:<port>/titles?sort=id
 		Year - http://localhost:<port>/titles?sort=year
 
@@ -73,10 +73,10 @@ DELETE `http://localhost:<port>/titles/<id>`
 
 GET `http://localhost:<port>/genre`
 	
-	Returns a list of ALL the genres in the database in order of number of movies in the genre.
+	Returns a list of ALL the genres in the database ordered by the number of movies in the genre.
 
 	Options:
-		Alphabetical order - http://localhost:<port>/genre?sort=name
+		Return the list in Alphabetical Order - http://localhost:<port>/genre?sort=name
 
 **Search by Genre**
 
@@ -96,10 +96,10 @@ PATCH `http://localhost:<port>/genre`
 
 GET `http://localhost:<port>/year/index`
 
-	Returns a list of ALL the years in the database in order of number of movies released that year.
+	Returns a list of ALL the years in the database ordered by the number of movies released that year.
 
 	Options:
-		Numerical order - http://localhost:<port>/year?sort=year
+		Returns the list in numerical order - http://localhost:<port>/year?sort=year
 
 **Search by Year**
 
