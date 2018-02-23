@@ -29,7 +29,7 @@ router.get('/', (req, res, next) => {
             })
 
             const response = {
-                count: filteredGenres.length,
+                results: filteredGenres.length,
                 genres: filteredGenres.map(genre => {
                     return {
                         name: genre,

@@ -26,7 +26,7 @@ router.get('/', (req, res, next) => {
             })
 
             const response = {
-                count: result.length,
+                results: result.length,
                 movies: result.map(movie => {
                     return {
                         title: movie.title,
@@ -75,12 +75,12 @@ router.post('/', (req, res, next) => {
                             title: result.title,
                             year: result.year,
                             genres: result.genres,
-                            id: result.id,
-                            request: {
-                                type: 'GET',
-                                description: 'Get details about this movie',
-                                url: `http://localhost:${port}/titles/` + result.id
-                            }
+                            id: result.id
+                        },
+                        request: {
+                            type: 'GET',
+                            description: 'Get details about this movie',
+                            url: `http://localhost:${port}/titles/` + result.id
                         }
                     })
                 })
@@ -115,15 +115,10 @@ router.get('/:id', (req, res, next) => {
                                 url: `http://localhost:${port}/titles/` + result.id,
                                 body: [{ propName: '<movie property name>', value: '<new property value>' }]
                             },
-                            All: {
-                                type: 'GET',
-                                description: 'Get a list of all movies',
-                                url: `http://localhost:${port}/titles/`,
-                                sort: {
-                                    byTitle: `http://localhost:${port}/titles/?sort=title`,
-                                    byId: `http://localhost:${port}/titles/?sort=id`,
-                                    byYear: `http://localhost:${port}/titles/?sort=year`
-                                }
+                            Remove: {
+                                type: 'DELETE',
+                                description: 'Remove this movie from the database',
+                                url: `http://localhost:${port}/titles/` + result.id
                             }
                         }
                     }
@@ -190,7 +185,7 @@ router.delete('/:id', (req, res, next) => {
                         type: 'POST',
                         description: 'Create a new movie',
                         url: `http://localhost:${port}/titles/`,
-                        body: { title: 'String', year: 'Number', genres: 'String' }
+                        body: { title: 'String', year: 'Number', genres: 'String ( seperated by | )' }
                     }
                 }
             })
