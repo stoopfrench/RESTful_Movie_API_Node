@@ -37,7 +37,7 @@ router.get('/', (req, res, next) => {
                         requests: {
                             genreList: {
                                 type: 'GET',
-                                description: 'Get a list of Movies in this Genre',
+                                description: 'Get a list of movies in this genre',
                                 url: `http://localhost:${port}/genre/` + genre
                             },
                             Rename: {
@@ -94,7 +94,7 @@ router.get('/:genre', (req, res, next) => {
                             id: movie.id,
                             request: {
                                 type: 'GET',
-                                description: 'Get details about this Movie',
+                                description: 'Get details about this movie',
                                 url: `http://localhost:${port}/titles/` + movie.id
                             }
                         }
@@ -148,7 +148,10 @@ router.patch('/', (req, res, next) => {
                     request: {
                         type: 'GET',
                         description: 'Get a list of all the genres',
-                        url: `http://localhost:${port}/genre`
+                        url: `http://localhost:${port}/genre`,
+                        sort: {
+                            byName: `http://localhost:${port}/genre?sort=name`
+                        }
                     }
                 })
             } else {
@@ -180,7 +183,10 @@ router.patch('/', (req, res, next) => {
                         All: {
                             type: 'GET',
                             description: 'Get a new list of genres',
-                            url: `http://localhost:${port}/genre`
+                            url: `http://localhost:${port}/genre`,
+                            sort: {
+                                byName: `http://localhost:${port}/genre?sort=name`
+                            }
                         }
                     }
                 })

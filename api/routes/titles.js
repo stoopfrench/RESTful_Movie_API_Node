@@ -35,7 +35,7 @@ router.get('/', (req, res, next) => {
                         id: movie.id,
                         request: {
                             type: 'GET',
-                            description: 'Get Details about this Movie',
+                            description: 'Get details about this movie',
                             url: `http://localhost:${port}/titles/` + movie.id
                         }
                     }
@@ -78,7 +78,7 @@ router.post('/', (req, res, next) => {
                             id: result.id,
                             request: {
                                 type: 'GET',
-                                description: 'Get Details about this Movie',
+                                description: 'Get details about this movie',
                                 url: `http://localhost:${port}/titles/` + result.id
                             }
                         }
@@ -111,21 +111,20 @@ router.get('/:id', (req, res, next) => {
                         requests: {
                             Update: {
                                 type: 'PATCH',
-                                description: 'Update this Movie',
+                                description: 'Update this movie',
                                 url: `http://localhost:${port}/titles/` + result.id,
                                 body: [{ propName: '<movie property name>', value: '<new property value>' }]
                             },
                             All: {
                                 type: 'GET',
-                                description: 'Get a list of all Movies',
+                                description: 'Get a list of all movies',
                                 url: `http://localhost:${port}/titles/`,
-                                options: {
-                                    title: `http://localhost:${port}/titles/?sort=title`,
-                                    id: `http://localhost:${port}/titles/?sort=id`,
-                                    year: `http://localhost:${port}/titles/?sort=year`
+                                sort: {
+                                    byTitle: `http://localhost:${port}/titles/?sort=title`,
+                                    byId: `http://localhost:${port}/titles/?sort=id`,
+                                    byYear: `http://localhost:${port}/titles/?sort=year`
                                 }
                             }
-
                         }
                     }
                 })
@@ -156,7 +155,7 @@ router.patch('/:id', (req, res, next) => {
                 message: 'Movie updated',
                 request: {
                     type: 'GET',
-                    description: 'Get Details about this product',
+                    description: 'Get details about this product',
                     url: `http://localhost:${port}/titles/` + id
                 }
             })
@@ -179,17 +178,17 @@ router.delete('/:id', (req, res, next) => {
                 requests: {
                     All: {
                         type: 'GET',
-                        description: 'Get a new list of all Movies',
+                        description: 'Get a new list of all movies',
                         url: `http://localhost:${port}/titles/`,
-                        options: {
-                            title: `http://localhost:${port}/titles/?sort=title`,
-                            id: `http://localhost:${port}/titles/?sort=id`,
-                            year: `http://localhost:${port}/titles/?sort=year`
+                        sort: {
+                            byTitle: `http://localhost:${port}/titles/?sort=title`,
+                            byId: `http://localhost:${port}/titles/?sort=id`,
+                            byYear: `http://localhost:${port}/titles/?sort=year`
                         }
                     },
                     Create: {
                         type: 'POST',
-                        description: 'Create a new Movie',
+                        description: 'Create a new movie',
                         url: `http://localhost:${port}/titles/`,
                         body: { title: 'String', year: 'Number', genres: 'String' }
                     }

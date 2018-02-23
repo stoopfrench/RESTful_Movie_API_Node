@@ -35,7 +35,7 @@ router.get('/', (req, res, next) => {
                         movies: movieCount[year],
                         request: {
                             type: 'GET',
-                            description: 'Get a list of Movies from this Year',
+                            description: 'Get a list of movies from this year',
                             url: `http://localhost:${port}/year/` + year
                         }
                     }
@@ -76,7 +76,7 @@ router.get('/:year', (req, res, next) => {
                             id: year.id,
                             request: {
                                 type: 'GET',
-                                description: 'Get details about this Movie',
+                                description: 'Get details about this movie',
                                 url: `http://localhost:${port}/titles/` + year.id
                             }
                         }
