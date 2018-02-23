@@ -12,24 +12,53 @@ router.get('/', (req, res, next) => {
 
     Movie
         .find()
-        .select('id title year genres')
+        .select('id title year')
         .exec()
         .then(result => {
-            result.sort((a, b) => {
-                if (Object.keys(req.query).length === 0 || Object.keys(req.query).length > 0 && req.query.sort === 'title') {
-                    return a.title.localeCompare(b.title)
-                } else if (Object.keys(req.query).length > 0 && req.query.sort === 'id') {
-                    return a.id - b.id
-                } else if (Object.keys(req.query).length > 0 && req.query.sort === 'year') {
-                    return a.year - b.year
+            if (Object.keys(req.query).length === 0) {
+                const years = []
+                const sortRefObject = {}
+                result.forEach(movie => {
+                    years.push(movie.year)
+                })
+                const movieCount = years.reduce((yr, count) => {
+                    yr[count] = (yr[count] + 1) || 1
+                    return yr
+                }, {})
+                const yearArray = Object.entries(movieCount).sort((a, b) => {
+                    return b[1] - a[1]
+                }).map(e => {
+                    return e.splice(0, 1)
+                }).join().split(',')
+                for (let i = 0; i < yearArray.length; i++) {
+                    sortRefObject[yearArray[i]] = i
                 }
-            })
-
+                result.sort((a, b) => {
+                    if (sortRefObject[a.year] === sortRefObject[b.year]) {
+                        return a.title.localeCompare(b.title)
+                    }
+                    return sortRefObject[a.year] - sortRefObject[b.year]
+                })
+            } else {
+                result.sort((a, b) => {
+                    if (Object.keys(req.query).length > 0 && req.query.sort === 'title') {
+                        return a.title.localeCompare(b.title)
+                    } else if (Object.keys(req.query).length > 0 && req.query.sort === 'id') {
+                        return a.id - b.id
+                    } else if (Object.keys(req.query).length > 0 && req.query.sort === 'year') {
+                        if (a.year === b.year) {
+                            return a.title.localeCompare(b.title)
+                        }
+                        return a.year - b.year
+                    }
+                })
+            }
             const response = {
                 results: result.length,
                 movies: result.map(movie => {
                     return {
                         title: movie.title,
+                        year: movie.year,
                         id: movie.id,
                         request: {
                             type: 'GET',

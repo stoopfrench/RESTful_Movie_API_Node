@@ -19,9 +19,9 @@ router.get('/', (req, res, next) => {
                 genres.push(movie.genres.split('|'))
             })
             const splitGenres = genres.join(',').split(',')
-            const movieCount = splitGenres.reduce((yr, count) => {
-                yr[count] = (yr[count] + 1) || 1
-                return yr
+            const movieCount = splitGenres.reduce((genre, count) => {
+                genre[count] = (genre[count] + 1) || 1
+                return genre
             }, {})
             const hash = {}
             const filteredGenres = splitGenres.filter(function(element) {
