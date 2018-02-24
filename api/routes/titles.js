@@ -201,15 +201,13 @@ router.delete('/:id', (req, res, next) => {
         .deleteOne({ 'id': id })
         .exec()
         .then(result => {
-            if (result.length > 0) {
-
+            if(result.n !== 0) {
 
                 Movie
                     .find({ 'id': { $gt: id } })
                     .select('id')
                     .exec()
                     .then(number => {
-                        console.log(number)
                         number.forEach(e => {
 
                             Movie
