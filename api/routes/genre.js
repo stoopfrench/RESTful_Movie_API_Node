@@ -27,7 +27,6 @@ router.get('/', (req, res, next) => {
             const filteredGenres = splitGenres.filter(function(element) {
                 return hash.hasOwnProperty(element) ? false : (hash[element] = true)
             })
-
             const response = {
                 results: filteredGenres.length,
                 genres: filteredGenres.map(genre => {
@@ -83,7 +82,7 @@ router.get('/:genre', (req, res, next) => {
                 return a.title.localeCompare(b.title)
             })
             if (genreMovies.length >= 1) {
-                res.status(200).json({
+                const response = {
                     genre: genre,
                     count: genreMovies.length,
                     movies: genreMovies.map(movie => {
@@ -99,7 +98,8 @@ router.get('/:genre', (req, res, next) => {
                             }
                         }
                     })
-                })
+                }
+                res.status(200).json(response)
             } else {
                 res.status(404).json({
                     message: 'No Movies found with that Genre'
@@ -121,11 +121,9 @@ router.patch('/', (req, res, next) => {
 
     Movie
         .find()
+        .sort({ id: 1 })
         .exec()
         .then(result => {
-            result.sort((a, b) => {
-                return a.id - b.id
-            })
             result.forEach(el => {
                 if (el.genres.length > 1) {
                     elGenre = el.genres.split('|')
@@ -173,7 +171,7 @@ router.patch('/', (req, res, next) => {
                         })
                 })
                 res.status(200).json({
-                    message: `'${genre}' renamed '${newName}'`,
+                    message: `'${genre}' has been renamed: '${newName}'`,
                     changes: count,
                     requests: {
                         genreList: {

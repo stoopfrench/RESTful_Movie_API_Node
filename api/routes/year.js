@@ -26,7 +26,7 @@ router.get('/', (req, res, next) => {
             const filteredYears = years.filter(function(element) {
                 return hash.hasOwnProperty(element) ? false : (hash[element] = true)
             })
-            res.status(200).json({
+            const response = {
                 count: filteredYears.length,
                 years: filteredYears.map(year => {
                     return {
@@ -45,14 +45,15 @@ router.get('/', (req, res, next) => {
                         return a.year - b.year
                     }
                 })
-            })
+            }
+            res.status(200).json(response)
         })
         .catch(err => {
             message: err
         })
 })
 
-//GET MOVIE BY YEAR --------------------------------------------------------------
+//GET MOVIES BY YEAR --------------------------------------------------------------
 router.get('/:year', (req, res, next) => {
     const year = req.params.year
 
@@ -65,7 +66,7 @@ router.get('/:year', (req, res, next) => {
                 result.sort((a, b) => {
                     return a.title.localeCompare(b.title)
                 })
-                res.status(200).json({
+                const response = {
                     year: year,
                     count: result.length,
                     movies: result.map(year => {
@@ -80,7 +81,8 @@ router.get('/:year', (req, res, next) => {
                             }
                         }
                     })
-                })
+                }
+                res.status(200).json(response)
             } else {
                 res.status(404).json({
                     message: 'No Movies found from that year'

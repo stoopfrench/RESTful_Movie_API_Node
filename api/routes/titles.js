@@ -110,7 +110,13 @@ router.get('/:id', (req, res, next) => {
                 })
             } else {
                 res.status(404).json({
-                    message: 'No entry found with that ID'
+                    message: 'No entry found with that ID',
+                    request: {
+                        type: 'GET',
+                        description: 'Get a list of All movies by ID',
+                        url: `http://localhost:${port}/titles/?sort=id`
+                    }
+
                 })
             }
         })
@@ -195,27 +201,60 @@ router.delete('/:id', (req, res, next) => {
         .deleteOne({ 'id': id })
         .exec()
         .then(result => {
-            res.status(200).json({
-                message: 'Movie deleted',
-                requests: {
-                    All: {
-                        type: 'GET',
-                        description: 'Get a new list of all movies',
-                        url: `http://localhost:${port}/titles/`,
-                        sorted: {
-                            byTitle: `http://localhost:${port}/titles/?sort=title`,
-                            byId: `http://localhost:${port}/titles/?sort=id`,
-                            byYear: `http://localhost:${port}/titles/?sort=year`
+            if (result.length > 0) {
+
+
+                Movie
+                    .find({ 'id': { $gt: id } })
+                    .select('id')
+                    .exec()
+                    .then(number => {
+                        console.log(number)
+                        number.forEach(e => {
+
+                            Movie
+                                .update({ 'id': e.id }, { $inc: { 'id': -1 } })
+                                .exec()
+                                .then()
+                                .catch(err => {
+                                    console.log(err)
+                                })
+                        })
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+                res.status(200).json({
+                    message: 'Movie deleted',
+                    requests: {
+                        All: {
+                            type: 'GET',
+                            description: 'Get a new list of all movies',
+                            url: `http://localhost:${port}/titles/`,
+                            sorted: {
+                                byTitle: `http://localhost:${port}/titles/?sort=title`,
+                                byId: `http://localhost:${port}/titles/?sort=id`,
+                                byYear: `http://localhost:${port}/titles/?sort=year`
+                            }
+                        },
+                        Create: {
+                            type: 'POST',
+                            description: 'Create a new movie',
+                            url: `http://localhost:${port}/titles/`,
+                            body: { title: 'String', year: 'Number', genres: 'String ( seperated by | )' }
                         }
-                    },
-                    Create: {
-                        type: 'POST',
-                        description: 'Create a new movie',
-                        url: `http://localhost:${port}/titles/`,
-                        body: { title: 'String', year: 'Number', genres: 'String ( seperated by | )' }
                     }
-                }
-            })
+                })
+            } else {
+                res.status(404).json({
+                    message: 'No entry found with that ID',
+                    request: {
+                        type: 'GET',
+                        description: 'Get a list of All movies by ID',
+                        url: `http://localhost:${port}/titles/?sort=id`
+                    }
+                })
+            }
         })
         .catch(err => {
             res.status(500).json({
