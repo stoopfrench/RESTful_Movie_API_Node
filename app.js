@@ -40,14 +40,9 @@ app.use((req, res, next) => {
 
 //ALL OTHER ERROR HANDLING
 app.use((error, req, res, next) => {
-    res.status(error.status || 500)
-    res.json({
+    res.status(error.status || 500).json({
         error: {
             message: error.message,
-            requests: {
-                type: 'GET',
-                urls: '/titles, /genre, /year'
-            }
         }
     })
 })
