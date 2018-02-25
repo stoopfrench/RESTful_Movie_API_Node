@@ -100,7 +100,7 @@ router.get('/:id', (req, res, next) => {
                                 type: 'PATCH',
                                 description: 'Update this movie',
                                 url: `http://localhost:${port}/titles/` + result.id,
-                                body: [{ propName: '<movie property name>', value: '<new property value>' }]
+                                body: [{ property: '<movie property name>', value: '<new property value>' }]
                             },
                             Remove: {
                                 type: 'DELETE',
@@ -175,26 +175,32 @@ router.patch('/:id', (req, res, next) => {
     const updateFields = {}
 
     for (let ops of req.body) {
-        if(ops.hasOwnProperty('property') && ops.hasOwnProperty('value') && ops.property !== 'id') {
+        if (ops.hasOwnProperty('property') && ops.hasOwnProperty('value') && ops.property !== 'id') {
             updateFields[ops.property] = ops.value
-        }
-        else {
-            if(ops.property === 'id'){
-                const error = new Error("Patch Failed: Not allowed to change the ID property")
+        } else {
+            if (ops.property === 'id') {
+                const error = new Error("Patch Failed: Changes to the ID property are not allowed")
                 next(error)
             }
             const error = new Error("Patch Failed: Invalid patch request")
             next(error)
-        } 
+        }
     }
 
     Movie
-        .update({ 'id': id }, { $set: updateFields })
+        .findOneAndUpdate({ 'id': id }, { $set: updateFields }, { new: true })
+        .select('title year genres id')
         .exec()
         .then(result => {
-            console.log(result)
             res.status(200).json({
                 message: 'Movie updated',
+                updates: updateFields,
+                result: {
+                    title: result.title,
+                    year: result.year,
+                    genres: result.genres,
+                    id: result.id
+                },
                 request: {
                     type: 'GET',
                     description: 'Get details about this product',
@@ -203,7 +209,7 @@ router.patch('/:id', (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err)         
+            console.log(err)
         })
 })
 
@@ -215,19 +221,19 @@ router.delete('/:id', (req, res, next) => {
         .deleteOne({ 'id': id })
         .exec()
         .then(result => {
-            if(result.n !== 0) {
+            if (result.n !== 0) {
 
-            //Decrement the ID
+                //Decrement the ID
                 Movie
                     .find({ 'id': { $gt: id } })
                     .select('id')
                     .exec()
                     .then(number => {
                         number.forEach(e => {
-                            let newIdNumber = e.id -1
+                            let newIdNumber = e.id - 1
 
                             Movie
-                                .update({ 'id': e.id }, { '$set': { 'id': newIdNumber }})
+                                .update({ 'id': e.id }, { '$set': { 'id': newIdNumber } })
                                 .exec()
                                 .then()
                                 .catch(err => {
@@ -238,7 +244,7 @@ router.delete('/:id', (req, res, next) => {
                     .catch(err => {
                         console.log(err)
                     })
-                    
+
                 res.status(200).json({
                     message: 'Movie deleted',
                     requests: {

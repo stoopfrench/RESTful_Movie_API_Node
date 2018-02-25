@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 
-let thisYear
-;(function() {
-	const date = new Date
-	thisYear = date.getFullYear()
+let thisYear;
+(function() {
+    const date = new Date
+    thisYear = date.getFullYear()
 }())
 
 const movieSchema = mongoose.Schema({
