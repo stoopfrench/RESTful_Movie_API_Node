@@ -27,6 +27,7 @@ describe('Requests to /titles', () => {
 	                .get('/titles')
 	                .end((err, res) => {
 	                    res.should.have.status(200)
+	                    res.should.be.json
 	                    res.body.should.have.property('results')
 	                    res.body.should.have.property('movies')
 	                    res.body.movies.should.be.a('array')
@@ -54,6 +55,7 @@ describe('Requests to /titles', () => {
                 .send(movie)
                 .end((err, res) => {
                     res.should.have.status(201)
+                    res.should.be.json
                     res.body.should.be.a('object')
                     res.body.message.should.be.eql('added new movie')
                     res.body.should.have.property('created')
@@ -75,6 +77,7 @@ describe('Requests to /titles', () => {
                     .send(movie)
                     .end((err, res) => {
                         res.should.have.status(200)
+                        res.should.be.json
                         res.body.should.be.a('object')
                         res.body.should.have.property('movie')
                         res.body.movie.should.have.property('title')
@@ -97,6 +100,7 @@ describe('Requests to /titles', () => {
                     .send(patchUpdates)
                     .end((err, res) => {
                         res.should.have.status(200)
+                        res.should.be.json
                         res.body.should.be.a('object')
                         res.body.message.should.be.eql('Movie updated')
                         res.body.should.have.property('updates')
@@ -119,6 +123,7 @@ describe('Requests to /titles', () => {
                     .delete(`/titles/${movie.id}`)
                     .end((err, res) => {
                         res.should.have.status(200)
+                        res.should.be.json
                         res.body.should.be.a('object')
                         res.body.message.should.be.eql('Movie deleted')
                         done()

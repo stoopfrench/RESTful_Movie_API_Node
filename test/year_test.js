@@ -26,6 +26,7 @@ describe('Requests to /year', () => {
                     .get('/year')
                     .end((err, res) => {
                         res.should.have.status(200)
+                        res.should.be.json
                         res.body.should.be.a('object')
                         res.body.should.have.property('years')
                         res.body.should.have.property('count').eql(1)
@@ -44,6 +45,7 @@ describe('Requests to /year', () => {
                     .send(movie)
                     .end((err, res) => {
                         res.should.have.status(200)
+                        res.should.be.json
                         res.body.should.be.a('object')
                         res.body.should.have.property('year').eql(`${movie.year}`)
                         res.body.should.have.property('count').eql(1)

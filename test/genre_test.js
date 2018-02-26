@@ -26,6 +26,7 @@ describe('Requests to /genre', () => {
                     .get('/genre')
                     .end((err, res) => {
                         res.should.have.status(200)
+                        res.should.be.json
                         res.body.should.be.a('object')
                         res.body.should.have.property('results').eql(3)
                         res.body.should.have.property('genres')
@@ -48,6 +49,7 @@ describe('Requests to /genre', () => {
                     .send(movie)
                     .end((err, res) => {
                         res.should.have.status(200)
+                        res.should.be.json
                         res.body.should.be.a('object')
                         res.body.should.have.property('genre').equal(firstGenre)
                         res.body.should.have.property('count').eql(1)
@@ -71,6 +73,7 @@ describe('Requests to /genre', () => {
                     .send(patchUpdates)
                     .end((err, res) => {
                         res.should.have.status(200)
+                        res.should.be.json
                         res.body.should.be.a('object')
                         res.body.message.should.be.equal(`'${firstGenre}' has been renamed: '${patchUpdates.newName}'`)
                         res.body.changes.should.be.eql(1)
