@@ -13,62 +13,61 @@ const Movie = require('../api/models/movieModel')
 chai.use(chaiHttp)
 
 const createMovie = () => {
-	return new Promise((resolve, reject) => {
-		const movieTemplate =  {
-			title: 'Mocha Test 1',
-			year: 1990,
-			genres: 'Action|Comedy|Tragedy'
-		}
+    return new Promise((resolve, reject) => {
+        const movieTemplate = {
+            title: 'Mocha Test 1',
+            year: 1990,
+            genres: 'Action|Comedy|Tragedy'
+        }
 
-		chai.request(app)
-		.post('/titles')
-		.send(movieTemplate)
-		.end((err, res) => {
-			resolve(res.body.created)
-		})
-	})
+        chai.request(app)
+            .post('/titles')
+            .send(movieTemplate)
+            .end((err, res) => {
+                resolve(res.body.created)
+            })
+    })
 }
 
 describe('Requests to /year', () => {
-	beforeEach((done) => {
-		Movie.remove({}, (err) => { 
-    		done()
+    beforeEach((done) => {
+        Movie.remove({}, (err) => {
+            done()
         })
-	})  
+    })
 
-	describe('GET request to /year', () => {
-		it('Returns an index of Years stored in the database', (done) => {
-			createMovie().then(movie => {
-				chai.request(app)
-				.get('/year')
-				.end((err, res) => {
-					res.should.have.status(200)
-					res.body.should.be.a('object')
-					res.body.should.have.property('count')
-					res.body.should.have.property('years')
-					res.body.should.have.property('count').eql(1)
-					done()
-				})
-			})
-		})
-	})
+    describe('GET request to /year', () => {
+        it('Returns an index of Years stored in the database', (done) => {
+            createMovie().then(movie => {
+                chai.request(app)
+                    .get('/year')
+                    .end((err, res) => {
+                        res.should.have.status(200)
+                        res.body.should.be.a('object')
+                        res.body.should.have.property('years')
+                        res.body.should.have.property('count').eql(1)
+                        done()
+                    })
+            })
+        })
+    })
 
-	describe('GET request to /year/<id>', () => {
-		it('Returns the movies in the database from this year', (done) => {
-			
-			createMovie().then(movie => {
-				chai.request(app)
-				.get(`/year/${movie.year}`)
-				.send(movie)
-				.end((err, res) => {
-					res.should.have.status(200)
-					res.body.should.be.a('object')
-					res.body.should.have.property('year').eql(`${movie.year}`)
-					res.body.should.have.property('count').eql(1)
-					res.body.should.have.property('movies')
-					done()
-				})
-			})
-		})
-	})
-}) 
+    describe('GET request to /year/<id>', () => {
+        it('Returns the movies in the database from this year', (done) => {
+
+            createMovie().then(movie => {
+                chai.request(app)
+                    .get(`/year/${movie.year}`)
+                    .send(movie)
+                    .end((err, res) => {
+                        res.should.have.status(200)
+                        res.body.should.be.a('object')
+                        res.body.should.have.property('year').eql(`${movie.year}`)
+                        res.body.should.have.property('count').eql(1)
+                        res.body.should.have.property('movies')
+                        done()
+                    })
+            })
+        })
+    })
+})
