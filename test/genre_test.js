@@ -66,7 +66,7 @@ describe('Requests to /genre', () => {
                     .end((err, res) => {
                         res.should.have.status(200)
                         res.body.should.be.a('object')
-                        res.body.should.have.property('genre').eql(firstGenre)
+                        res.body.should.have.property('genre').equal(firstGenre)
                         res.body.should.have.property('count').eql(1)
                         res.body.should.have.property('movies')
                         res.body.movies.should.be.a('array')
@@ -89,7 +89,7 @@ describe('Requests to /genre', () => {
                     .end((err, res) => {
                         res.should.have.status(200)
                         res.body.should.be.a('object')
-                        res.body.message.should.be.eql(`'${firstGenre}' has been renamed: '${patchUpdates.newName}'`)
+                        res.body.message.should.be.equal(`'${firstGenre}' has been renamed: '${patchUpdates.newName}'`)
                         res.body.changes.should.be.eql(1)
                         done()
                     })
