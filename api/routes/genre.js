@@ -42,7 +42,7 @@ router.get('/', (req, res, next) => {
                             Rename: {
                                 type: 'PATCH',
                                 description: 'Rename a genre',
-                                url: `http://localhost:${port}/genre`,
+                                url: `http://localhost:${port}/genre/` + genre,
                                 body: { genre: '<genre to rename>', newName: '<new name for genre>' }
                             }
                         }

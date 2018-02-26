@@ -1,7 +1,9 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const config = require('config')
 const app = express()
+
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -12,7 +14,7 @@ const genreRoutes = require('./api/routes/genre')
 const yearRoutes = require('./api/routes/year')
 
 //CONNECT TO MONGO CLIENT
-mongoose.connect('mongodb://localhost:27017/movie-database')
+mongoose.connect(config.dbHost)
 mongoose.Promise = global.Promise
 
 //CORS HANDLING 
