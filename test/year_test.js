@@ -63,11 +63,11 @@ describe('Requests to /year', () => {
 				.end((err, res) => {
 					res.should.have.status(200)
 					res.body.should.be.a('object')
-					res.body.should.have.property('year').eql(movie.year)
+					res.body.should.have.property('year').eql(`${movie.year}`)
 					res.body.should.have.property('count').eql(1)
 					res.body.should.have.property('movies')
+					done()
 				})
-				done()
 			})
 		})
 	})

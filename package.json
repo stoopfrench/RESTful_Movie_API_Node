@@ -4,7 +4,7 @@
   "description": "RESTful movie database api",
   "main": "app.js",
   "scripts": {
-    "test": "mocha --timeout 5000",
+    "test": "mocha --timeout 5000 --exit",
     "start": "node server.js"
   },
   "author": "Aaron Allen",
