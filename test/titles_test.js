@@ -102,7 +102,7 @@ describe('Requests to /titles', () => {
                         res.should.have.status(200)
                         res.should.be.json
                         res.body.should.be.a('object')
-                        res.body.message.should.be.eql('Movie updated')
+                        res.body.message.should.be.equal('Movie updated')
                         res.body.should.have.property('updates')
                         res.body.updates.should.have.property(patchUpdates[0].property).equal(patchUpdates[0].value)
                         res.body.updates.should.have.property(patchUpdates[1].property).equal(patchUpdates[1].value)
@@ -125,7 +125,7 @@ describe('Requests to /titles', () => {
                         res.should.have.status(200)
                         res.should.be.json
                         res.body.should.be.a('object')
-                        res.body.message.should.be.eql('Movie deleted')
+                        res.body.message.should.be.equal('Movie deleted')
                         done()
                     })
             })
