@@ -12,23 +12,6 @@ const Movie = require('../api/models/movieModel')
 
 chai.use(chaiHttp)
 
-const createMovie = () => {
-    return new Promise((resolve, reject) => {
-        const movieTemplate = {
-            title: 'Mocha Test 1',
-            year: 1990,
-            genres: 'Action|Comedy|Tragedy'
-        }
-
-        chai.request(app)
-            .post('/titles')
-            .send(movieTemplate)
-            .end((err, res) => {
-                resolve(res.body.created)
-            })
-    })
-}
-
 describe('Requests to /titles', () => {
     beforeEach((done) => {
         Movie.remove({}, (err) => {
@@ -144,3 +127,20 @@ describe('Requests to /titles', () => {
         })
     })
 })
+
+const createMovie = () => {
+    return new Promise((resolve, reject) => {
+        const movieTemplate = {
+            title: 'Mocha Test 1',
+            year: 1990,
+            genres: 'Action|Comedy|Tragedy'
+        }
+
+        chai.request(app)
+            .post('/titles')
+            .send(movieTemplate)
+            .end((err, res) => {
+                resolve(res.body.created)
+            })
+    })
+}
