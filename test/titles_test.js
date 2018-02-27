@@ -133,6 +133,124 @@ describe('Requests to /titles', () => {
     })
 })
 
+describe('Bad Requests to /titles', () => {
+    beforeEach((done) => {
+        Movie.remove({}, (err) => {
+            done()
+        })
+    })
+
+    describe('GET request to invalid url', () => {
+        it('Returns a 404 error', (done) => {
+            chai.request(app)
+                .get('/titl')
+                .end((err, res) => {
+                    res.should.have.status(404)
+                    res.body.error.message.should.be.equal('Route not found')
+                    done()
+                })
+        })     
+    })
+
+    describe('GET request to /titles/<id> with invalid ID', () => {
+        it('Returns a 404 error with a message', (done) => {
+            chai.request(app)
+            .get('/titles/2')
+            .end((err, res) => {
+                res.should.have.status(404)
+                res.body.message.should.be.equal('No entry found with that ID')
+                done()
+            })
+        })         
+    })
+
+    describe('POST request to /titles with missing properties', () => {
+        it('Returns a 500 error', (done) => {
+            const badMovie = {
+                title: 'Bad Request Title',
+                year: 1993
+            }
+            chai.request(app)
+            .post('/titles')
+            .send(badMovie)
+            .end((err, res) => {
+                res.should.have.status(500)
+                res.body.should.have.property('error')
+                done()
+            })
+        })
+    })
+
+    describe('PATCH request to /titles with an invalid ID', () => {
+        it("Returns a 404 error with the message 'No entry found with that ID'", (done) => {
+            const updates = [{property: 'title', value: 'New Title'}]
+            chai.request(app)
+            .patch('/titles/5')
+            .send(updates)
+            .end((err, res) => {
+                res.should.have.status(500)
+                res.body.should.have.property('message')
+                res.body.message.should.be.equal('No entry found with that ID')
+                done()
+            })
+        })
+    })
+
+    describe('PATCH request to /titles/<id> with an invalid patch request', () => {
+        it("Returns a 500 error with the message 'Patch Failed: Invalid patch request'", (done) => {
+
+            const patchUpdates = [{ wrongName: 'title', value: 'Mocha TEST 2' }, { property: 'year', value: 2000 }]
+            createMovie().then(movie => {
+                chai.request(app)
+                    .patch(`/titles/${movie.id}`)
+                    .send(patchUpdates)
+                    .end((err, res) => {
+                        res.should.have.status(500)
+                        res.body.should.have.property('error')
+                        res.body.error.should.have.property('message')
+                        res.body.error.message.should.be.equal('Patch Failed: Invalid patch request')
+                        done()
+                    })
+            })
+        })
+    })
+
+    describe('PATCH request to /titles/<id> with an update to ID', () => {
+        it("Returns a 500 error with the message 'Patch Failed: Changes to the ID property are not permitted'", (done) => {
+
+            const patchUpdates = [{ property: 'id', value: '5' }, { property: 'year', value: 2000 }]
+            createMovie().then(movie => {
+                chai.request(app)
+                    .patch(`/titles/${movie.id}`)
+                    .send(patchUpdates)
+                    .end((err, res) => {
+                        res.should.have.status(500)
+                        res.body.should.have.property('error')
+                        res.body.error.should.have.property('message')
+                        res.body.error.message.should.be.equal('Patch Failed: Changes to the ID property are not permitted')
+                        done()
+                    })
+            })
+        })
+    })
+
+    describe('DELETE request to /titles/<id> with an invalid ID', () => {
+        it("Returns a 404 error with the message 'No entry found with that ID'", (done) => {
+
+            createMovie().then(movie => {
+                chai.request(app)
+                    .delete('/titles/8')
+                    .end((err, res) => {
+                        res.should.have.status(404)
+                        res.body.should.have.property('message')
+                        res.body.message.should.be.equal('No entry found with that ID')
+                        done()
+                    })
+            })
+        })
+    })
+})
+
 const createMovie = () => {
     return new Promise((resolve, reject) => {
         const movieTemplate = {

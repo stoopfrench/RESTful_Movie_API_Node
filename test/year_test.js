@@ -57,6 +57,38 @@ describe('Requests to /year', () => {
     })
 })
 
+describe('Bad Requests to /year', () => {
+    beforeEach((done) => {
+        Movie.remove({}, (err) => {
+            done()
+        })
+    })
+
+    describe('GET request to invalid url', () => {
+        it('Returns a 404 error', (done) => {
+            chai.request(app)
+                .get('/yeara')
+                .end((err, res) => {
+                    res.should.have.status(404)
+                    res.body.error.message.should.be.equal('Route not found')
+                    done()
+                })
+        })     
+    })
+
+    describe('GET request to /genre/<genre> with invalid ID', () => {
+        it("Returns a 404 error with the message 'No Movies found from that year'", (done) => {
+            chai.request(app)
+            .get('/year/2000')
+            .end((err, res) => {
+                res.should.have.status(404)
+                res.body.message.should.be.equal('No Movies found from that year')
+                done()
+            })
+        })         
+    })
+})
+
 
 const createMovie = () => {
     return new Promise((resolve, reject) => {

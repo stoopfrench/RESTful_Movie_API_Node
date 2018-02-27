@@ -179,11 +179,15 @@ router.patch('/:id', (req, res, next) => {
             updateFields[ops.property] = ops.value
         } else {
             if (ops.property === 'id') {
-                const error = new Error("Patch Failed: Changes to the ID property are not allowed")
-                next(error)
+                throw new Error('Patch Failed: Changes to the ID property are not permitted')
+/*                res.status(500).json({
+                    message: 'Patch Failed: Changes to the ID property are not permitted'
+                })*/
             }
-            const error = new Error("Patch Failed: Invalid patch request")
-            next(error)
+            throw new Error('Patch Failed: Invalid patch request')
+/*            res.status(500).json({
+                message: 'Patch Failed: Invalid patch request'
+            })*/
         }
     }
 
@@ -209,7 +213,9 @@ router.patch('/:id', (req, res, next) => {
             })
         })
         .catch(err => {
-            console.log(err)
+            res.status(500).json({
+                message: 'No entry found with that ID',
+            })
         })
 })
 

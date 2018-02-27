@@ -77,6 +77,10 @@ router.get('/:genre', (req, res, next) => {
                 if (movie.genres.indexOf(genre) != -1) {
                     genreMovies.push(movie)
                 }
+                // else {
+                //     throw new Error('No entries found with that Genre')
+                // }
+
             })
             genreMovies.sort((a, b) => {
                 return a.title.localeCompare(b.title)
@@ -100,14 +104,15 @@ router.get('/:genre', (req, res, next) => {
                     })
                 }
                 res.status(200).json(response)
-            } else {
-                res.status(404).json({
-                    message: 'No Movies found with that Genre'
-                })
+            } 
+            else {
+                throw new Error('No Movies found with that Genre')
             }
         })
         .catch(err => {
-            console.log(err)
+            res.status(404).json({
+                message: err.message
+            })
         })
 })
 
