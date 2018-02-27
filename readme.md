@@ -12,8 +12,9 @@
 	`npm install`
 4. Start the MongoDB client:
 	`sudo mongod`
-
-	Enter your password if required.
+		
+		Enter your password if required.
+		
 5. Open a new terminal tab (the other one should be running the mongoDB service).
 6. Populate the Database from the dump file:
 	`mongorestore -d movie-database dump/movie-database`
