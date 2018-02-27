@@ -22,21 +22,21 @@ describe('Requests to /titles', () => {
     describe('GET request to /titles', () => {
         it('Returns all Movies from the Database', (done) => {
 
-        	createMovie().then(movie => {
-	            chai.request(app)
-	                .get('/titles')
-	                .end((err, res) => {
-	                    res.should.have.status(200)
-	                    res.should.be.json
-	                    res.body.should.have.property('results')
-	                    res.body.should.have.property('movies')
-	                    res.body.movies.should.be.a('array')
-	                    res.body.movies[0].should.have.property('title')
-	                    res.body.movies[0].should.have.property('year')
-	                    res.body.movies[0].should.have.property('id')
-	                    res.body.movies.length.should.be.eql(1)
-	                    done()
-	                })
+            createMovie().then(movie => {
+                chai.request(app)
+                    .get('/titles')
+                    .end((err, res) => {
+                        res.should.have.status(200)
+                        res.should.be.json
+                        res.body.should.have.property('results')
+                        res.body.should.have.property('movies')
+                        res.body.movies.should.be.a('array')
+                        res.body.movies[0].should.have.property('title')
+                        res.body.movies[0].should.have.property('year')
+                        res.body.movies[0].should.have.property('id')
+                        res.body.movies.length.should.be.eql(1)
+                        done()
+                    })
             })
         })
     })
@@ -149,19 +149,19 @@ describe('Bad Requests to /titles', () => {
                     res.body.error.message.should.be.equal('Route not found')
                     done()
                 })
-        })     
+        })
     })
 
     describe('GET request to /titles/<id> with invalid ID', () => {
         it('Returns a 404 error with a message', (done) => {
             chai.request(app)
-            .get('/titles/2')
-            .end((err, res) => {
-                res.should.have.status(404)
-                res.body.message.should.be.equal('No entry found with that ID')
-                done()
-            })
-        })         
+                .get('/titles/2')
+                .end((err, res) => {
+                    res.should.have.status(404)
+                    res.body.message.should.be.equal('No entry found with that ID')
+                    done()
+                })
+        })
     })
 
     describe('POST request to /titles with missing properties', () => {
@@ -171,28 +171,28 @@ describe('Bad Requests to /titles', () => {
                 year: 1993
             }
             chai.request(app)
-            .post('/titles')
-            .send(badMovie)
-            .end((err, res) => {
-                res.should.have.status(500)
-                res.body.should.have.property('error')
-                done()
-            })
+                .post('/titles')
+                .send(badMovie)
+                .end((err, res) => {
+                    res.should.have.status(500)
+                    res.body.should.have.property('error')
+                    done()
+                })
         })
     })
 
     describe('PATCH request to /titles with an invalid ID', () => {
         it("Returns a 404 error with the message 'No entry found with that ID'", (done) => {
-            const updates = [{property: 'title', value: 'New Title'}]
+            const updates = [{ property: 'title', value: 'New Title' }]
             chai.request(app)
-            .patch('/titles/5')
-            .send(updates)
-            .end((err, res) => {
-                res.should.have.status(500)
-                res.body.should.have.property('message')
-                res.body.message.should.be.equal('No entry found with that ID')
-                done()
-            })
+                .patch('/titles/5')
+                .send(updates)
+                .end((err, res) => {
+                    res.should.have.status(500)
+                    res.body.should.have.property('message')
+                    res.body.message.should.be.equal('No entry found with that ID')
+                    done()
+                })
         })
     })
 

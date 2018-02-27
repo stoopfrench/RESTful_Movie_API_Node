@@ -73,19 +73,19 @@ describe('Bad Requests to /year', () => {
                     res.body.error.message.should.be.equal('Route not found')
                     done()
                 })
-        })     
+        })
     })
 
     describe('GET request to /genre/<genre> with invalid ID', () => {
         it("Returns a 404 error with the message 'No Movies found from that year'", (done) => {
             chai.request(app)
-            .get('/year/2000')
-            .end((err, res) => {
-                res.should.have.status(404)
-                res.body.message.should.be.equal('No Movies found from that year')
-                done()
-            })
-        })         
+                .get('/year/2000')
+                .end((err, res) => {
+                    res.should.have.status(404)
+                    res.body.message.should.be.equal('No Movies found from that year')
+                    done()
+                })
+        })
     })
 })
 
