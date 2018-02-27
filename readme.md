@@ -27,7 +27,7 @@
 
 BE SURE TO CRASH OUT (`^C`) OF THE MONGOD SERVICE IN THE TERMINAL WHEN YOURE FINISHED EXPLORING
 
-**TESTING**
+**TESTING ----------------------------------------------------------------------------------**
 
 Run the test in the `/text` directory with Mocha/Chai: `npm run test`
 
