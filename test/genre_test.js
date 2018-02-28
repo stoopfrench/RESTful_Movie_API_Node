@@ -134,8 +134,8 @@ describe('Bad Requests to /genre', () => {
 const createMovie = () => {
     return new Promise((resolve, reject) => {
         const movieTemplate = {
-            title: 'Mocha Test 1',
-            year: 1990,
+            title: 'Mocha Movie Template',
+            year: 1991,
             genres: 'Action|Comedy|Tragedy'
         }
 
