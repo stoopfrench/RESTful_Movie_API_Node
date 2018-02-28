@@ -30,7 +30,7 @@ BE SURE TO CRASH OUT (`^C`) OF THE MONGOD SERVICE IN THE TERMINAL WHEN YOURE FIN
 
 **TESTING -----------------------------------------------------------------------------------**
 
-Run the Mocha test in the `/test` directory: `npm run test`
+Run the Mocha tests in the `/test` directory: `npm run test`
 
 **ENDPOINTS --------------------------------------------------------------------------------**
 
