@@ -23,7 +23,7 @@ router.get('/', (req, res, next) => {
                 return yr
             }, {})
             const hash = {}
-            const filteredYears = years.filter(function(element) {
+            const filteredYears = years.filter((element) => {
                 return hash.hasOwnProperty(element) ? false : (hash[element] = true)
             })
             const response = {
@@ -49,7 +49,9 @@ router.get('/', (req, res, next) => {
             res.status(200).json(response)
         })
         .catch(err => {
-            message: err
+            res.status(500).json({
+                error: err
+            })
         })
 })
 
@@ -85,9 +87,6 @@ router.get('/:year', (req, res, next) => {
                 res.status(200).json(response)
             } else {
                 throw new Error('No Movies found from that year')
-/*                res.status(404).json({
-                    message: 'No Movies found from that year'
-                })*/
             }
         })
         .catch(err => {

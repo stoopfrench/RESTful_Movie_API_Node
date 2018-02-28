@@ -24,7 +24,7 @@ router.get('/', (req, res, next) => {
                 return genre
             }, {})
             const hash = {}
-            const filteredGenres = splitGenres.filter(function(element) {
+            const filteredGenres = splitGenres.filter((element) => {
                 return hash.hasOwnProperty(element) ? false : (hash[element] = true)
             })
             const response = {
@@ -77,10 +77,6 @@ router.get('/:genre', (req, res, next) => {
                 if (movie.genres.indexOf(genre) != -1) {
                     genreMovies.push(movie)
                 }
-                // else {
-                //     throw new Error('No entries found with that Genre')
-                // }
-
             })
             genreMovies.sort((a, b) => {
                 return a.title.localeCompare(b.title)

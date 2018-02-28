@@ -123,7 +123,9 @@ router.get('/:id', (req, res, next) => {
             }
         })
         .catch(err => {
-            console.log(err)
+            res.status(500).json({
+                error: err
+            })
         })
 })
 
@@ -180,14 +182,8 @@ router.patch('/:id', (req, res, next) => {
         } else {
             if (ops.property === 'id') {
                 throw new Error('Patch Failed: Changes to the ID property are not permitted')
-/*                res.status(500).json({
-                    message: 'Patch Failed: Changes to the ID property are not permitted'
-                })*/
             }
             throw new Error('Patch Failed: Invalid patch request')
-/*            res.status(500).json({
-                message: 'Patch Failed: Invalid patch request'
-            })*/
         }
     }
 
