@@ -142,6 +142,7 @@ describe('Bad Requests to /titles', () => {
 
     describe('GET request to invalid url', () => {
         it('Returns a 404 error', (done) => {
+            
             chai.request(app)
                 .get('/titl')
                 .end((err, res) => {
@@ -154,6 +155,7 @@ describe('Bad Requests to /titles', () => {
 
     describe('GET request to /titles/<id> with invalid ID', () => {
         it('Returns a 404 error with a message', (done) => {
+            
             chai.request(app)
                 .get('/titles/2')
                 .end((err, res) => {
@@ -166,6 +168,7 @@ describe('Bad Requests to /titles', () => {
 
     describe('POST request to /titles with missing properties', () => {
         it('Returns a 500 error', (done) => {
+            
             const badMovie = {
                 title: 'Bad Request Title',
                 year: 1993
@@ -183,6 +186,7 @@ describe('Bad Requests to /titles', () => {
 
     describe('PATCH request to /titles with an invalid ID', () => {
         it("Returns a 404 error with the message 'No entry found with that ID'", (done) => {
+            
             const updates = [{ property: 'title', value: 'New Title' }]
             chai.request(app)
                 .patch('/titles/5')

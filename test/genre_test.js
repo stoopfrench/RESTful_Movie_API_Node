@@ -21,6 +21,7 @@ describe('Requests to /genre', () => {
 
     describe('GET request to /genres', () => {
         it('Returns an index of Genres stored in the database', (done) => {
+            
             createMovie().then(movie => {
                 chai.request(app)
                     .get('/genre')
@@ -93,6 +94,7 @@ describe('Bad Requests to /genre', () => {
 
     describe('GET request to invalid url', () => {
         it('Returns a 404 error', (done) => {
+            
             chai.request(app)
                 .get('/genresia')
                 .end((err, res) => {
@@ -105,6 +107,7 @@ describe('Bad Requests to /genre', () => {
 
     describe('GET request to /genre/<genre> with invalid ID', () => {
         it("Returns a 404 error with the message 'No entry found with that'", (done) => {
+            
             chai.request(app)
                 .get('/genre/notAGenre')
                 .end((err, res) => {
@@ -117,6 +120,7 @@ describe('Bad Requests to /genre', () => {
 
     describe('PATCH request to /genre with a genre that is not in the database', () => {
         it("Returns a 404 error with the message 'No entry found with that ID'", (done) => {
+            
             const updates = [{ genre: 'Not|A|Genre', value: 'NEW|GENRE' }]
             chai.request(app)
                 .patch('/genre')
