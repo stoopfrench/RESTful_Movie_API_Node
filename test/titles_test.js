@@ -177,7 +177,7 @@ describe('Bad Requests to /titles', () => {
                 .post('/titles')
                 .send(badMovie)
                 .end((err, res) => {
-                    res.should.have.status(500)
+                    res.should.have.status(400)
                     res.body.should.have.property('error')
                     done()
                 })
@@ -228,7 +228,7 @@ describe('Bad Requests to /titles', () => {
                     .patch(`/titles/${movie.id}`)
                     .send(patchUpdates)
                     .end((err, res) => {
-                        res.should.have.status(405)
+                        res.should.have.status(400)
                         res.body.should.have.property('error')
                         res.body.error.should.have.property('message')
                         res.body.error.message.should.be.equal('Patch Failed: Changes to the ID property are not permitted')

@@ -164,8 +164,9 @@ router.post('/', (req, res, next) => {
                     })
                 })
                 .catch(err => {
-                    res.status(500).json({
-                        error: err.message
+                    res.status(400).json({
+                        error: err.message,
+                        body: { title: 'String', year: 'Number', genres: 'String ( seperated by | )' }
                     })
                 })
         })
@@ -182,7 +183,7 @@ router.patch('/:id', (req, res, next) => {
         } else {
             if (ops.property === 'id') {
                 const error = new Error('Patch Failed: Changes to the ID property are not permitted')
-                error.status = 405
+                error.status = 400
                 throw error
             }
             const error = new Error('Patch Failed: Invalid patch request')
