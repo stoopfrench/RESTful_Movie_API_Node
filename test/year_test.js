@@ -98,7 +98,7 @@ const createMovie = () => {
         const movieTemplate = {
             title: 'Mocha Movie Template',
             year: 1991,
-            genres: 'Action|Comedy|Tragedy'
+            genres: 'Action,Comedy,Tragedy'
         }
 
         chai.request(app)

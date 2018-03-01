@@ -47,7 +47,7 @@ describe('Requests to /titles', () => {
             const movie = {
                 title: 'Mocha TEST 1',
                 year: 1990,
-                genres: 'Action|Comedy|Tragedy'
+                genres: 'Action,Comedy,Tragedy'
             }
 
             chai.request(app)
@@ -59,9 +59,9 @@ describe('Requests to /titles', () => {
                     res.body.should.be.a('object')
                     res.body.message.should.be.eql('added new movie')
                     res.body.should.have.property('created')
-                    res.body.created.should.have.property('title')
-                    res.body.created.should.have.property('year')
-                    res.body.created.should.have.property('genres')
+                    res.body.created.should.have.property('title').equal(movie.title)
+                    res.body.created.should.have.property('year').equal(movie.year)
+                    res.body.created.should.have.property('genres').equal(movie.genres.split(',').join('|'))
                     res.body.created.should.have.property('id').eql(1)
                     done()
                 })
@@ -260,7 +260,7 @@ const createMovie = () => {
         const movieTemplate = {
             title: 'Mocha Movie Template',
             year: 1991,
-            genres: 'Action|Comedy|Tragedy'
+            genres: 'Action,Comedy,Tragedy'
         }
 
         chai.request(app)
