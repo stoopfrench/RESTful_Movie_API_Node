@@ -220,7 +220,7 @@ describe('Bad Requests to /titles', () => {
     })
 
     describe('PATCH request to /titles/<id> with an update to ID', () => {
-        it("Returns a 405 error with the message 'Patch Failed: Changes to the ID property are not permitted'", (done) => {
+        it("Returns a 400 error with the message 'Patch Failed: Changes to the ID property are not permitted'", (done) => {
 
             const patchUpdates = [{ property: 'id', value: '5' }, { property: 'year', value: 2000 }]
             createMovie().then(movie => {

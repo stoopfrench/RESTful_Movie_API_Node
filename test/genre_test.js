@@ -63,7 +63,7 @@ describe('Requests to /genre', () => {
     })
 
     describe('PATCH request to /genre', () => {
-        it('Rename this genre', (done) => {
+        it('Renames this genre', (done) => {
 
             createMovie().then(movie => {
                 const movieGenres = movie.genres.split('|')
