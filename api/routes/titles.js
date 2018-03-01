@@ -132,16 +132,21 @@ router.get('/:id', (req, res, next) => {
 // CREATE NEW MOVIE --------------------------------------------------------------
 router.post('/', (req, res, next) => {
 
+
     Movie
         .find()
         .select('id')
         .exec()
         .then(docs => {
+            let newGenres
+            if(req.body.genres){
+                newGenres = req.body.genres.split(/,| |-|:|;/).join('|')
+            }
             const id = docs.length + 1
             const movie = new Movie({
                 title: req.body.title,
                 year: req.body.year,
-                genres: req.body.genres,
+                genres: newGenres,
                 id: id
             })
 
@@ -166,7 +171,7 @@ router.post('/', (req, res, next) => {
                 .catch(err => {
                     res.status(400).json({
                         error: err.message,
-                        body: { title: 'String', year: 'Number', genres: 'String ( seperated by | )' }
+                        body: { title: 'String', year: 'Number', genres: 'String ( seperated by , )' }
                     })
                 })
         })
@@ -273,7 +278,7 @@ router.delete('/:id', (req, res, next) => {
                             type: 'POST',
                             description: 'Create a new movie',
                             url: `http://localhost:${port}/titles/`,
-                            body: { title: 'String', year: 'Number', genres: 'String ( seperated by | )' }
+                            body: { title: 'String', year: 'Number', genres: 'String ( seperated by , )' }
                         }
                     }
                 })

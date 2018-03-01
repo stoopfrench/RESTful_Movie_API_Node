@@ -56,7 +56,7 @@ POST `http://localhost:<port>/titles`
 	
 	Creates a new movie in the database.
 	
-	Template: { title: 'string', year: 'number', genres: 'string ( seperated by | )' }
+	Template: { title: 'string', year: 'number', genres: 'string ( seperated by , )' }
 
 **Update Movie**
 

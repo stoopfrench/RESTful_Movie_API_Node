@@ -167,7 +167,7 @@ describe('Bad Requests to /titles', () => {
     })
 
     describe('POST request to /titles with missing properties', () => {
-        it('Returns a 500 error', (done) => {
+        it('Returns a 400 error', (done) => {
             
             const badMovie = {
                 title: 'Bad Request Title',
