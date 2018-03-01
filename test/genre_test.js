@@ -106,7 +106,7 @@ describe('Bad Requests to /genre', () => {
     })
 
     describe('GET request to /genre/<genre> with invalid ID', () => {
-        it("Returns a 404 error with the message 'No entry found with that'", (done) => {
+        it("Returns a 404 error with the message 'No entry found with that Genre'", (done) => {
             
             chai.request(app)
                 .get('/genre/notAGenre')
@@ -119,7 +119,7 @@ describe('Bad Requests to /genre', () => {
     })
 
     describe('PATCH request to /genre with a genre that is not in the database', () => {
-        it("Returns a 404 error with the message 'No entry found with that ID'", (done) => {
+        it("Returns a 404 error with the message 'Genre not found'", (done) => {
             
             const updates = [{ genre: 'Not|A|Genre', value: 'NEW|GENRE' }]
             chai.request(app)
