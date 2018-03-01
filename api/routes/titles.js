@@ -140,7 +140,7 @@ router.post('/', (req, res, next) => {
         .then(docs => {
             let newGenres
             if(req.body.genres){
-                newGenres = req.body.genres.split(/,| |-|:|;/).join('|')
+                newGenres = req.body.genres.split(/,| |-|:|;|\_|\//).join('|')
             }
             const id = docs.length + 1
             const movie = new Movie({
