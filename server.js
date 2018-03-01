@@ -1,7 +1,7 @@
 const http = require('http')
 
 const _var = require('./variables.js')
-const port = _var.port
+const port = process.env.PORT || _var.port
 
 const app = require('./app')
 

@@ -192,7 +192,7 @@ describe('Bad Requests to /titles', () => {
                 .patch('/titles/5')
                 .send(updates)
                 .end((err, res) => {
-                    res.should.have.status(500)
+                    res.should.have.status(404)
                     res.body.should.have.property('message')
                     res.body.message.should.be.equal('No entry found with that ID')
                     done()
@@ -201,7 +201,7 @@ describe('Bad Requests to /titles', () => {
     })
 
     describe('PATCH request to /titles/<id> with an invalid patch request', () => {
-        it("Returns a 500 error with the message 'Patch Failed: Invalid patch request'", (done) => {
+        it("Returns a 400 error with the message 'Patch Failed: Invalid patch request'", (done) => {
 
             const patchUpdates = [{ wrongName: 'title', value: 'Mocha TEST 2' }, { property: 'year', value: 2000 }]
             createMovie().then(movie => {
@@ -209,7 +209,7 @@ describe('Bad Requests to /titles', () => {
                     .patch(`/titles/${movie.id}`)
                     .send(patchUpdates)
                     .end((err, res) => {
-                        res.should.have.status(500)
+                        res.should.have.status(400)
                         res.body.should.have.property('error')
                         res.body.error.should.have.property('message')
                         res.body.error.message.should.be.equal('Patch Failed: Invalid patch request')
@@ -220,7 +220,7 @@ describe('Bad Requests to /titles', () => {
     })
 
     describe('PATCH request to /titles/<id> with an update to ID', () => {
-        it("Returns a 500 error with the message 'Patch Failed: Changes to the ID property are not permitted'", (done) => {
+        it("Returns a 405 error with the message 'Patch Failed: Changes to the ID property are not permitted'", (done) => {
 
             const patchUpdates = [{ property: 'id', value: '5' }, { property: 'year', value: 2000 }]
             createMovie().then(movie => {
@@ -228,7 +228,7 @@ describe('Bad Requests to /titles', () => {
                     .patch(`/titles/${movie.id}`)
                     .send(patchUpdates)
                     .end((err, res) => {
-                        res.should.have.status(500)
+                        res.should.have.status(405)
                         res.body.should.have.property('error')
                         res.body.error.should.have.property('message')
                         res.body.error.message.should.be.equal('Patch Failed: Changes to the ID property are not permitted')
