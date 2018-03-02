@@ -23,10 +23,7 @@ router.get('/', (req, res, next) => {
                 genre[count] = (genre[count] + 1) || 1
                 return genre
             }, {})
-            const hash = {}
-            const filteredGenres = splitGenres.filter((element) => {
-                return hash.hasOwnProperty(element) ? false : (hash[element] = true)
-            })
+            const filteredGenres = Object.keys(movieCount)
             const response = {
                 results: filteredGenres.length,
                 genres: filteredGenres.map(genre => {

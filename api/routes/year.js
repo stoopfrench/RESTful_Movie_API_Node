@@ -22,10 +22,7 @@ router.get('/', (req, res, next) => {
                 yr[count] = (yr[count] + 1) || 1
                 return yr
             }, {})
-            const hash = {}
-            const filteredYears = years.filter((element) => {
-                return hash.hasOwnProperty(element) ? false : (hash[element] = true)
-            })
+            const filteredYears = Object.keys(movieCount)
             const response = {
                 count: filteredYears.length,
                 years: filteredYears.map(year => {
