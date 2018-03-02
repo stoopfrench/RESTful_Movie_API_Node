@@ -139,8 +139,8 @@ router.post('/', (req, res, next) => {
         .exec()
         .then(docs => {
             let newGenres
-            if(req.body.genres){
-                newGenres = req.body.genres.split(/,| |-|:|;|\_|\//).join('|')
+            if (req.body.genres) {
+                newGenres = req.body.genres.split(/[ ,:;_/]+/).join('|')
             }
             const id = docs.length + 1
             const movie = new Movie({
@@ -181,10 +181,14 @@ router.post('/', (req, res, next) => {
 router.patch('/:id', (req, res, next) => {
     const id = req.params.id
     const updateFields = {}
+    let newGenres
 
     for (let ops of req.body) {
         if (ops.hasOwnProperty('property') && ops.hasOwnProperty('value') && ops.property !== 'id') {
-            updateFields[ops.property] = ops.value
+            if(ops.property === 'genres'){
+                newGenres = ops.value.split(/[ ,:;_/]+/).join('|')
+                updateFields['genres'] = newGenres
+            } else {updateFields[ops.property] = ops.value}
         } else {
             if (ops.property === 'id') {
                 const error = new Error('Patch Failed: Changes to the ID property are not permitted')
@@ -208,7 +212,7 @@ router.patch('/:id', (req, res, next) => {
                 result: {
                     title: result.title,
                     year: result.year,
-                    genres: result.genres,
+                    genres: newGenres,
                     id: result.id
                 },
                 request: {

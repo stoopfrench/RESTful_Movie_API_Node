@@ -97,8 +97,7 @@ router.get('/:genre', (req, res, next) => {
                     })
                 }
                 res.status(200).json(response)
-            } 
-            else {
+            } else {
                 throw new Error('No Movies found with that Genre')
             }
         })
@@ -165,7 +164,7 @@ router.patch('/', (req, res, next) => {
                         .exec()
                         .then()
                         .catch(err => {
-                            console.log("err", err)
+                            throw new Error(err)
                         })
                 })
                 res.status(200).json({

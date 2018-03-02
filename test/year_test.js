@@ -21,7 +21,7 @@ describe('Requests to /year', () => {
 
     describe('GET request to /year', () => {
         it('Returns an index of Years stored in the database', (done) => {
-            
+
             createMovie().then(movie => {
                 chai.request(app)
                     .get('/year')
@@ -67,7 +67,7 @@ describe('Bad Requests to /year', () => {
 
     describe('GET request to invalid url', () => {
         it('Returns a 404 error', (done) => {
-            
+
             chai.request(app)
                 .get('/yeara')
                 .end((err, res) => {
@@ -80,7 +80,7 @@ describe('Bad Requests to /year', () => {
 
     describe('GET request to /genre/<genre> with invalid ID', () => {
         it("Returns a 404 error with the message 'No Movies found from that year'", (done) => {
-            
+
             chai.request(app)
                 .get('/year/2000')
                 .end((err, res) => {
