@@ -185,10 +185,10 @@ router.patch('/:id', (req, res, next) => {
 
     for (let ops of req.body) {
         if (ops.hasOwnProperty('property') && ops.hasOwnProperty('value') && ops.property !== 'id') {
-            if(ops.property === 'genres'){
+            if (ops.property === 'genres') {
                 newGenres = ops.value.split(/[ ,:;_/]+/).join('|')
                 updateFields['genres'] = newGenres
-            } else {updateFields[ops.property] = ops.value}
+            } else { updateFields[ops.property] = ops.value }
         } else {
             if (ops.property === 'id') {
                 const error = new Error('Patch Failed: Changes to the ID property are not permitted')
@@ -212,7 +212,7 @@ router.patch('/:id', (req, res, next) => {
                 result: {
                     title: result.title,
                     year: result.year,
-                    genres: newGenres,
+                    genres: result.genres,
                     id: result.id
                 },
                 request: {
