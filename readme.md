@@ -64,7 +64,7 @@ PATCH `http://localhost:<port>/titles/<id>`
 	
 	Updates one or more values of a movie in the database.
 	
-	Template: ```[{ property: <property name>, value: <new value }]```
+	Template: [{ property: <property name>, value: <new value }]
 
 **Delete Movie**
 
@@ -93,7 +93,7 @@ PATCH `http://localhost:<port>/genre`
 
 	Renames a genre.
 
-	Template: ```{ genre: <genre to rename>, newName: <new name for genre> }```
+	Template: { genre: <genre to rename>, newName: <new name for genre> }
 
 **Year Index**
 
