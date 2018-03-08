@@ -8,7 +8,6 @@ const port = _var.port
 
 //GET ALL GENRES -----------------------------------------------------------------
 exports.genres_get_all = (req, res, next) => {
-    const genres = []
 
     Movie
         .aggregate([
@@ -92,6 +91,7 @@ exports.get_by_genre = (req, res, next) => {
 //RENAME A GENRE -----------------------------------------------------------------
 exports.rename_genre = (req, res, next) => {
     if (req.body.hasOwnProperty('genre') && req.body.hasOwnProperty('newName')) {
+        let count = 0
         const genre = req.body.genre
         const regexGenre = new RegExp(genre, "i")
         const newName = req.body.newName
@@ -99,6 +99,7 @@ exports.rename_genre = (req, res, next) => {
         Movie.collection
             .find({ "genres": regexGenre })
             .forEach(genre => {
+                count++
                 genre.genres = genre.genres.replace(regexGenre, newName)
                 Movie
                     .update({ id: genre.id }, { $set: { 'genres': genre.genres } })
@@ -108,19 +109,32 @@ exports.rename_genre = (req, res, next) => {
                         throw new Error('Movie not updated')
                     })
             }, result => {
-                res.status(200).json({
-                    message: "Movie has been updated",
-                    request: {
-                        type: "GET",
-                        description: "Get a new list of all Genres",
-                        url: `http://localhost:${port}/genre`
-                    }
-                })
+                if(count > 0) {
+                    res.status(200).json({
+                        message: `'${genre}' has been renamed '${newName}'`,
+                        changes: count,
+                        request: {
+                            type: "GET",
+                            description: "Get a new list of all Genres",
+                            url: `http://localhost:${port}/genre`
+                        }
+                    })
+                } else {
+                    res.status(404).json({
+                        error: {
+                            message: "Genre not found"
+                        }
+                    })
+                }
             })
     } else {
         res.status(500).json({
             error: {
-                message: "Invalid request format"
+                message: "Invalid request format",
+                template: {
+                    genre: "<genre to rename>",
+                    newName: "<new name for genre>"
+                }
             }
         })
     }
