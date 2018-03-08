@@ -9,41 +9,28 @@ const port = _var.port
 exports.year_get_all = (req, res, next) => {
 
     Movie
-        .find()
+        .aggregate([
+            { $group: { _id: { "year": "$year" }, count: { $sum: 1 } } },
+            { $sort: { "count": -1 } }
+        ])
         .exec()
         .then(result => {
-            const years = []
-            result.forEach(movie => {
-                years.push(movie.year)
-            })
-            const movieCount = years.reduce((yr, count) => {
-                yr[count] = (yr[count] + 1) || 1
-                return yr
-            }, {})
-            const filteredYears = Object.keys(movieCount)
             const response = {
-                count: filteredYears.length,
-                years: filteredYears.map(year => {
+                "results": result.length,
+                "data": result.map(year => {
                     return {
-                        year: year,
-                        movies: movieCount[year],
+                        year: year._id.year,
+                        movies: year.count,
                         request: {
                             type: 'GET',
-                            description: 'Get a list of movies from this year',
-                            url: `http://localhost:${port}/year/` + year
+                            description: 'Get a list of movies in this year',
+                            url: `http://localhost:${port}/year/` + year._id.year
                         }
-                    }
-                }).sort((a, b) => {
-                    if (Object.keys(req.query).length === 0) {
-                        return b.movies - a.movies
-                    } else if (Object.keys(req.query).length > 0 && req.query.sort === 'year') {
-                        return a.year - b.year
                     }
                 })
             }
             res.status(200).json(response)
-        })
-        .catch(err => {
+        }).catch(err => {
             res.status(500).json({
                 error: err
             })
@@ -57,12 +44,10 @@ exports.get_title_by_year = (req, res, next) => {
     Movie
         .find({ 'year': year })
         .select('id title year genres')
+        .sort({"title": 1})
         .exec()
         .then(result => {
             if (result.length > 0) {
-                result.sort((a, b) => {
-                    return a.title.localeCompare(b.title)
-                })
                 const response = {
                     year: year,
                     count: result.length,

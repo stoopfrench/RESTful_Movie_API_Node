@@ -11,7 +11,7 @@ exports.titles_get_all = (req, res, next) => {
     Movie
         .find()
         .select('id title year')
-        .exec()
+        .exec()       
         .then(result => {
             if (Object.keys(req.query).length === 0) {
                 const years = []

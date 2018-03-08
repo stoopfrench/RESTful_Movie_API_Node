@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const Movie = require('../models/movieModel')
+const db = require('mongodb')
 
 const _var = require('config')
 const port = _var.port
@@ -10,49 +11,38 @@ exports.genres_get_all = (req, res, next) => {
     const genres = []
 
     Movie
-        .find()
+        .aggregate([
+            { $project: { split_genres: { $split: ["$genres", "|"] } } },
+            { $unwind: "$split_genres" },
+            { $group: { _id: { "genres": "$split_genres" }, count: { $sum: 1 } } },
+            { $sort: { "count": -1 } }
+        ])
         .exec()
         .then(result => {
-            result.forEach(movie => {
-                genres.push(movie.genres.split('|'))
-            })
-            const splitGenres = genres.join(',').split(',')
-            const movieCount = splitGenres.reduce((genre, count) => {
-                genre[count] = (genre[count] + 1) || 1
-                return genre
-            }, {})
-            const filteredGenres = Object.keys(movieCount)
             const response = {
-                results: filteredGenres.length,
-                genres: filteredGenres.map(genre => {
+                "results": result.length,
+                "data": result.map(genre => {
                     return {
-                        name: genre,
-                        movies: movieCount[genre],
+                        genre: genre._id.genres,
+                        movies: genre.count,
                         requests: {
                             genreList: {
                                 type: 'GET',
                                 description: 'Get a list of movies in this genre',
-                                url: `http://localhost:${port}/genre/` + genre
+                                url: `http://localhost:${port}/genre/` + genre._id.genres
                             },
                             Rename: {
                                 type: 'PATCH',
                                 description: 'Rename a genre',
-                                url: `http://localhost:${port}/genre/` + genre,
+                                url: `http://localhost:${port}/genre/` + genre._id.genres,
                                 body: { genre: '<genre to rename>', newName: '<new name for genre>' }
                             }
                         }
                     }
-                }).sort((a, b) => {
-                    if (Object.keys(req.query).length === 0) {
-                        return b.movies - a.movies
-                    } else if (Object.keys(req.query).length > 0 && req.query.sort === 'name') {
-                        return a.name.localeCompare(b.name)
-                    }
                 })
             }
             res.status(200).json(response)
-        })
-        .catch(err => {
+        }).catch(err => {
             res.status(500).json({
                 error: err
             })
@@ -62,25 +52,18 @@ exports.genres_get_all = (req, res, next) => {
 //GET BY GENRE -------------------------------------------------------------------
 exports.get_by_genre = (req, res, next) => {
     const genre = req.params.genre
-    const genreMovies = []
+    const regexGenre = new RegExp(genre, "i")
 
     Movie
-        .find()
+        .find({ "genres": regexGenre })
+        .sort({ "title": 1 })
         .exec()
         .then(result => {
-            result.forEach(movie => {
-                if (movie.genres.indexOf(genre) != -1) {
-                    genreMovies.push(movie)
-                }
-            })
-            genreMovies.sort((a, b) => {
-                return a.title.localeCompare(b.title)
-            })
-            if (genreMovies.length >= 1) {
+            if (result.length > 0) {
                 const response = {
                     genre: genre,
-                    count: genreMovies.length,
-                    movies: genreMovies.map(movie => {
+                    count: result.length,
+                    movies: result.map(movie => {
                         return {
                             title: movie.title,
                             year: movie.year,
@@ -108,91 +91,37 @@ exports.get_by_genre = (req, res, next) => {
 
 //RENAME A GENRE -----------------------------------------------------------------
 exports.rename_genre = (req, res, next) => {
-    const genre = req.body.genre
-    const newName = req.body.newName
-    const genres = []
-    let elGenre = []
-    let count = 0
+    if (req.body.hasOwnProperty('genre') && req.body.hasOwnProperty('newName')) {
+        const genre = req.body.genre
+        const regexGenre = new RegExp(genre, "i")
+        const newName = req.body.newName
 
-    Movie
-        .find()
-        .sort({ id: 1 })
-        .exec()
-        .then(result => {
-            result.forEach(el => {
-                if (el.genres.length > 1) {
-                    elGenre = el.genres.split('|')
-                } else {
-                    elGenre = el.genres
-                }
-                genres.push(elGenre)
-                genres.forEach((item) => {
-                    for (let i = 0; i < item.length; i++) {
-                        if (item[i] === genre) {
-                            count++
-                            item.splice(i, 1, newName)
-                        }
+        Movie.collection
+            .find({ "genres": regexGenre })
+            .forEach(genre => {
+                genre.genres = genre.genres.replace(regexGenre, newName)
+                Movie
+                    .update({ id: genre.id }, { $set: { 'genres': genre.genres } })
+                    .exec()
+                    .then()
+                    .catch(err => {
+                        throw new Error('Movie not updated')
+                    })
+            }, result => {
+                res.status(200).json({
+                    message: "Movie has been updated",
+                    request: {
+                        type: "GET",
+                        description: "Get a new list of all Genres",
+                        url: `http://localhost:${port}/genre`
                     }
                 })
             })
-            if (count === 0) {
-                res.status(404).json({
-                    message: "Genre not found",
-                    request: {
-                        type: 'GET',
-                        description: 'Get a list of all the genres',
-                        url: `http://localhost:${port}/genre`,
-                        sorted: {
-                            byName: `http://localhost:${port}/genre?sort=name`
-                        }
-                    }
-                })
-            } else {
-                const newGenres = genres.map(newGenre => {
-                    if (newGenre.length > 1) {
-                        return newGenre.join('|')
-                    } else {
-                        return newGenre.join()
-                    }
-                })
-                newGenres.forEach((element, i) => {
-
-                    Movie
-                        .update({ "id": i + 1 }, { $set: { "genres": element } }, false, false)
-                        .exec()
-                        .then()
-                        .catch(err => {
-                            throw new Error(err)
-                        })
-                })
-                res.status(200).json({
-                    message: `'${genre}' has been renamed: '${newName}'`,
-                    changes: count,
-                    requests: {
-                        genreList: {
-                            type: 'GET',
-                            description: 'Get a list of movies in this genre',
-                            url: `http://localhost:${port}/genre/` + newName
-                        },
-                        All: {
-                            type: 'GET',
-                            description: 'Get a new list of genres',
-                            url: `http://localhost:${port}/genre`,
-                            sorted: {
-                                byName: `http://localhost:${port}/genre?sort=name`
-                            }
-                        }
-                    }
-                })
+    } else {
+        res.status(500).json({
+            error: {
+                message: "Invalid request format"
             }
         })
-        .catch(err => {
-            res.status(500).json({
-                error: err
-            })
-        })
+    }
 }
-
-
-
-
