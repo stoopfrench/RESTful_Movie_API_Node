@@ -12,19 +12,19 @@ const Movie = require('../api/models/movieModel')
 
 chai.use(chaiHttp)
 
-describe('Requests to /year', () => {
+describe('Requests to /api/year', () => {
     beforeEach((done) => {
         Movie.remove({}, (err) => {
             done()
         })
     })
 
-    describe('GET request to /year', () => {
+    describe('GET request to /api/year', () => {
         it('Returns an index of Years stored in the database', (done) => {
 
             createMovie().then(movie => {
                 chai.request(app)
-                    .get('/year')
+                    .get('/api/year')
                     .end((err, res) => {
                         res.should.have.status(200)
                         res.should.be.json
@@ -37,12 +37,12 @@ describe('Requests to /year', () => {
         })
     })
 
-    describe('GET request to /year/<id>', () => {
+    describe('GET request to /api/year/<id>', () => {
         it('Returns the movies in the database from this year', (done) => {
 
             createMovie().then(movie => {
                 chai.request(app)
-                    .get(`/year/${movie.year}`)
+                    .get(`/api/year/${movie.year}`)
                     .send(movie)
                     .end((err, res) => {
                         res.should.have.status(200)
@@ -58,7 +58,7 @@ describe('Requests to /year', () => {
     })
 })
 
-describe('Bad Requests to /year', () => {
+describe('Bad Requests to /api/year', () => {
     beforeEach((done) => {
         Movie.remove({}, (err) => {
             done()
@@ -69,7 +69,7 @@ describe('Bad Requests to /year', () => {
         it('Returns a 404 error', (done) => {
 
             chai.request(app)
-                .get('/yeara')
+                .get('/api/yeara')
                 .end((err, res) => {
                     res.should.have.status(404)
                     res.body.error.message.should.be.equal('Route not found')
@@ -82,7 +82,7 @@ describe('Bad Requests to /year', () => {
         it("Returns a 404 error with the message 'No Movies found from that year'", (done) => {
 
             chai.request(app)
-                .get('/year/2000')
+                .get('/api/year/2000')
                 .end((err, res) => {
                     res.should.have.status(404)
                     res.body.message.should.be.equal('No Movies found from that year')
@@ -102,7 +102,7 @@ const createMovie = () => {
         }
 
         chai.request(app)
-            .post('/titles')
+            .post('/api/titles')
             .send(movieTemplate)
             .end((err, res) => {
                 resolve(res.body.created)

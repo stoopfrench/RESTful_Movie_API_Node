@@ -28,12 +28,12 @@ exports.genres_get_all = (req, res, next) => {
                             genreList: {
                                 type: 'GET',
                                 description: 'Get a list of movies in this genre',
-                                url: `http://localhost:${port}/genre/` + genre._id.genres
+                                url: `http://localhost:${port}/api/genre/` + genre._id.genres
                             },
                             Rename: {
                                 type: 'PATCH',
                                 description: 'Rename a genre',
-                                url: `http://localhost:${port}/genre/` + genre._id.genres,
+                                url: `http://localhost:${port}/api/genre/` + genre._id.genres,
                                 body: { genre: '<genre to rename>', newName: '<new name for genre>' }
                             }
                         }
@@ -71,7 +71,7 @@ exports.get_by_genre = (req, res, next) => {
                             request: {
                                 type: 'GET',
                                 description: 'Get details about this movie',
-                                url: `http://localhost:${port}/titles/` + movie.id
+                                url: `http://localhost:${port}/api/titles/` + movie.id
                             }
                         }
                     })
@@ -104,10 +104,6 @@ exports.rename_genre = (req, res, next) => {
                 Movie
                     .update({ id: genre.id }, { $set: { 'genres': genre.genres } })
                     .exec()
-                    .then()
-                    .catch(err => {
-                        throw new Error('Movie not updated')
-                    })
             }, result => {
                 if(count > 0) {
                     res.status(200).json({
@@ -116,7 +112,7 @@ exports.rename_genre = (req, res, next) => {
                         request: {
                             type: "GET",
                             description: "Get a new list of all Genres",
-                            url: `http://localhost:${port}/genre`
+                            url: `http://localhost:${port}/api/genre`
                         }
                     })
                 } else {

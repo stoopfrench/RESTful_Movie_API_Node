@@ -12,19 +12,19 @@ const Movie = require('../api/models/movieModel')
 
 chai.use(chaiHttp)
 
-describe('Requests to /titles', () => {
+describe('Requests to /api/titles', () => {
     beforeEach((done) => {
         Movie.remove({}, (err) => {
             done()
         })
     })
 
-    describe('GET request to /titles', () => {
+    describe('GET request to /api/titles', () => {
         it('Returns all Movies from the Database', (done) => {
 
             createMovie().then(movie => {
                 chai.request(app)
-                    .get('/titles')
+                    .get('/api/titles')
                     .end((err, res) => {
                         res.should.have.status(200)
                         res.should.be.json
@@ -41,7 +41,7 @@ describe('Requests to /titles', () => {
         })
     })
 
-    describe('POST request to /titles', () => {
+    describe('POST request to /api/titles', () => {
         it('Creates a new movie in the database', (done) => {
 
             const movie = {
@@ -51,7 +51,7 @@ describe('Requests to /titles', () => {
             }
 
             chai.request(app)
-                .post('/titles')
+                .post('/api/titles')
                 .send(movie)
                 .end((err, res) => {
                     res.should.have.status(201)
@@ -68,12 +68,12 @@ describe('Requests to /titles', () => {
         })
     })
 
-    describe('GET request to /titles/<id>', () => {
+    describe('GET request to /api/titles/<id>', () => {
         it('Returns the movie in the database with this ID', (done) => {
 
             createMovie().then(movie => {
                 chai.request(app)
-                    .get(`/titles/${movie.id}`)
+                    .get(`/api/titles/${movie.id}`)
                     .send(movie)
                     .end((err, res) => {
                         res.should.have.status(200)
@@ -90,13 +90,13 @@ describe('Requests to /titles', () => {
         })
     })
 
-    describe('PATCH request to /titles/<id>', () => {
+    describe('PATCH request to /api/titles/<id>', () => {
         it('Updates the movie with this ID', (done) => {
 
             const patchUpdates = [{ property: 'title', value: 'Mocha TEST 2' }, { property: 'year', value: 2000 }]
             createMovie().then(movie => {
                 chai.request(app)
-                    .patch(`/titles/${movie.id}`)
+                    .patch(`/api/titles/${movie.id}`)
                     .send(patchUpdates)
                     .end((err, res) => {
                         res.should.have.status(200)
@@ -115,12 +115,12 @@ describe('Requests to /titles', () => {
         })
     })
 
-    describe('DELETE request to /titles/<id>', () => {
+    describe('DELETE request to /api/titles/<id>', () => {
         it('Removes the movie with this ID', (done) => {
 
             createMovie().then(movie => {
                 chai.request(app)
-                    .delete(`/titles/${movie.id}`)
+                    .delete(`/api/titles/${movie.id}`)
                     .end((err, res) => {
                         res.should.have.status(200)
                         res.should.be.json
@@ -133,7 +133,7 @@ describe('Requests to /titles', () => {
     })
 })
 
-describe('Bad Requests to /titles', () => {
+describe('Bad Requests to /api/titles', () => {
     beforeEach((done) => {
         Movie.remove({}, (err) => {
             done()
@@ -153,11 +153,11 @@ describe('Bad Requests to /titles', () => {
         })
     })
 
-    describe('GET request to /titles/<id> with invalid ID', () => {
+    describe('GET request to /api/titles/<id> with invalid ID', () => {
         it('Returns a 404 error with a message', (done) => {
 
             chai.request(app)
-                .get('/titles/2')
+                .get('/api/titles/2')
                 .end((err, res) => {
                     res.should.have.status(404)
                     res.body.message.should.be.equal('No entry found with that ID')
@@ -166,7 +166,7 @@ describe('Bad Requests to /titles', () => {
         })
     })
 
-    describe('POST request to /titles with missing properties', () => {
+    describe('POST request to /api/titles with missing properties', () => {
         it('Returns a 400 error', (done) => {
 
             const badMovie = {
@@ -174,7 +174,7 @@ describe('Bad Requests to /titles', () => {
                 year: 1993
             }
             chai.request(app)
-                .post('/titles')
+                .post('/api/titles')
                 .send(badMovie)
                 .end((err, res) => {
                     res.should.have.status(400)
@@ -184,12 +184,12 @@ describe('Bad Requests to /titles', () => {
         })
     })
 
-    describe('PATCH request to /titles with an invalid ID', () => {
+    describe('PATCH request to /api/titles with an invalid ID', () => {
         it("Returns a 404 error with the message 'No entry found with that ID'", (done) => {
 
             const updates = [{ property: 'title', value: 'New Title' }]
             chai.request(app)
-                .patch('/titles/5')
+                .patch('/api/titles/5')
                 .send(updates)
                 .end((err, res) => {
                     res.should.have.status(404)
@@ -200,13 +200,13 @@ describe('Bad Requests to /titles', () => {
         })
     })
 
-    describe('PATCH request to /titles/<id> with an invalid patch request', () => {
+    describe('PATCH request to /api/titles/<id> with an invalid patch request', () => {
         it("Returns a 400 error with the message 'Patch Failed: Invalid patch request'", (done) => {
 
             const patchUpdates = [{ wrongName: 'title', value: 'Mocha TEST 2' }, { property: 'year', value: 2000 }]
             createMovie().then(movie => {
                 chai.request(app)
-                    .patch(`/titles/${movie.id}`)
+                    .patch(`/api/titles/${movie.id}`)
                     .send(patchUpdates)
                     .end((err, res) => {
                         res.should.have.status(400)
@@ -219,13 +219,13 @@ describe('Bad Requests to /titles', () => {
         })
     })
 
-    describe('PATCH request to /titles/<id> with an update to ID', () => {
+    describe('PATCH request to /api/titles/<id> with an update to ID', () => {
         it("Returns a 400 error with the message 'Patch Failed: Changes to the ID property are not permitted'", (done) => {
 
             const patchUpdates = [{ property: 'id', value: '5' }, { property: 'year', value: 2000 }]
             createMovie().then(movie => {
                 chai.request(app)
-                    .patch(`/titles/${movie.id}`)
+                    .patch(`/api/titles/${movie.id}`)
                     .send(patchUpdates)
                     .end((err, res) => {
                         res.should.have.status(400)
@@ -238,12 +238,12 @@ describe('Bad Requests to /titles', () => {
         })
     })
 
-    describe('DELETE request to /titles/<id> with an invalid ID', () => {
+    describe('DELETE request to /api/titles/<id> with an invalid ID', () => {
         it("Returns a 404 error with the message 'No entry found with that ID'", (done) => {
 
             createMovie().then(movie => {
                 chai.request(app)
-                    .delete('/titles/8')
+                    .delete('/api/titles/8')
                     .end((err, res) => {
                         res.should.have.status(404)
                         res.body.should.have.property('message')
@@ -264,7 +264,7 @@ const createMovie = () => {
         }
 
         chai.request(app)
-            .post('/titles')
+            .post('/api/titles')
             .send(movieTemplate)
             .end((err, res) => {
                 resolve(res.body.created)

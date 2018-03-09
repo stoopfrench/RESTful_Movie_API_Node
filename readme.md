@@ -37,23 +37,22 @@ Run the Mocha tests in the `/test` directory: `npm run test`
 
 **Movie Search**
 
-GET `http://localhost:<port>/titles`
+GET `http://localhost:<port>/api/titles`
  	
  	Returns ALL the movies in the database
 
 	Sort By:
-		Title - http://localhost:<port>/titles?sort=title
-		ID - http://localhost:<port>/titles?sort=id
-		Year - http://localhost:<port>/titles?sort=year
+		ID - http://localhost:<port>/api/titles?sort=id
+		Year - http://localhost:<port>/api/titles?sort=year
+		Releases - http://localhost:<port>/api/titles?sort=releases
 
-
-GET `http://localhost:<port>/titles/<id>`
+GET `http://localhost:<port>/api/titles/<id>`
  	
  	Returns the movie stored with that ID
 
 **Create New Movie**
 
-POST `http://localhost:<port>/titles`
+POST `http://localhost:<port>/api/titles`
 	
 	Creates a new movie in the database.
 	
@@ -61,7 +60,7 @@ POST `http://localhost:<port>/titles`
 
 **Update Movie**
 
-PATCH `http://localhost:<port>/titles/<id>`
+PATCH `http://localhost:<port>/api/titles/<id>`
 	
 	Updates one or more values of a movie in the database.
 	
@@ -69,25 +68,25 @@ PATCH `http://localhost:<port>/titles/<id>`
 
 **Delete Movie**
 
-DELETE `http://localhost:<port>/titles/<id>`
+DELETE `http://localhost:<port>/api/titles/<id>`
 
 	Deletes the movie with that ID.
 
 **Genre Index**
 
-GET `http://localhost:<port>/genre`
+GET `http://localhost:<port>/api/genre`
 	
 	Returns a list of ALL the genres in the database sorted by the number of movies in the genre.
 
 **Search by Genre**
 
-GET `http://localhost:<port>/genre/<genre>`
+GET `http://localhost:<port>/api/genre/<genre>`
 	
 	Returns the movies stored with that genre.
 
 **Rename a Genre**
 
-PATCH `http://localhost:<port>/genre`
+PATCH `http://localhost:<port>/api/genre`
 
 	Renames a genre.
 
@@ -95,13 +94,13 @@ PATCH `http://localhost:<port>/genre`
 
 **Year Index**
 
-GET `http://localhost:<port>/year/index`
+GET `http://localhost:<port>/api/year`
 
 	Returns a list of ALL the years in the database sorted by the number of movies released that year.
 
 **Search by Year**
 
-GET `http://localhost:<port>/year/<year>`
+GET `http://localhost:<port>/api/year/<year>`
 	
 	Returns the movies from that year.
 

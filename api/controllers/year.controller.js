@@ -24,7 +24,7 @@ exports.year_get_all = (req, res, next) => {
                         request: {
                             type: 'GET',
                             description: 'Get a list of movies in this year',
-                            url: `http://localhost:${port}/year/` + year._id.year
+                            url: `http://localhost:${port}/api/year/` + year._id.year
                         }
                     }
                 })
@@ -59,7 +59,7 @@ exports.get_title_by_year = (req, res, next) => {
                             request: {
                                 type: 'GET',
                                 description: 'Get details about this movie',
-                                url: `http://localhost:${port}/titles/` + year.id
+                                url: `http://localhost:${port}/api/titles/` + year.id
                             }
                         }
                     })

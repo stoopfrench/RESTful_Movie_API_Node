@@ -10,39 +10,39 @@ exports.titles_get_all = (req, res, next) => {
 
     Movie
         .find()
-        .select('id title year')
+        .select('id title year genres')
         .exec()       
         .then(result => {
             if (Object.keys(req.query).length === 0) {
-                const years = []
-                const sortRefObject = {}
-
-                result.forEach(movie => {
-                    years.push(movie.year)
-                })
-                const movieCount = years.reduce((yr, count) => {
-                    yr[count] = (yr[count] + 1) || 1
-                    return yr
-                }, {})
-                const yearArray = Object.entries(movieCount).sort((a, b) => {
-                    return b[1] - a[1]
-                }).map(e => {
-                    return e.splice(0, 1)
-                }).join().split(',')
-                for (let i = 0; i < yearArray.length; i++) {
-                    sortRefObject[yearArray[i]] = i
-                }
-
-                result.sort((a, b) => {
-                    if (sortRefObject[a.year] === sortRefObject[b.year]) {
-                        return a.title.localeCompare(b.title)
-                    }
-                    return sortRefObject[a.year] - sortRefObject[b.year]
+                result.sort((a,b) => {
+                    return a.title.localeCompare(b.title)
                 })
             } else {
                 result.sort((a, b) => {
-                    if (Object.keys(req.query).length > 0 && req.query.sort === 'title') {
-                        return a.title.localeCompare(b.title)
+                    if (Object.keys(req.query).length > 0 && req.query.sort === 'releases') {
+                        const years = []
+                        const sortRefObject = {}
+
+                        result.forEach(movie => {
+                            years.push(movie.year)
+                        })
+                        const movieCount = years.reduce((yr, count) => {
+                            yr[count] = (yr[count] + 1) || 1
+                            return yr
+                        }, {})
+                        const yearArray = Object.entries(movieCount).sort((a, b) => {
+                            return b[1] - a[1]
+                        }).map(e => {
+                            return e.splice(0, 1)
+                        }).join().split(',')
+                        for (let i = 0; i < yearArray.length; i++) {
+                            sortRefObject[yearArray[i]] = i
+                        }
+                        if (sortRefObject[a.year] === sortRefObject[b.year]) {
+                            return a.title.localeCompare(b.title)
+                        }
+                        return sortRefObject[a.year] - sortRefObject[b.year]
+
                     } else if (Object.keys(req.query).length > 0 && req.query.sort === 'id') {
                         return a.id - b.id
                     } else if (Object.keys(req.query).length > 0 && req.query.sort === 'year') {
@@ -59,11 +59,12 @@ exports.titles_get_all = (req, res, next) => {
                     return {
                         title: movie.title,
                         year: movie.year,
+                        genres: movie.genres,
                         id: movie.id,
                         request: {
                             type: 'GET',
                             description: 'Get details about this movie',
-                            url: `http://localhost:${port}/titles/` + movie.id
+                            url: `http://localhost:${port}/api/titles/` + movie.id
                         }
                     }
                 })
@@ -97,13 +98,13 @@ exports.title_by_ID = (req, res, next) => {
                             Update: {
                                 type: 'PATCH',
                                 description: 'Update this movie',
-                                url: `http://localhost:${port}/titles/` + result.id,
+                                url: `http://localhost:${port}/api/titles/` + result.id,
                                 body: [{ property: '<movie property name>', value: '<new property value>' }]
                             },
                             Remove: {
                                 type: 'DELETE',
                                 description: 'Remove this movie from the database',
-                                url: `http://localhost:${port}/titles/` + result.id
+                                url: `http://localhost:${port}/api/titles/` + result.id
                             }
                         }
                     }
@@ -114,7 +115,7 @@ exports.title_by_ID = (req, res, next) => {
                     request: {
                         type: 'GET',
                         description: 'Get a list of All movies by ID',
-                        url: `http://localhost:${port}/titles/?sort=id`
+                        url: `http://localhost:${port}/api/titles/?sort=id`
                     }
 
                 })
@@ -162,7 +163,7 @@ exports.create_new_title = (req, res, next) => {
                         request: {
                             type: 'GET',
                             description: 'Get details about this movie',
-                            url: `http://localhost:${port}/titles/` + result.id
+                            url: `http://localhost:${port}/api/titles/` + result.id
                         }
                     })
                 })
@@ -216,7 +217,7 @@ exports.update_title_by_ID = (req, res, next) => {
                 request: {
                     type: 'GET',
                     description: 'Get details about this product',
-                    url: `http://localhost:${port}/titles/` + id
+                    url: `http://localhost:${port}/api/titles/` + id
                 }
             })
         })
@@ -269,17 +270,17 @@ exports.delete_title_by_ID = (req, res, next) => {
                         All: {
                             type: 'GET',
                             description: 'Get a new list of all movies',
-                            url: `http://localhost:${port}/titles/`,
+                            url: `http://localhost:${port}/api/titles/`,
                             sorted: {
-                                byTitle: `http://localhost:${port}/titles/?sort=title`,
-                                byId: `http://localhost:${port}/titles/?sort=id`,
-                                byYear: `http://localhost:${port}/titles/?sort=year`
+                                byTitle: `http://localhost:${port}/api/titles/?sort=title`,
+                                byId: `http://localhost:${port}/api/titles/?sort=id`,
+                                byYear: `http://localhost:${port}/api/titles/?sort=year`
                             }
                         },
                         Create: {
                             type: 'POST',
                             description: 'Create a new movie',
-                            url: `http://localhost:${port}/titles/`,
+                            url: `http://localhost:${port}/api/titles/`,
                             body: { title: 'String', year: 'Number', genres: 'String ( seperated by , )' }
                         }
                     }
@@ -290,7 +291,7 @@ exports.delete_title_by_ID = (req, res, next) => {
                     request: {
                         type: 'GET',
                         description: 'Get a list of All movies by ID',
-                        url: `http://localhost:${port}/titles/?sort=id`
+                        url: `http://localhost:${port}/api/titles/?sort=id`
                     }
                 })
             }

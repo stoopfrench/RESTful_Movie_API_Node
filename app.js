@@ -28,9 +28,9 @@ app.use((req, res, next) => {
 })
 
 //REQUEST ROUTE HANDLERS
-app.use('/titles', titlesRoutes)
-app.use('/genre', genreRoutes)
-app.use('/year', yearRoutes)
+app.use('/api/titles', titlesRoutes)
+app.use('/api/genre', genreRoutes)
+app.use('/api/year', yearRoutes)
 
 //ERROR HANDLING - 404
 app.use((req, res, next) => {

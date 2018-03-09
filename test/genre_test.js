@@ -12,19 +12,19 @@ const Movie = require('../api/models/movieModel')
 
 chai.use(chaiHttp)
 
-describe('Requests to /genre', () => {
+describe('Requests to /api/genre', () => {
     beforeEach((done) => {
         Movie.remove({}, (err) => {
             done()
         })
     })
 
-    describe('GET request to /genres', () => {
+    describe('GET request to /api/genre', () => {
         it('Returns an index of Genres stored in the database', (done) => {
 
             createMovie().then(movie => {
                 chai.request(app)
-                    .get('/genre')
+                    .get('/api/genre')
                     .end((err, res) => {
                         res.should.have.status(200)
                         res.should.be.json
@@ -39,14 +39,14 @@ describe('Requests to /genre', () => {
         })
     })
 
-    describe('GET request to /genre/<genre>', () => {
+    describe('GET request to /api/genre/<genre>', () => {
         it('Returns the movies in the database from this genre', (done) => {
 
             createMovie().then(movie => {
                 const movieGenres = movie.genres.split('|')
                 const firstGenre = movieGenres[0]
                 chai.request(app)
-                    .get(`/genre/${firstGenre}`)
+                    .get(`/api/genre/${firstGenre}`)
                     .send(movie)
                     .end((err, res) => {
                         res.should.have.status(200)
@@ -62,7 +62,7 @@ describe('Requests to /genre', () => {
         })
     })
 
-    describe('PATCH request to /genre', () => {
+    describe('PATCH request to /api/genre', () => {
         it('Renames a genre', (done) => {
 
             createMovie().then(movie => {
@@ -70,7 +70,7 @@ describe('Requests to /genre', () => {
                 const firstGenre = movieGenres[0]
                 const patchUpdates = { genre: firstGenre, newName: "RENAMED" }
                 chai.request(app)
-                    .patch('/genre')
+                    .patch('/api/genre')
                     .send(patchUpdates)
                     .end((err, res) => {
                         res.should.have.status(200)
@@ -85,7 +85,7 @@ describe('Requests to /genre', () => {
     })
 })
 
-describe('Bad Requests to /genre', () => {
+describe('Bad Requests to /api/genre', () => {
     beforeEach((done) => {
         Movie.remove({}, (err) => {
             done()
@@ -96,7 +96,7 @@ describe('Bad Requests to /genre', () => {
         it('Returns a 404 error', (done) => {
 
             chai.request(app)
-                .get('/genresia')
+                .get('/api/genresia')
                 .end((err, res) => {
                     res.should.have.status(404)
                     res.body.error.message.should.be.equal('Route not found')
@@ -105,11 +105,11 @@ describe('Bad Requests to /genre', () => {
         })
     })
 
-    describe('GET request to /genre/<genre> with invalid ID', () => {
+    describe('GET request to /api/genre/<genre> with invalid ID', () => {
         it("Returns a 404 error with the message 'No entry found with that Genre'", (done) => {
 
             chai.request(app)
-                .get('/genre/notAGenre')
+                .get('/api/genre/notAGenre')
                 .end((err, res) => {
                     res.should.have.status(404)
                     res.body.message.should.be.equal('No Movies found with that Genre')
@@ -118,12 +118,12 @@ describe('Bad Requests to /genre', () => {
         })
     })
 
-    describe('PATCH request to /genre with a genre that is not in the database', () => {
+    describe('PATCH request to /api/genre with a genre that is not in the database', () => {
         it("Returns a 404 error with the message 'Genre not found'", (done) => {
 
             const updates = { genre: 'Not|A|Genre', newName: 'NEW|GENRE'}
             chai.request(app)
-                .patch('/genre')
+                .patch('/api/genre')
                 .send(updates)
                 .end((err, res) => {
                     res.should.have.status(404)
@@ -134,12 +134,12 @@ describe('Bad Requests to /genre', () => {
         })
     })
 
-    describe('PATCH request to /genre with an invalid request format', () => {
+    describe('PATCH request to /api/genre with an invalid request format', () => {
         it("Returns a 500 error with the message 'Genre not found'", (done) => {
 
             const updates = { genre: 'Not|A|Genre', wrongKey: 'NEW|GENRE'}
             chai.request(app)
-                .patch('/genre')
+                .patch('/api/genre')
                 .send(updates)
                 .end((err, res) => {
                     res.should.have.status(500)
@@ -161,7 +161,7 @@ const createMovie = () => {
         }
 
         chai.request(app)
-            .post('/titles')
+            .post('/api/titles')
             .send(movieTemplate)
             .end((err, res) => {
                 resolve(res.body.created)
