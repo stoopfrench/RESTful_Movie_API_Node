@@ -78,9 +78,6 @@ GET `http://localhost:<port>/genre`
 	
 	Returns a list of ALL the genres in the database sorted by the number of movies in the genre.
 
-	Options:
-		Return the list in Alphabetical Order - http://localhost:<port>/genre?sort=name
-
 **Search by Genre**
 
 GET `http://localhost:<port>/genre/<genre>`
@@ -100,9 +97,6 @@ PATCH `http://localhost:<port>/genre`
 GET `http://localhost:<port>/year/index`
 
 	Returns a list of ALL the years in the database sorted by the number of movies released that year.
-
-	Options:
-		Returns the list in numerical order - http://localhost:<port>/year?sort=year
 
 **Search by Year**
 

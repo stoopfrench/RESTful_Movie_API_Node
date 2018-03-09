@@ -111,7 +111,7 @@ exports.rename_genre = (req, res, next) => {
             }, result => {
                 if(count > 0) {
                     res.status(200).json({
-                        message: `'${genre}' has been renamed '${newName}'`,
+                        message: `${genre} has been renamed ${newName}`,
                         changes: count,
                         request: {
                             type: "GET",

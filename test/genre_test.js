@@ -30,9 +30,9 @@ describe('Requests to /genre', () => {
                         res.should.be.json
                         res.body.should.be.a('object')
                         res.body.should.have.property('results').eql(3)
-                        res.body.should.have.property('genres')
-                        res.body.genres.should.be.a('array')
-                        res.body.genres.length.should.be.eql(3)
+                        res.body.should.have.property('data')
+                        res.body.data.should.be.a('array')
+                        res.body.data.length.should.be.eql(3)
                         done()
                     })
             })
@@ -68,7 +68,7 @@ describe('Requests to /genre', () => {
             createMovie().then(movie => {
                 const movieGenres = movie.genres.split('|')
                 const firstGenre = movieGenres[0]
-                const patchUpdates = { genre: firstGenre, newName: 'RENAMED' }
+                const patchUpdates = { genre: firstGenre, newName: "RENAMED" }
                 chai.request(app)
                     .patch('/genre')
                     .send(patchUpdates)
@@ -76,7 +76,7 @@ describe('Requests to /genre', () => {
                         res.should.have.status(200)
                         res.should.be.json
                         res.body.should.be.a('object')
-                        res.body.message.should.be.equal(`'${firstGenre}' has been renamed: '${patchUpdates.newName}'`)
+                        res.body.message.should.be.equal(`${firstGenre} has been renamed ${patchUpdates.newName}`)
                         res.body.changes.should.be.eql(1)
                         done()
                     })
@@ -121,14 +121,31 @@ describe('Bad Requests to /genre', () => {
     describe('PATCH request to /genre with a genre that is not in the database', () => {
         it("Returns a 404 error with the message 'Genre not found'", (done) => {
 
-            const updates = [{ genre: 'Not|A|Genre', value: 'NEW|GENRE' }]
+            const updates = { genre: 'Not|A|Genre', newName: 'NEW|GENRE'}
             chai.request(app)
                 .patch('/genre')
                 .send(updates)
                 .end((err, res) => {
                     res.should.have.status(404)
-                    res.body.should.have.property('message')
-                    res.body.message.should.be.equal('Genre not found')
+                    res.body.error.should.have.property('message')
+                    res.body.error.message.should.be.equal('Genre not found')
+                    done()
+                })
+        })
+    })
+
+    describe('PATCH request to /genre with an invalid request format', () => {
+        it("Returns a 500 error with the message 'Genre not found'", (done) => {
+
+            const updates = { genre: 'Not|A|Genre', wrongKey: 'NEW|GENRE'}
+            chai.request(app)
+                .patch('/genre')
+                .send(updates)
+                .end((err, res) => {
+                    res.should.have.status(500)
+                    res.body.error.should.have.property('message')
+                    res.body.error.message.should.be.equal('Invalid request format')
+                    res.body.error.should.have.property('template')
                     done()
                 })
         })

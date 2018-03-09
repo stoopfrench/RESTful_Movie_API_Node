@@ -29,8 +29,8 @@ describe('Requests to /year', () => {
                         res.should.have.status(200)
                         res.should.be.json
                         res.body.should.be.a('object')
-                        res.body.should.have.property('years')
-                        res.body.should.have.property('count').eql(1)
+                        res.body.should.have.property('data')
+                        res.body.should.have.property('results').eql(1)
                         done()
                     })
             })
