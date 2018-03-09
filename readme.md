@@ -5,7 +5,7 @@
 **INSTALLATION -----------------------------------------------------------------------------**
 
 1. Clone this repository:
-	`git clone https://github.com/stoopfrench/movie_api_mongo.git`
+	`git clone https://github.com/stoopfrench/RESTful_Movie_API_Node.git`
 2. cd into the directory:
 	`cd RESTful_Movie_API_Node`
 3. Install Dependencies:
