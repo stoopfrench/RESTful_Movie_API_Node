@@ -17,7 +17,7 @@
 		
 5. Open a new terminal tab (the other one should be running the mongoDB service).
 6. Seed the Database from the .csv file:
-	1. cd into the /db_seeder folder:`cd db_seeder`
+	1. cd into the `db_seeder folder`: `cd db_seeder`
 	2. Run `seeder.js`: `node seeder.js`
 7. Start the local server:
 	`npm start`
@@ -31,7 +31,7 @@ BE SURE TO CRASH OUT (`^C`) OF THE MONGOD SERVICE IN THE TERMINAL WHEN YOURE FIN
 
 **TESTING -----------------------------------------------------------------------------------**
 
-Run the Mocha tests in the `/test` directory: `npm run test`
+Run the Mocha tests in the `test` directory: `npm run test`
 
 **ENDPOINTS --------------------------------------------------------------------------------**
 
