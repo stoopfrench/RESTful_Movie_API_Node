@@ -16,8 +16,9 @@
 		Enter your password if required.
 		
 5. Open a new terminal tab (the other one should be running the mongoDB service).
-6. Populate the Database from the dump file:
-	`mongorestore -d movie-database dump/movie-database`
+6. Seed the Database from the .csv file:
+	1. cd into the /db_seeder folder:`cd db_seeder`
+	2. Run `seeder.js`: `node seeder.js`
 7. Start the local server:
 	`npm start`
 8. Use an API Development Enviroment (ex. Postman) to make requests to the API.
