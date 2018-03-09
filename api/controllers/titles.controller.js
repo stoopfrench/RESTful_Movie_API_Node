@@ -11,46 +11,44 @@ exports.titles_get_all = (req, res, next) => {
     Movie
         .find()
         .select('id title year genres')
+        .sort({'title': 1})
         .exec()       
         .then(result => {
-            if (Object.keys(req.query).length === 0) {
-                result.sort((a,b) => {
-                    return a.title.localeCompare(b.title)
+            if (Object.keys(req.query).length > 0 && req.query.sort === 'releases') {
+                const years = []
+                const sortRefObject = {}
+
+                result.forEach(movie => {
+                    years.push(movie.year)
                 })
-            } else {
-                result.sort((a, b) => {
-                    if (Object.keys(req.query).length > 0 && req.query.sort === 'releases') {
-                        const years = []
-                        const sortRefObject = {}
-
-                        result.forEach(movie => {
-                            years.push(movie.year)
-                        })
-                        const movieCount = years.reduce((yr, count) => {
-                            yr[count] = (yr[count] + 1) || 1
-                            return yr
-                        }, {})
-                        const yearArray = Object.entries(movieCount).sort((a, b) => {
-                            return b[1] - a[1]
-                        }).map(e => {
-                            return e.splice(0, 1)
-                        }).join().split(',')
-                        for (let i = 0; i < yearArray.length; i++) {
-                            sortRefObject[yearArray[i]] = i
-                        }
-                        if (sortRefObject[a.year] === sortRefObject[b.year]) {
-                            return a.title.localeCompare(b.title)
-                        }
-                        return sortRefObject[a.year] - sortRefObject[b.year]
-
-                    } else if (Object.keys(req.query).length > 0 && req.query.sort === 'id') {
-                        return a.id - b.id
-                    } else if (Object.keys(req.query).length > 0 && req.query.sort === 'year') {
-                        if (a.year === b.year) {
-                            return a.title.localeCompare(b.title)
-                        }
-                        return a.year - b.year
+                const movieCount = years.reduce((yr, count) => {
+                    yr[count] = (yr[count] + 1) || 1
+                    return yr
+                }, {})
+                const yearArray = Object.entries(movieCount).sort((a, b) => {
+                    return b[1] - a[1]
+                }).map(e => {
+                    return e.splice(0, 1)
+                }).join().split(',')
+                for (let i = 0; i < yearArray.length; i++) {
+                    sortRefObject[yearArray[i]] = i
+                }
+                result.sort((a,b) => {
+                    if (sortRefObject[a.year] === sortRefObject[b.year]) {
+                        return a.title.localeCompare(b.title)
                     }
+                    return sortRefObject[a.year] - sortRefObject[b.year]
+                })
+            } else if (Object.keys(req.query).length > 0 && req.query.sort === 'id') {
+                results.sort((a,b) => {
+                    return a.id - b.id
+                })
+            } else if (Object.keys(req.query).length > 0 && req.query.sort === 'year') {
+                result.sort((a,b) => {
+                    if (a.year === b.year) {
+                        return a.title.localeCompare(b.title)
+                    }
+                    return a.year - b.year
                 })
             }
             const response = {
