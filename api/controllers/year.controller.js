@@ -24,7 +24,7 @@ exports.year_get_all = (req, res, next) => {
                         request: {
                             type: 'GET',
                             description: 'Get a list of movies in this year',
-                            url: `http://localhost:${port}/api/year/` + year._id.year
+                            url: `http://localhost:${port}/api/year/${year._id.year}`
                         }
                     }
                 })
@@ -42,8 +42,7 @@ exports.get_title_by_year = (req, res, next) => {
     const year = req.params.year
 
     Movie
-        .find({ 'year': year })
-        .select('id title year genres')
+        .find({ 'year': year }, { id: 1, title: 1, year: 1, genres: 1, _id: 0 })
         .sort({ "title": 1 })
         .exec()
         .then(result => {
@@ -54,12 +53,13 @@ exports.get_title_by_year = (req, res, next) => {
                     movies: result.map(year => {
                         return {
                             title: year.title,
+                            year: year.year,
                             genres: year.genres,
                             id: year.id,
                             request: {
                                 type: 'GET',
                                 description: 'Get details about this movie',
-                                url: `http://localhost:${port}/api/titles/` + year.id
+                                url: `http://localhost:${port}/api/titles/${year.id}`
                             }
                         }
                     })

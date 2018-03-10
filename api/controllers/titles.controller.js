@@ -127,15 +127,16 @@ exports.create_new_title = (req, res, next) => {
 
 
     Movie
-        .find()
-        .select('id')
+        .find({}, { id: 1, _id: 0 })
+        .sort({ id: -1 })
+        .limit(1)
         .exec()
-        .then(docs => {
+        .then(docId => {
             let newGenres
             if (req.body.genres) {
                 newGenres = req.body.genres.split(/[ ,:;_/]+/).join('|')
             }
-            const id = docs.length + 1
+            const id = (docId.length > 0 ? docId[0].id : 0) + 1
             const movie = new Movie({
                 title: req.body.title,
                 year: req.body.year,
@@ -157,7 +158,7 @@ exports.create_new_title = (req, res, next) => {
                         request: {
                             type: 'GET',
                             description: 'Get details about this movie',
-                            url: `http://localhost:${port}/api/titles/` + result.id
+                            url: `http://localhost:${port}/api/titles/${result.id}` 
                         }
                     })
                 })
@@ -211,7 +212,7 @@ exports.update_title_by_ID = (req, res, next) => {
                 request: {
                     type: 'GET',
                     description: 'Get details about this product',
-                    url: `http://localhost:${port}/api/titles/` + id
+                    url: `http://localhost:${port}/api/titles/${id}` 
                 }
             })
         })

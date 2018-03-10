@@ -28,12 +28,12 @@ exports.genres_get_all = (req, res, next) => {
                             genreList: {
                                 type: 'GET',
                                 description: 'Get a list of movies in this genre',
-                                url: `http://localhost:${port}/api/genre/` + genre._id.genres
+                                url: `http://localhost:${port}/api/genre/${genre._id.genres}` 
                             },
                             Rename: {
                                 type: 'PATCH',
                                 description: 'Rename a genre',
-                                url: `http://localhost:${port}/api/genre/` + genre._id.genres,
+                                url: `http://localhost:${port}/api/genre` ,
                                 body: { genre: '<genre to rename>', newName: '<new name for genre>' }
                             }
                         }
@@ -71,7 +71,7 @@ exports.get_by_genre = (req, res, next) => {
                             request: {
                                 type: 'GET',
                                 description: 'Get details about this movie',
-                                url: `http://localhost:${port}/api/titles/` + movie.id
+                                url: `http://localhost:${port}/api/titles/${movie.id}`
                             }
                         }
                     })
