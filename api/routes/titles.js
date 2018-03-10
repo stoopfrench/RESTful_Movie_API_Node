@@ -4,7 +4,7 @@ const router = express.Router()
 const titlesController = require('../controllers/titles.controller.js')
 
 // GET ALL MOVIES ----------------------------------------------------------------
-router.get('/', titlesController.titles_get_all) 
+router.get('/', titlesController.titles_get_all)
 
 // GET MOVIE BY ID ---------------------------------------------------------------
 router.get('/:id', titlesController.title_by_ID)

@@ -11,59 +11,59 @@ exports.titles_get_all = (req, res, next) => {
     Movie
         .find()
         .select('id title year genres')
-        .sort({title: 1})
+        .sort({ title: 1 })
         .exec()
         .then(result => {
             Movie.aggregate([
-                { $group: { _id: "$year", count: { $sum: 1 } } },
-                { $sort: { "count": -1 } }
-            ])
-            .exec()
-            .then(yearResults => {
-                if (req.query.sort === 'releases') {
-                    const sortRefObject = {}
-                    for (let i = 0; i < yearResults.length; i++) {
-                        sortRefObject[yearResults[i]._id] = i
-                    }
-                    result.sort((a, b) => {
-                        if (sortRefObject[a.year] === sortRefObject[b.year]) {
-                            return a.title.localeCompare(b.title)
+                    { $group: { _id: "$year", count: { $sum: 1 } } },
+                    { $sort: { "count": -1 } }
+                ])
+                .exec()
+                .then(yearResults => {
+                    if (req.query.sort === 'releases') {
+                        const sortRefObject = {}
+                        for (let i = 0; i < yearResults.length; i++) {
+                            sortRefObject[yearResults[i]._id] = i
                         }
-                        return sortRefObject[a.year] - sortRefObject[b.year]
-                    })
-                } else if (req.query.sort === 'id') {
-                    result.sort((a, b) => {
-                        return a.id - b.id
-                    })
-                } else if (req.query.sort === 'year') {
-                    result.sort((a, b) => {
-                        if (a.year === b.year) {
-                            return a.title.localeCompare(b.title)
-                        }
-                        return a.year - b.year
-                    })
-                }
-                const response = {
-                    results: result.length,
-                    movies: result.map(movie => {
-                        return {
-                            title: movie.title,
-                            year: movie.year,
-                            genres: movie.genres,
-                            id: movie.id,
-                            request: {
-                                type: 'GET',
-                                description: 'Get details about this movie',
-                                url: `http://localhost:${port}/api/titles/` + movie.id
+                        result.sort((a, b) => {
+                            if (sortRefObject[a.year] === sortRefObject[b.year]) {
+                                return a.title.localeCompare(b.title)
                             }
-                        }
-                    })
-                }
-                res.status(200).json(response)
-            })
-            .catch(err => {
-                throw new Error(err)
-            })
+                            return sortRefObject[a.year] - sortRefObject[b.year]
+                        })
+                    } else if (req.query.sort === 'id') {
+                        result.sort((a, b) => {
+                            return a.id - b.id
+                        })
+                    } else if (req.query.sort === 'year') {
+                        result.sort((a, b) => {
+                            if (a.year === b.year) {
+                                return a.title.localeCompare(b.title)
+                            }
+                            return a.year - b.year
+                        })
+                    }
+                    const response = {
+                        results: result.length,
+                        movies: result.map(movie => {
+                            return {
+                                title: movie.title,
+                                year: movie.year,
+                                genres: movie.genres,
+                                id: movie.id,
+                                request: {
+                                    type: 'GET',
+                                    description: 'Get details about this movie',
+                                    url: `http://localhost:${port}/api/titles/` + movie.id
+                                }
+                            }
+                        })
+                    }
+                    res.status(200).json(response)
+                })
+                .catch(err => {
+                    throw new Error(err)
+                })
         })
         .catch(err => {
             res.status(500).json({
