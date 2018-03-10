@@ -44,7 +44,7 @@ exports.get_title_by_year = (req, res, next) => {
     Movie
         .find({ 'year': year })
         .select('id title year genres')
-        .sort({"title": 1})
+        .sort({ "title": 1 })
         .exec()
         .then(result => {
             if (result.length > 0) {

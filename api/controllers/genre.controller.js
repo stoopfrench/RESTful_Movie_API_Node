@@ -105,7 +105,7 @@ exports.rename_genre = (req, res, next) => {
                     .update({ id: genre.id }, { $set: { 'genres': genre.genres } })
                     .exec()
             }, result => {
-                if(count > 0) {
+                if (count > 0) {
                     res.status(200).json({
                         message: `${genre} has been renamed ${newName}`,
                         changes: count,
