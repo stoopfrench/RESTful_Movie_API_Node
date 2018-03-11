@@ -1,19 +1,18 @@
 const exec = require('child_process').exec
+const config = require('config')
 const mongoose = require('mongoose')
 
 const Movie = require('../api/models/movieModel')
 
-const dbName = process.argv[2] || "movie-database"
-const collName = process.argv[3] || "movies"
-const csv_file = process.argv[4] || "Movie-List.csv"
+const csv_file = process.argv[2] || "Movie-List.csv"
 
-mongoose.connect(`mongodb://localhost:27017/${dbName}`)
+mongoose.connect(config.dbHost)
 
 exec(`
     echo;
     echo DUMPING OLD DATABASE;
     echo ============================================================;
-    mongo ${dbName} --eval "db.dropDatabase()";
+    mongo movie-database --eval "db.dropDatabase()";
     `,
     (error, stdout, stderr) => {
         if (stdout) {
@@ -26,7 +25,7 @@ exec(`
             console.log(`exec error: ${error}`)
         }
         console.log("...done")
-        
+
         importCSV().then((message) => {
             Movie
                 .update({ imported: { $exists: false } }, { $set: { "imported": new Date() } }, { upsert: true, multi: true })
@@ -53,7 +52,7 @@ function importCSV() {
             echo;
             echo IMPORTING CSV AND TRANSFORMING DATABASE;
             echo ============================================================; 
-            mongoimport --host=127.0.0.1 -d ${dbName} -c ${collName} --type csv --maintainInsertionOrder --columnsHaveTypes --fields "index.int32(),title.string(),year.int32(),genres.string()" --file ./db_seeder/csv_files/${csv_file};
+            mongoimport --host=127.0.0.1 -d movie-database -c movies --type csv --maintainInsertionOrder --columnsHaveTypes --fields "index.int32(),title.string(),year.int32(),genres.string()" --file ./db_utilities/csv_files/${csv_file};
             echo;
             `,
             (error, stdout, stderr) => {
