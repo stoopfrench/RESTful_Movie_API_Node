@@ -32,7 +32,7 @@ BE SURE TO CRASH OUT (`^C`) OF THE MONGOD SERVICE IN THE TERMINAL WHEN YOURE FIN
 
 The `test` directory contains detailed tests for all the routes.  
 
-If you would like to see these tests: `npm run test`
+Run the tests: `npm run test`
 
 **ENDPOINTS --------------------------------------------------------------------------------**
 
