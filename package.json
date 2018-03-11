@@ -1,12 +1,13 @@
 {
   "name": "movie-api-mongo",
-  "version": "2.0.1",
+  "version": "2.1.2",
   "description": "RESTful movie database api",
   "main": "app.js",
   "scripts": {
-    "test": "node ./node_modules/mocha/bin/mocha --timeout 5000 --exit",
     "start": "node server.js",
-    "seeder" : "node db_utilities/seeder.js"
+    "test": "node ./node_modules/mocha/bin/mocha --timeout 5000 --exit",
+    "seeder" : "node db_utilities/seeder.js",
+    "exportCSV": "node ./db_utilities/exportToCsv.js" 
   },
   "author": "Aaron Allen",
   "license": "ISC",

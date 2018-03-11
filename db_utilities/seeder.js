@@ -1,12 +1,19 @@
-const exec = require('child_process').exec
+const util = require('util')
+const exec = util.promisify(require('child_process').exec)
 const config = require('config')
 const mongoose = require('mongoose')
 
 const Movie = require('../api/models/movieModel')
 
-const csv_file = process.argv[2] || "Movie-List.csv"
-
 mongoose.connect(config.dbHost)
+
+const csv_file = process.argv[2] || "Movie-List.csv"
+    if(csv_file.startsWith("EXPORTED")) {
+        exec(`
+            cp ./db_utilities/csv_files/exported/${csv_file} ./db_utilities/csv_files/${csv_file}
+            sed -i '' 1d ./db_utilities/csv_files/${csv_file}
+            `)
+    }
 
 exec(`
     echo;
