@@ -30,7 +30,7 @@ BE SURE TO CRASH OUT (`^C`) OF THE MONGOD SERVICE IN THE TERMINAL WHEN YOURE FIN
 
 **TESTING -----------------------------------------------------------------------------------**
 
-The `test` directory contains detailed tests for all the routes.  
+The `test` directory contains detailed Mocha/Chai tests for all the routes.  
 
 Run the tests: `npm run test`
 
