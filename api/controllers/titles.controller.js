@@ -83,7 +83,6 @@ exports.title_by_INDEX = (req, res, next) => {
         .then(result => {
             if (result) {
                 const responseData = {
-                    result: {
                         title: result.title,
                         year: result.year,
                         genres: result.genres,
@@ -102,7 +101,6 @@ exports.title_by_INDEX = (req, res, next) => {
                                 url: `http://localhost:${port}/api/titles/` + result.index
                             }
                         }
-                    }
                 }
                 res.status(200).json({
                     data: responseData

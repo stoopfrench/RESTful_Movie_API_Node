@@ -50,7 +50,7 @@ describe('Requests to /api/year', () => {
                         res.body.should.be.a('object')
                         res.body.should.have.property('year').equal(`${movie.year}`)
                         res.body.should.have.property('count').eql(1)
-                        res.body.should.have.property('movies')
+                        res.body.should.have.property('data')
                         done()
                     })
             })

@@ -16,7 +16,7 @@
 		Enter your password if required.
 		
 5. Open a new terminal tab (the other one should be running the mongoDB service).
-6. Seed the Database with the Custom Seeder from the sample .csv file:
+6. Seed the Database with the custom seeder in `db_utilities` from the sample .csv file:
 	`npm run seeder`
 7. Start the local server:
 	`npm start`

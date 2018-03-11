@@ -50,7 +50,7 @@ exports.get_title_by_year = (req, res, next) => {
                 const response = {
                     year: year,
                     count: result.length,
-                    movies: result.map(year => {
+                    data: result.map(year => {
                         return {
                             title: year.title,
                             year: year.year,

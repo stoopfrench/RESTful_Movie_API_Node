@@ -11,7 +11,7 @@ mongoose.connect(config.dbHost)
 const date = new Date()
 const now = date.toISOString()
 
-exec(`mongoexport --db movie-database --collection movies --type=csv --fields index,title,year,genres --out exportedCSVs/Movies_${now}.csv`)
+exec(`mongoexport --db movie-database --collection movies --type=csv --fields index,title,year,genres --out exportedCSVs/EXPORTED_movies_${now}.csv`)
 	.then((stdout) => {
 		console.log("==========================================")
 		console.log()

@@ -61,7 +61,7 @@ exports.get_by_genre = (req, res, next) => {
                 const response = {
                     genre: genre,
                     count: result.length,
-                    movies: result.map(movie => {
+                    data: result.map(movie => {
                         return {
                             title: movie.title,
                             year: movie.year,
