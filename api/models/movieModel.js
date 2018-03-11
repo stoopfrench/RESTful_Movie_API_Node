@@ -7,12 +7,14 @@ let thisYear;
 }())
 
 const movieSchema = mongoose.Schema({
-    id: { type: Number },
+    _id: mongoose.Schema.Types.ObjectId,
+    index: { type: Number },
     title: { type: String, required: true, unique: true },
     year: { type: Number, required: true, min: 1888, max: thisYear },
-    genres: { type: String, required: true }
+    genres: { type: String, required: true },
+    imported: { type: Date }
 }, {
-    timestamps: true
+    timestamps: { createdAt: "created", updatedAt: "updated" }
 })
 
 module.exports = mongoose.model('Movie', movieSchema)

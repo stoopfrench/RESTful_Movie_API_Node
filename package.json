@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "node ./node_modules/mocha/bin/mocha --timeout 5000 --exit",
-    "start": "node server.js"
+    "start": "node server.js",
+    "seed" : "node db_seeder/seeder.js"
   },
   "author": "Aaron Allen",
   "license": "ISC",

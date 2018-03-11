@@ -42,7 +42,7 @@ exports.get_title_by_year = (req, res, next) => {
     const year = req.params.year
 
     Movie
-        .find({ 'year': year }, { id: 1, title: 1, year: 1, genres: 1, _id: 0 })
+        .find({ 'year': year }, { _id: 0 })
         .sort({ "title": 1 })
         .exec()
         .then(result => {
@@ -55,11 +55,11 @@ exports.get_title_by_year = (req, res, next) => {
                             title: year.title,
                             year: year.year,
                             genres: year.genres,
-                            id: year.id,
+                            index: year.index,
                             request: {
                                 type: 'GET',
                                 description: 'Get details about this movie',
-                                url: `http://localhost:${port}/api/titles/${year.id}`
+                                url: `http://localhost:${port}/api/titles/${year.index}`
                             }
                         }
                     })

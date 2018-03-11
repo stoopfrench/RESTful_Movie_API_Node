@@ -6,16 +6,16 @@ const titlesController = require('../controllers/titles.controller.js')
 // GET ALL MOVIES ----------------------------------------------------------------
 router.get('/', titlesController.titles_get_all)
 
-// GET MOVIE BY ID ---------------------------------------------------------------
-router.get('/:id', titlesController.title_by_ID)
+// GET MOVIE BY INDEX ------------------------------------------------------------
+router.get('/:index', titlesController.title_by_INDEX)
 
 // CREATE NEW MOVIE --------------------------------------------------------------
 router.post('/', titlesController.create_new_title)
 
-// UPDATE MOVIE BY ID ------------------------------------------------------------
-router.patch('/:id', titlesController.update_title_by_ID)
+// UPDATE MOVIE BY INDEX ---------------------------------------------------------
+router.patch('/:index', titlesController.update_title_by_INDEX)
 
-// DELETE MOVIE BY ID ------------------------------------------------------------
-router.delete('/:id', titlesController.delete_title_by_ID)
+// DELETE MOVIE BY INDEX ---------------------------------------------------------
+router.delete('/:index', titlesController.delete_title_by_INDEX)
 
 module.exports = router

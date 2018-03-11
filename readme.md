@@ -42,13 +42,13 @@ GET `/api/titles`
  	Returns ALL the movies in the database
 
 	Sort By:
-		ID - /api/titles?sort=id
+		Index # - /api/titles?sort=index
 		Year - /api/titles?sort=year
 		Releases - /api/titles?sort=releases
 
-GET `/api/titles/<id>`
+GET `/api/titles/<index>`
  	
- 	Returns the movie stored with that ID
+ 	Returns the movie stored with that INDEX #
 
 **Create New Movie**
 
@@ -60,7 +60,7 @@ POST `/api/titles`
 
 **Update Movie**
 
-PATCH `/api/titles/<id>`
+PATCH `/api/titles/<index>`
 	
 	Updates one or more values of a movie in the database.
 	
@@ -68,9 +68,9 @@ PATCH `/api/titles/<id>`
 
 **Delete Movie**
 
-DELETE `/api/titles/<id>`
+DELETE `/api/titles/<index>`
 
-	Deletes the movie with that ID.
+	Deletes the movie with that INDEX #.
 
 **Genre Index**
 

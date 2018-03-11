@@ -105,7 +105,7 @@ describe('Bad Requests to /api/genre', () => {
         })
     })
 
-    describe('GET request to /api/genre/<genre> with invalid ID', () => {
+    describe('GET request to /api/genre/<genre> with invalid GENRE', () => {
         it("Returns a 404 error with the message 'No entry found with that Genre'", (done) => {
 
             chai.request(app)

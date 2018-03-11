@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 const Movie = require('../models/movieModel')
-const db = require('mongodb')
 
 const _var = require('config')
 const port = _var.port
@@ -67,11 +66,11 @@ exports.get_by_genre = (req, res, next) => {
                             title: movie.title,
                             year: movie.year,
                             genres: movie.genres,
-                            id: movie.id,
+                            index: movie.index,
                             request: {
                                 type: 'GET',
                                 description: 'Get details about this movie',
-                                url: `http://localhost:${port}/api/titles/${movie.id}`
+                                url: `http://localhost:${port}/api/titles/${movie.index}`
                             }
                         }
                     })
@@ -102,7 +101,7 @@ exports.rename_genre = (req, res, next) => {
                 count++
                 genre.genres = genre.genres.replace(regexGenre, newName)
                 Movie
-                    .update({ id: genre.id }, { $set: { 'genres': genre.genres } })
+                    .update({ index: genre.index }, { $set: { 'genres': genre.genres } })
                     .exec()
             }, result => {
                 if (count > 0) {

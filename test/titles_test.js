@@ -29,12 +29,12 @@ describe('Requests to /api/titles', () => {
                         res.should.have.status(200)
                         res.should.be.json
                         res.body.should.have.property('results')
-                        res.body.should.have.property('movies')
-                        res.body.movies.should.be.a('array')
-                        res.body.movies[0].should.have.property('title')
-                        res.body.movies[0].should.have.property('year')
-                        res.body.movies[0].should.have.property('id')
-                        res.body.movies.length.should.be.eql(1)
+                        res.body.should.have.property('data')
+                        res.body.data.should.be.a('array')
+                        res.body.data[0].should.have.property('title')
+                        res.body.data[0].should.have.property('year')
+                        res.body.data[0].should.have.property('index')
+                        res.body.data.length.should.be.eql(1)
                         done()
                     })
             })
@@ -62,41 +62,41 @@ describe('Requests to /api/titles', () => {
                     res.body.created.should.have.property('title').equal(movie.title)
                     res.body.created.should.have.property('year').equal(movie.year)
                     res.body.created.should.have.property('genres').equal(movie.genres.split(',').join('|'))
-                    res.body.created.should.have.property('id').eql(1)
+                    res.body.created.should.have.property('index').eql(1)
                     done()
                 })
         })
     })
 
-    describe('GET request to /api/titles/<id>', () => {
-        it('Returns the movie in the database with this ID', (done) => {
+    describe('GET request to /api/titles/<index>', () => {
+        it('Returns the movie in the database with this INDEX', (done) => {
 
             createMovie().then(movie => {
                 chai.request(app)
-                    .get(`/api/titles/${movie.id}`)
+                    .get(`/api/titles/${movie.index}`)
                     .send(movie)
                     .end((err, res) => {
                         res.should.have.status(200)
                         res.should.be.json
                         res.body.should.be.a('object')
-                        res.body.should.have.property('movie')
-                        res.body.movie.should.have.property('title')
-                        res.body.movie.should.have.property('year')
-                        res.body.movie.should.have.property('genres')
-                        res.body.movie.should.have.property('id').eql(movie.id)
+                        res.body.data.should.have.property('result')
+                        res.body.data.result.should.have.property('title')
+                        res.body.data.result.should.have.property('year')
+                        res.body.data.result.should.have.property('genres')
+                        res.body.data.result.should.have.property('index').eql(movie.index)
                         done()
                     })
             })
         })
     })
 
-    describe('PATCH request to /api/titles/<id>', () => {
-        it('Updates the movie with this ID', (done) => {
+    describe('PATCH request to /api/titles/<index>', () => {
+        it('Updates the movie with this INDEX', (done) => {
 
             const patchUpdates = [{ property: 'title', value: 'Mocha TEST 2' }, { property: 'year', value: 2000 }]
             createMovie().then(movie => {
                 chai.request(app)
-                    .patch(`/api/titles/${movie.id}`)
+                    .patch(`/api/titles/${movie.index}`)
                     .send(patchUpdates)
                     .end((err, res) => {
                         res.should.have.status(200)
@@ -115,12 +115,12 @@ describe('Requests to /api/titles', () => {
         })
     })
 
-    describe('DELETE request to /api/titles/<id>', () => {
-        it('Removes the movie with this ID', (done) => {
+    describe('DELETE request to /api/titles/<index>', () => {
+        it('Removes the movie with this INDEX', (done) => {
 
             createMovie().then(movie => {
                 chai.request(app)
-                    .delete(`/api/titles/${movie.id}`)
+                    .delete(`/api/titles/${movie.index}`)
                     .end((err, res) => {
                         res.should.have.status(200)
                         res.should.be.json
@@ -153,14 +153,14 @@ describe('Bad Requests to /api/titles', () => {
         })
     })
 
-    describe('GET request to /api/titles/<id> with invalid ID', () => {
+    describe('GET request to /api/titles/<index> with invalid INDEX', () => {
         it('Returns a 404 error with a message', (done) => {
 
             chai.request(app)
                 .get('/api/titles/2')
                 .end((err, res) => {
                     res.should.have.status(404)
-                    res.body.message.should.be.equal('No entry found with that ID')
+                    res.body.message.should.be.equal('No entry found with that INDEX')
                     done()
                 })
         })
@@ -184,8 +184,8 @@ describe('Bad Requests to /api/titles', () => {
         })
     })
 
-    describe('PATCH request to /api/titles with an invalid ID', () => {
-        it("Returns a 404 error with the message 'No entry found with that ID'", (done) => {
+    describe('PATCH request to /api/titles with an invalid INDEX', () => {
+        it("Returns a 404 error with the message 'No entry found with that INDEX'", (done) => {
 
             const updates = [{ property: 'title', value: 'New Title' }]
             chai.request(app)
@@ -194,19 +194,19 @@ describe('Bad Requests to /api/titles', () => {
                 .end((err, res) => {
                     res.should.have.status(404)
                     res.body.should.have.property('message')
-                    res.body.message.should.be.equal('No entry found with that ID')
+                    res.body.message.should.be.equal('No entry found with that INDEX')
                     done()
                 })
         })
     })
 
-    describe('PATCH request to /api/titles/<id> with an invalid patch request', () => {
+    describe('PATCH request to /api/titles/<index> with an invalid patch request', () => {
         it("Returns a 400 error with the message 'Patch Failed: Invalid patch request'", (done) => {
 
             const patchUpdates = [{ wrongName: 'title', value: 'Mocha TEST 2' }, { property: 'year', value: 2000 }]
             createMovie().then(movie => {
                 chai.request(app)
-                    .patch(`/api/titles/${movie.id}`)
+                    .patch(`/api/titles/${movie.index}`)
                     .send(patchUpdates)
                     .end((err, res) => {
                         res.should.have.status(400)
@@ -219,26 +219,26 @@ describe('Bad Requests to /api/titles', () => {
         })
     })
 
-    describe('PATCH request to /api/titles/<id> with an update to ID', () => {
-        it("Returns a 400 error with the message 'Patch Failed: Changes to the ID property are not permitted'", (done) => {
+    describe('PATCH request to /api/titles/<index> with an update to INDEX', () => {
+        it("Returns a 400 error with the message 'Patch Failed: Changes to the INDEX property are not permitted'", (done) => {
 
-            const patchUpdates = [{ property: 'id', value: '5' }, { property: 'year', value: 2000 }]
+            const patchUpdates = [{ property: 'index', value: '5' }, { property: 'year', value: 2000 }]
             createMovie().then(movie => {
                 chai.request(app)
-                    .patch(`/api/titles/${movie.id}`)
+                    .patch(`/api/titles/${movie.index}`)
                     .send(patchUpdates)
                     .end((err, res) => {
                         res.should.have.status(400)
                         res.body.should.have.property('error')
                         res.body.error.should.have.property('message')
-                        res.body.error.message.should.be.equal('Patch Failed: Changes to the ID property are not permitted')
+                        res.body.error.message.should.be.equal('Patch Failed: Changes to the INDEX property are not permitted')
                         done()
                     })
             })
         })
     })
 
-    describe('DELETE request to /api/titles/<id> with an invalid ID', () => {
+    describe('DELETE request to /api/titles/<index> with an invalid INDEX', () => {
         it("Returns a 404 error with the message 'No entry found with that ID'", (done) => {
 
             createMovie().then(movie => {
@@ -247,7 +247,7 @@ describe('Bad Requests to /api/titles', () => {
                     .end((err, res) => {
                         res.should.have.status(404)
                         res.body.should.have.property('message')
-                        res.body.message.should.be.equal('No entry found with that ID')
+                        res.body.message.should.be.equal('No entry found with that INDEX')
                         done()
                     })
             })

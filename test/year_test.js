@@ -37,7 +37,7 @@ describe('Requests to /api/year', () => {
         })
     })
 
-    describe('GET request to /api/year/<id>', () => {
+    describe('GET request to /api/year/<year>', () => {
         it('Returns the movies in the database from this year', (done) => {
 
             createMovie().then(movie => {
@@ -78,7 +78,7 @@ describe('Bad Requests to /api/year', () => {
         })
     })
 
-    describe('GET request to /genre/<genre> with invalid ID', () => {
+    describe('GET request to /year/<year> with invalid YEAR', () => {
         it("Returns a 404 error with the message 'No Movies found from that year'", (done) => {
 
             chai.request(app)
