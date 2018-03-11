@@ -24,7 +24,7 @@
 		
 		Make sure the program is making request at the correct port:
 		Default: http://localhost:8080
-	**The port can be changed by modifying the value of the `port` property in `variables.js`**
+	**The port can be changed by modifying the value of the `port` property in `config/default.json`**
 
 BE SURE TO CRASH OUT (`^C`) OF THE MONGOD SERVICE IN THE TERMINAL WHEN YOURE FINISHED EXPLORING
 
