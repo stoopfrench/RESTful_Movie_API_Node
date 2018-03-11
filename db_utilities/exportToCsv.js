@@ -1,24 +1,19 @@
-process.env.SUPPRESS_NO_CONFIG_WARNING = "y"
-
 const util = require('util')
 const exec = util.promisify(require('child_process').exec)
-const config = require('config')
-
-const mongoose = require('mongoose')
-
-mongoose.connect(config.dbHost)
 
 const date = new Date()
 const now = date.toISOString()
 
-exec(`mongoexport --db movie-database --collection movies --type=csv --fields index,title,year,genres --out exportedCSVs/EXPORTED_movies_${now}.csv`)
+exec(`mongoexport --db movie-database --collection movies --type csv --fields index,title,year,genres --out csv_files/exported/EXPORTED_movies_${now}.csv`)
     .then((stdout) => {
         console.log("==========================================")
         console.log()
         console.log(stdout.stderr)
-        console.log()
         console.log("...success")
+        console.log()
+        console.log("Files were exported to ./csv_files/exported")
+
     })
     .catch(error => {
-        console.log(error)
+        console.log(error)  
     })
