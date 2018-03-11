@@ -27,6 +27,10 @@ exec(`
         console.log("...done")
 
         importCSV().then((message) => {
+
+            console.log(message)
+            console.log()
+
             Movie
                 .update({ imported: { $exists: false } }, { $set: { "imported": new Date() } }, { upsert: true, multi: true })
                 .exec()
@@ -64,9 +68,9 @@ function importCSV() {
                 }
                 if (error !== null) {
                     console.log(`exec error: ${error}`)
-                    reject('not imported')
+                    reject('failure...no documents were imported')
                 }
-                resolve()
+                resolve('...documents imported successfully!')
             })
     })
 }
