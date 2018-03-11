@@ -29,8 +29,7 @@
 BE SURE TO CRASH OUT (`^C`) OF THE MONGOD SERVICE IN THE TERMINAL WHEN YOURE FINISHED EXPLORING
 
 **TESTING -----------------------------------------------------------------------------------**
-
-Run the Mocha tests in the `test` directory: `npm run test`
+The `test` directory contains detailed tests for all the routes.  If you would like to see these tests: `npm run test`
 
 **ENDPOINTS --------------------------------------------------------------------------------**
 
