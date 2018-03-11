@@ -36,20 +36,22 @@ Run the tests: `npm run test`
 
 **ENDPOINTS --------------------------------------------------------------------------------**
 
-**Movie Search**
+**Movie Index**
 
 GET `/api/titles`
  	
  	Returns ALL the movies in the database
 
 	Sort By:
-		Index # - /api/titles?sort=index
+		Index - /api/titles?sort=index
 		Year - /api/titles?sort=year
 		Releases - /api/titles?sort=releases
 
+**Search by Index**
+
 GET `/api/titles/<index>`
  	
- 	Returns the movie stored with that INDEX #
+ 	Returns the movie stored with that INDEX
 
 **Create New Movie**
 
@@ -71,7 +73,7 @@ PATCH `/api/titles/<index>`
 
 DELETE `/api/titles/<index>`
 
-	Deletes the movie with that INDEX #.
+	Deletes the movie with that INDEX.
 
 **Genre Index**
 
