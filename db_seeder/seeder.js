@@ -3,15 +3,15 @@ const mongoose = require('mongoose')
 
 const Movie = require('../api/models/movieModel')
 
-mongoose.connect("mongodb://localhost:27017/movie-database")
+const dbName = process.argv[2] || "movie-database"
+const collName = process.argv[3] || "movies"
+const csv_file = process.argv[4] || "Movie-List.csv"
 
-const dbName = "movie-database"
-const collName = "movies"
-const csv_file = "Movie-List.csv"
+mongoose.connect(`mongodb://localhost:27017/${dbName}`)
 
 exec(`
     echo;
-    echo CLEARING OUT DATABASE;
+    echo DUMPING OLD DATABASE;
     echo ============================================================;
     mongo ${dbName} --eval "db.dropDatabase()";
     `,
