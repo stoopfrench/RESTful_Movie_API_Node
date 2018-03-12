@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 
 const Movie = require('../models/movieModel')
 
-const _var = require('config')
-const port = _var.port
+const config = require('config')
+const port = config.port
 
 //GET YEAR INDEX -----------------------------------------------------------------
 exports.year_get_all = (req, res, next) => {
