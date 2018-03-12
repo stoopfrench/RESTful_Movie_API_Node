@@ -3,7 +3,7 @@ const exec = util.promisify(require('child_process').exec)
 const config = require('config')
 
 const mongoose = require('mongoose')
-const Movie = require('../api/models/movieModel')
+const Movie = require('../../api/models/movieModel')
 
 mongoose.connect(config.dbHost)
 

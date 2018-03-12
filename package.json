@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "test": "node ./node_modules/mocha/bin/mocha --timeout 5000 --exit",
-    "seeder" : "node db_utilities/seeder.js",
-    "exportCSV": "node ./db_utilities/exportToCsv.js" 
+    "seeder" : "node db_utilities/scripts/seeder.js",
+    "exportCSV": "node db_utilities/scripts/exportToCsv.js" 
   },
   "author": "Aaron Allen",
   "license": "ISC",
