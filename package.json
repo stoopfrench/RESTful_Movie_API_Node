@@ -6,21 +6,21 @@
   "scripts": {
     "start": "node server.js",
     "test": "node ./node_modules/mocha/bin/mocha --timeout 5000 --exit",
-    "seeder" : "node db_utilities/scripts/seeder.js",
-    "exportCSV": "node db_utilities/scripts/exportToCsv.js" 
+    "seeder": "node db_utilities/scripts/seeder.js",
+    "exportCSV": "node db_utilities/scripts/exportToCsv.js"
   },
   "author": "Aaron Allen",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
-    "config": "^1.29.4",
-    "express": "^4.16.2",
-    "mongoose": "^5.0.3"
+    "config": "^1.30.0",
+    "express": "^4.16.3",
+    "mongoose": "^5.0.11"
   },
   "devDependencies": {
     "chai": "^4.1.2",
     "chai-http": "^3.0.0",
     "child-process": "^1.0.2",
-    "mocha": "^5.0.1"
+    "mocha": "^5.0.4"
   }
 }

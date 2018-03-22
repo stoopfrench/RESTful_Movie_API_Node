@@ -72,6 +72,51 @@ exports.titles_get_all = (req, res, next) => {
         })
 }
 
+//GET MOVIE BY TITLE -------------------------------------------------------------
+exports.titles_by_title = (req, res, next) => {
+    const title = req.params.title
+    const regexTitle = new RegExp(`^${title}`, "i")
+
+    Movie
+        .find({ "title": regexTitle })
+        .sort({ "title": 1 })
+        .exec()
+        .then(result => {
+            if (result.length > 0) {
+                console.log(result)
+                const response = {
+                    search: title,
+                    count: result.length,
+                    data: result.map(movie => {
+                        return {
+                            title: movie.title,
+                            year: movie.year,
+                            genres: movie.genres,
+                            index: movie.index,
+                            request: {
+                                type: 'GET',
+                                description: 'Get details about this movie',
+                                url: `http://localhost:${port}/api/titles/${movie.index}`
+                            }
+                        }
+                    })
+                }
+                res.status(200).json(response)
+            } else {
+                res.status(404).json({
+                    error: {
+                        message: "No Movies found with that Title"
+                    }
+                })
+            }
+        })
+        .catch(err => {
+            res.status(404).json({
+                message: err.message
+            })
+        })
+}
+
 // GET MOVIE BY INDEX ------------------------------------------------------------
 exports.title_by_INDEX = (req, res, next) => {
     const index = req.params.index
@@ -126,7 +171,6 @@ exports.title_by_INDEX = (req, res, next) => {
 
 // CREATE NEW MOVIE --------------------------------------------------------------
 exports.create_new_title = (req, res, next) => {
-
 
     Movie
         .find({}, { index: 1, _id: 1 })

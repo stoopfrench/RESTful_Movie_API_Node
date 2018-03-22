@@ -6,6 +6,9 @@ const titlesController = require('../controllers/titles.controller.js')
 // GET ALL MOVIES ----------------------------------------------------------------
 router.get('/', titlesController.titles_get_all)
 
+// GET MOVIE BY TITLE ------------------------------------------------------------
+router.get('/:title', titlesController.titles_by_title)
+
 // GET MOVIE BY INDEX ------------------------------------------------------------
 router.get('/:index', titlesController.title_by_INDEX)
 
